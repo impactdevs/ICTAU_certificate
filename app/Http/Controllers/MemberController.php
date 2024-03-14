@@ -198,9 +198,10 @@ class MemberController extends Controller
         //save the image to the public folder
         $image->save(public_path('images/certificate-generated.png'));
 
-        $img = file_get_contents(public_path('images/certificate-generated.png'));
+        // $img = file_get_contents(public_path('images/certificate-generated.png'));
 
-        return response($img)->header('Content-Type', 'image/png');
+        // return response($img)->header('Content-Type', 'image/png');
+        return response()->download(public_path('images/certificate-generated.png'))->deleteFileAfterSend(true);
     }
 
     public function generate_qr()
