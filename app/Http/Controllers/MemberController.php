@@ -201,7 +201,7 @@ class MemberController extends Controller
         $image->toPng();
 
         //save the image to the public folder
-        $image->save(public_path('images/certificate-generated.png'));
+        $image->save(public_path('images/certificate-generated_'.request()->id.'.png'));
 
         // $img = file_get_contents(public_path('images/certificate-generated.png'));
 
