@@ -39,7 +39,7 @@
             margin-top: 0;
             margin-bottom: 20px;
             font-weight: bold;
-            color: #ff8c00;
+            color: black
             /* Orange */
         }
 
@@ -77,6 +77,10 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <p>
+                            The certificate is valid and the details are as follows. Please contact the ICTA Uganda for
+                            further assistance.
+                        </p>
                         <div class="col-md-6">
                             <h3>Full Name: {{ $member->first_name }} {{ $member->last_name }}</h3>
                             <h3>Membership ID: {{ $member->membership_id }}</h3>
