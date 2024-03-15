@@ -10,10 +10,9 @@ use Illuminate\Http\Request;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
+
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 class MemberController extends Controller
 {
@@ -193,83 +192,43 @@ class MemberController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->place(public_path('images/qr_code.png'), 'center', 0, 0, 100);
+        //generate the qr code
+        $qrPath = $this->generate_qr(request()->id);
+
+        //add the qr code to the certificate
+        $image->place($qrPath, 'top-right', 52, 55);
 
         $image->toPng();
 
         //save the image to the public folder
         $image->save(public_path('images/certificate-generated.png'));
 
-        $img = file_get_contents(public_path('images/certificate-generated.png'));
+        // $img = file_get_contents(public_path('images/certificate-generated.png'));
 
-        return response($img)->header('Content-Type', 'image/png');
-        // return response()->download(public_path('images/certificate-generated.png'))->deleteFileAfterSend(true);
+        // return response($img)->header('Content-Type', 'image/png');
+        return response()->download(public_path('images/certificate-generated_'.request()->id.'.png'))->deleteFileAfterSend(true);
     }
 
-    // public function generate_qr()
-    // {
-    //     $url = "https://image.intervention.io/v3/basics/image-output#encode-images-with-encoder-objects";
-
-    //     $imagick = new ImagickImageBackEnd('white');
-    //     // Create renderer for PNG image output
-    //     $renderer = new ImageRenderer(
-    //         new RendererStyle(400),
-    //         $imagick
-    //     );
-
-    //     // Create writer to generate QR code
-    //     $writer = new Writer($renderer);
-
-    //     // Generate the QR code as a PNG image
-    //     $qrCode = $writer->writeString($url);
-
-    //     //change the color of the QR code to white
-
-    //     // Save the QR code to a file
-    //     file_put_contents(public_path('images/qr_code.png'), $qrCode);
-    //     $img = file_get_contents(public_path('images/qr_code.png'));
-    //     return response($img)->header('Content-Type', 'image/png');
-    //     // Prompt the user to save the image
-    //     // header('Content-Disposition: attachment; filename="qr_code.png"');
-    //     // header('Content-Type: image/png');
-    //     // echo $qrCode;
-    // }
-
-    public function generate_qr()
+    public function generate_qr($memberId)
     {
-        $url = "https://image.intervention.io/v3/basics/image-output#encode-images-with-encoder-objects";
+        //check if the member exists
 
-        // Create renderer for PNG image output
-        $renderer = new ImageRenderer(
-            new RendererStyle(100),
-            new ImagickImageBackEnd()
-        );
+        $member = Member::find($memberId);
+        $qrText = url('member/' . $member->id);
 
-        // Create writer to generate QR code
-        $writer = new Writer($renderer);
+        // Generate QR code
+        $img = QrCode::format('png')->size(230)->generate($qrText);
 
-        // Generate the QR code as a PNG image
-        $qrCode = $writer->writeString($url);
-
-        // Create Imagick object
-        $imagick = new \Imagick();
-        $imagick->readImageBlob($qrCode);
-
-        // Set the color to white
-        $imagick->setColorspace(\Imagick::COLORSPACE_GRAY);
-        $imagick->negateImage(false);
-        $imagick->setImageColorspace(\Imagick::COLORSPACE_RGB);
-        $imagick->setImageAlphaChannel(\Imagick::ALPHACHANNEL_REMOVE);
-        $imagick->setImageBackgroundColor('white');
-
-        // Save the QR code to a file
-        $imagick->writeImage(public_path('images/qr_code.png'));
-        $imagick->clear();
-
-        // Output the image
-        return response()->file(public_path('images/qr_code.png'));
+        // Save the QR code to the public folder
+        file_put_contents(public_path('images/qrcode_'.$memberId.'.png'), $img);
+        //return the qr path
+        return public_path('images/qrcode_'.$memberId.'.png');
     }
 
-
+    public function member_verification($id)
+    {
+        $member = Member::find($id);
+        return view('admin.members.member_verification', compact('member'));
+    }
 }
 
