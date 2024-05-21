@@ -4,6 +4,7 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
@@ -26,7 +27,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
+    Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
+    Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
 	Route::get('dashboard', function () {
 		return view('dashboard');
