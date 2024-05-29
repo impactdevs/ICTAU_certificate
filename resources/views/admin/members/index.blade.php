@@ -48,6 +48,8 @@
                                                 <button type="submit" class="btn btn-danger" title="Delete member" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                             </form>
                                             <a href={{"/get-certificate?id=".$item->id}} class="btn btn-primary">Certificate</a>
+                                            {{-- share the certificate --}}
+                                            
                                         </td>
                                     </tr>
                                 @endforeach

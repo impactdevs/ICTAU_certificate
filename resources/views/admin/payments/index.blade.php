@@ -49,6 +49,7 @@
                                                 <button type="submit" class="btn btn-danger" title="Delete payment" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                             </form>
                                             <a href={{"/get-receipt?id=".$item->id}} class="btn btn-primary">Receipt</a>
+                                            <a href={{"/share-receipt?id=".$item->id}} class="btn btn-primary">Share</a>
                                         </td>
                                     </tr>
                                 @endforeach
