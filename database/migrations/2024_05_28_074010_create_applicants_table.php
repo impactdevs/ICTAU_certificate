@@ -12,16 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('applicants', function (Blueprint $table) {
-            $table->uuid('application_id')->primary();
-            $table->string('curriculum_vitae')->nullable();
-            $table->string('phone_number')->unique();
-            $table->string('email')->unique();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('title')->nullable();
-            $table->string('company_name')->nullable();
-            $table->string('niche')->nullable();
-            $table->string('application_category')->nullable();
+            $table->uuid('application_id')->primary();//unique identifier
+            $table->string('curriculum_vitae')->nullable();//path to CV
+            $table->string('phone_number')->unique();//phone number
+            $table->string('email')->unique();//email address
+            $table->string('first_name')->nullable();//given name
+            $table->string('last_name')->nullable();//surname
+            $table->string('title')->nullable();//Mr, Mrs, Dr, etc
+            $table->string('company_name')->nullable();//if applicant is a company
+            $table->string('niche')->nullable();//Software Development, Marketing, etc
+            $table->string('application_category')->nullable();//student/professional/company
+            $table->string('date_of_birth')->nullable();//date of birth
+            $table->string('profession')->nullable();//profession
             $table->timestamps();
         });
     }

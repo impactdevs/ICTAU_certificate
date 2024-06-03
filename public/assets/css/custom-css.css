@@ -1,0 +1,53 @@
+.form-control:focus {
+    border-color: #c61c1d;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.tab-color {
+    color: #c61c1d;
+}
+
+.upload .form-group {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.upload .form-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.upload .upload-container {
+    position: relative;
+    border: 2px dashed #c61c1d;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload .upload-container:hover {
+    background-color: #e9ecef;
+}
+
+.upload .upload-icon {
+    max-height: 100px;
+    max-width: 100px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.upload .upload-container:hover .upload-icon {
+    opacity: 1;
+}
+
+.upload .form-text {
+    margin-top: 10px;
+}
+
+.upload .form-control-file {
+    display: none;
+}

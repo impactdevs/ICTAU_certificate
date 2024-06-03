@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\ApplicantController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -31,31 +32,31 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
-	Route::get('dashboard', function () {
-		return view('dashboard');
-	})->name('dashboard');
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
     Route::get('/share-receipt', [PaymentController::class, 'ShareWidget']);
 
-	Route::get('/logout', [SessionsController::class, 'destroy']);
-	Route::get('/user-profile', [InfoUserController::class, 'create']);
-	Route::post('/user-profile', [InfoUserController::class, 'store']);
+    Route::get('/logout', [SessionsController::class, 'destroy']);
+    Route::get('/user-profile', [InfoUserController::class, 'create']);
+    Route::post('/user-profile', [InfoUserController::class, 'store']);
     Route::get('/login', function () {
-		return view('dashboard');
-	})->name('sign-up');
+        return view('dashboard');
+    })->name('sign-up');
 });
-
-
+Route::get('apply', [ApplicantController::class, 'create']);
+Route::post('application-store', [ApplicantController::class, 'store']);
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [SessionsController::class, 'create']);
     Route::post('/session', [SessionsController::class, 'store']);
-	Route::get('/login/forgot-password', [ResetController::class, 'create']);
-	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
-	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
-	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+    Route::get('/login/forgot-password', [ResetController::class, 'create']);
+    Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
+    Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
+    Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
     Route::get('/member/{id}', [MemberController::class, 'member_verification']);
 });
 
