@@ -35,6 +35,12 @@ class ApplicantController extends Controller
      */
     public function store(Request $request)
     {
+        //validate email and phone number by checking if they are present and unique
+        $request->validate([
+            'email' => 'required|unique:applicants',
+            'phone_number' => 'required|unique:applicants'
+        ]);
+        
         //check if the request has application_type as student
         if ($request->application_type == 'student') {
             $this->student();
