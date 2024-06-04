@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('application_category')->nullable();//student/professional/company
             $table->string('date_of_birth')->nullable();//date of birth
             $table->string('profession')->nullable();//profession
+            $table->string('application_type');
             $table->timestamps();
         });
     }

@@ -40,7 +40,7 @@ class ApplicantController extends Controller
             'email' => 'required|unique:applicants',
             'phone_number' => 'required|unique:applicants'
         ]);
-        
+
         //check if the request has application_type as student
         if ($request->application_type == 'student') {
             $this->student();
@@ -67,6 +67,7 @@ class ApplicantController extends Controller
         $application->date_of_birth = request('date_of_birth');
         $application->institution = request('institution');
         $application->course = request('course');
+        $application->application_type = request('application_type');
         $application->application_id = Str::uuid();
         $application->save();
 
@@ -123,6 +124,7 @@ class ApplicantController extends Controller
         $application->phone_number = request('phone_number');
         $application->date_of_birth = request('date_of_birth');
         $application->profession = request('profession');
+        $application->application_type = request('application_type');
         $application->application_id = Str::uuid();
         $application->save();
 
@@ -176,6 +178,7 @@ class ApplicantController extends Controller
         $application->first_name = request('niche');
         $application->email = request('email');
         $application->phone_number = request('phone_number');
+        $application->application_type = request('application_type');
         $application->application_id = Str::uuid();
         $application->save();
 
