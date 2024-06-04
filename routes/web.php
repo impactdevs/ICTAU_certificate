@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
         return view('dashboard');
     })->name('sign-up');
 });
+
 Route::get('apply', [ApplicantController::class, 'create']);
 Route::post('application-store', [ApplicantController::class, 'store']);
 

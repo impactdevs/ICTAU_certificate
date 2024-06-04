@@ -4,7 +4,10 @@
         <label for="{{ $id }}">
             <img src="{{ asset('assets/img/upload.png') }}" alt="upload placeholder" class="img-fluid upload-icon mt-3">
         </label>
-        <input type="file" name="{{ $name }}" id="{{ $id }}" class="form-control-file d-none">
+        <input type="file" name="{{ $name }}" id="{{ $id }}" class="form-control-file d-none" required>
+    </div>
+    <div id="preview-{{ $id }}" class="mt-2">
+        <!-- Preview will be shown here -->
     </div>
     <div id="{{ $form_text_id }}" class="form-text text-muted">
         The file should be a JPG or PNG.

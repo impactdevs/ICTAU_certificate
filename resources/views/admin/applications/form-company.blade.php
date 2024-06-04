@@ -1,13 +1,15 @@
 <x-forms.input name="company_name" label="Company Name" type="text" id="company_name"
     placeholder="Enter your company name" />
+<x-forms.input name="company_website" label="Company Website" type="text" id="company_website"
+    placeholder="Enter your company website url" />
 <x-forms.input name="niche" label="Niche" type="text" id="niche"
     placeholder="What is your company's speciality eg. Software Development" />
 <x-forms.input name="phone_number" label="Phone Number" type="tel" id="phone_number"
     placeholder="Company phone number e.g 0786065399" />
 <x-forms.input name="email" label="Email" type="email" id="email" placeholder="Enter company email" />
 <x-forms.upload name="company_logo" label="Company Logo" id="company_logo" />
-<x-forms.upload name="payment_proof" label="Payment Proof" id="payment_proof" />
-
+<x-forms.upload name="payment_proof" label="Payment Proof" id="payment_proof_company" />
+<x-forms.hidden name="application_type" id="application_type" value="company" />
 <fieldset>
     <legend style="font-size: 1.5em; margin-bottom: 10px;">Contact People</legend>
     <p style="font-size: 1em; color: #555;">Please provide details for three contact people.</p>

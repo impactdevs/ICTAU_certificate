@@ -51,3 +51,20 @@
 .upload .form-control-file {
     display: none;
 }
+
+.preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.preview-image {
+    max-width: 50px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 5px;
+}

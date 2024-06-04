@@ -49,19 +49,19 @@
 
     <nav class="">
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
-            <button class="nav-link active tab-color" id="pills-student-tab" data-bs-toggle="tab" data-bs-target="#pills-student"
-                type="button" role="tab" aria-controls="pills-student" aria-selected="true">Student</button>
-            <button class="nav-link tab-color" id="pills-professional-tab" data-bs-toggle="tab"
-                data-bs-target="#pills-professional" type="button" role="tab" aria-controls="pills-professional"
+            <button class="nav-link active tab-color" id="student-tab" data-bs-toggle="pill" data-bs-target="#student"
+                type="button" role="tab" aria-controls="student" aria-selected="true">Student</button>
+            <button class="nav-link tab-color" id="professional-tab" data-bs-toggle="pill"
+                data-bs-target="#professional" type="button" role="tab" aria-controls="professional"
                 aria-selected="false">Professional</button>
 
-            <button class="nav-link tab-color" id="pills-company-tab" data-bs-toggle="tab" data-bs-target="#pills-company"
-                type="button" role="tab" aria-controls="pills-company" aria-selected="false">Company</button>
+            <button class="nav-link tab-color" id="company-tab" data-bs-toggle="pill" data-bs-target="#company"
+                type="button" role="tab" aria-controls="company" aria-selected="false">Company</button>
 
         </div>
     </nav>
     <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-student" role="tabpanel" aria-labelledby="pills-student-tab">
+        <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="student-tab">
             <div class="content-wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="pills-professional" role="tabpanel" aria-labelledby="pills-professional-tab">
+        <div class="tab-pane fade" id="professional" role="tabpanel" aria-labelledby="professional-tab">
             <div class="content-wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -91,7 +91,9 @@
                                     class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
 
-                                    @include ('admin.applications.form-professional', ['formMode' => 'create'])
+                                    @include ('admin.applications.form-professional', [
+                                        'formMode' => 'create',
+                                    ])
 
                                 </form>
 
@@ -101,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="pills-company" role="tabpanel" aria-labelledby="pills-company-tab">
+        <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="company-tab">
             <div class="content-wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -122,20 +124,16 @@
             </div>
         </div>
     </div>
-
-    @if (session()->has('success'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-            class="position-fixed bg-success rounded right-3 text-sm py-2 px-4">
-            <p class="m-0">{{ session('success') }}</p>
-        </div>
-    @endif
     <!--   Core JS Files   -->
     <script src={{ asset('assets/js/core/popper.min.js') }}></script>
     <script src={{ asset('assets/js/core/bootstrap.min.js') }}></script>
     <script src={{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}></script>
     <script src={{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}></script>
-    <script src={{ asset('assets/js/plugins/fullcalendar.min.js') }}></script>
-    <script src={{ asset('assets/js/plugins/chartjs.min.js') }}></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @stack('rtl')
     @stack('dashboard')
     <script>
@@ -149,6 +147,67 @@
     </script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src={{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.3') }}></script>
+
+    <script>
+        $(document).ready(function() {
+            var tabEl = document.querySelectorAll('button[data-bs-toggle="pill"]');
+            var activated_pane = "student";
+            for (i = 0; i < tabEl.length; i++) {
+                tabEl[i].addEventListener("shown.bs.tab", function(event) {
+                    activated_pane = document.querySelector(
+                        event.target.getAttribute("data-bs-target")
+                    );
+                    const deactivated_pane = document.querySelector(
+                        event.relatedTarget.getAttribute("data-bs-target")
+                    );
+                    console.log(activated_pane.id);
+                });
+            }
+
+            $('.form-control-file').on('change', function(event) {
+                const fileInput = $(this);
+                const previewContainer = $('#preview-' + fileInput.attr('id'));
+
+                previewContainer.empty(); // Clear previous preview
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const file = fileInput[0].files[0];
+
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imgElement = $('<img>').attr('src', e.target.result).addClass(
+                                'img-fluid mt-2');
+                            previewContainer.append(imgElement);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        const fileInfo = $('<div>').text('Selected file: ' + file.name);
+                        previewContainer.append(fileInfo);
+                    }
+                }
+            });
+        });
+
+        //show swal alert
+        @if (session('success'))
+            swal({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                icon: "success",
+                button: "OK",
+            });
+            //else if error
+        @elseif (session('error'))
+            swal({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                icon: "error",
+                button: "OK",
+            });
+    </script>
+
+
 </body>
 
 </html>

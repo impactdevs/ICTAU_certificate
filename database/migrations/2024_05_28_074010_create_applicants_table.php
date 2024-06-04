@@ -18,8 +18,11 @@ return new class extends Migration
             $table->string('email')->unique();//email address
             $table->string('first_name')->nullable();//given name
             $table->string('last_name')->nullable();//surname
+            $table->string('institution')->nullable();//institution
+            $table->string('course')->nullable();//degree
             $table->string('title')->nullable();//Mr, Mrs, Dr, etc
             $table->string('company_name')->nullable();//if applicant is a company
+            $table->string('company_website')->nullable();//if applicant is a company
             $table->string('niche')->nullable();//Software Development, Marketing, etc
             $table->string('application_category')->nullable();//student/professional/company
             $table->string('date_of_birth')->nullable();//date of birth
