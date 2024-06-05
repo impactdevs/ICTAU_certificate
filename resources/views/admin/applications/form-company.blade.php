@@ -30,17 +30,19 @@
                 <h3 style="margin-top: 0; color: #c61c1d;">Contact Person {{ $i + 1 }}</h3>
                 <x-forms.input name="contact_people[{{ $i }}][first_name]" label="First Name" type="text"
                     id="contact_person_first_name_{{ $i }}" placeholder="Enter first name"
-                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['first_name']:'' }}" isrequired="false" />
+                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['first_name']:'' }}" isRequired="false" />
+
                 <x-forms.input name="contact_people[{{ $i }}][last_name]" label="Last Name" type="text"
                     id="contact_person_last_name_{{ $i }}" placeholder="Enter last name"
-                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['last_name']:'' }}" :isRequired="false" />
+                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['last_name']:'' }}" isRequired="false" />
+
                 <x-forms.input name="contact_people[{{ $i }}][phone_number]" label="Phone Number"
                     type="tel" id="contact_person_phone_number_{{ $i }}"
                     placeholder="Enter phone number"
-                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['phone_number']:'' }}" :isRrequired="false" />
+                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['phone_number']:'' }}" isRequired="false" />
                 <x-forms.input name="contact_people[{{ $i }}][email]" label="Email" type="email"
                     id="contact_person_email_{{ $i }}" placeholder="Enter email"
-                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['email']:'' }}" :isRequired="false" />
+                    value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['email']:'' }}" isRequired="false" />
 
                     {{-- hidden id field --}}
                     <x-forms.hidden name="contact_people[{{ $i }}][id]" id="contact_person_id_{{ $i }}" value="{{ isset($applicant)?$applicant->contactPersons->toArray()[$i]['id']:'' }}" />
