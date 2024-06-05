@@ -29,6 +29,7 @@
         <img src="{{ asset('assets/img/ictau-logo.jpg') }}" class="navbar-brand-img h-100" alt="...">
         <div class="card-header">Register With ICTAU</div>
         <p class="text-center">This is your bio-data form, This is where you will track the bio-data acceptance or rejection and make any updates.</p>
+        <p class="text-center">All fields marked with * mandatory</p>
     </div>
     @if ($applicant->application_type == 'student')
         <div class="content-wrapper">

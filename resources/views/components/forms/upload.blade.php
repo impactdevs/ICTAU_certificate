@@ -1,5 +1,5 @@
 <div class="form-group upload">
-    <label for="{{ $id }}" class="form-label">{{ $label }}</label>
+    <label for="{{ $id }}" class="form-label">{{ $label }}(*)</label>
     <div class="upload-container text-center">
         @if ($value)
         <label for="{{ $id }}">

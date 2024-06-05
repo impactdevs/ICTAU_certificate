@@ -30,6 +30,8 @@
         <div class="card-header">Register With ICTAU</div>
         <p class="text-center">Please fill in the form below to register with ICTAU. Select the category that best
             describes you from the tabs below.</p>
+            <p class="text-center">All fields marked with <stron>*</strong> mandatory</p>
+
     </div>
 
     <nav class="">
