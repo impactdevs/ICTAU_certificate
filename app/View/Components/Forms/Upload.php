@@ -16,6 +16,7 @@ class Upload extends Component
         public string $name,
         public string $id,
         public string $form_text_id='',
+        public string $value='',
     )
     {
         //
