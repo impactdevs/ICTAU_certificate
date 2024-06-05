@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 
 class Input extends Component
 {
+
     /**
      * Create a new component instance.
      */
@@ -17,6 +18,8 @@ class Input extends Component
         public string $id,
         public string $placeholder = '', // Default value provided here
         public string $value = '', // Default value provided here
+        public string $isRequired=''
+
     )
     {
         //
@@ -30,4 +33,3 @@ class Input extends Component
         return view('components.forms.input');
     }
 }
-

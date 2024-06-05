@@ -28,7 +28,7 @@
     <div class="text-center">
         <img src="{{ asset('assets/img/ictau-logo.jpg') }}" class="navbar-brand-img h-100" alt="...">
         <div class="card-header">Register With ICTAU</div>
-        <p class="text-center">This is your bio-data form</p>
+        <p class="text-center">This is your bio-data form, This is where you will track the bio-data acceptance or rejection and make any updates.</p>
     </div>
     @if ($applicant->application_type == 'student')
         <div class="content-wrapper">
@@ -77,9 +77,10 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ url('/application-update') }}" accept-charset="UTF-8"
+                            <form method="POST" action="{{ url('/application-update/' . $applicant->application_id) }}" accept-charset="UTF-8"
                                 class="form-horizontal" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
 
                                 @include ('admin.applications.form-company', ['formMode' => 'edit'])
 

@@ -413,7 +413,7 @@ class ApplicantController extends Controller
         //contact people
         $contact_people = request('contact_people');
 
-        if ($contact_people != null)
+        if ($contact_people != null){
             foreach ($contact_people as $contact_person) {
                 //check if the contact already exists, if it does update it else create a new one
                 if (ContactPerson::where('id', $contact_person['id'])->exists()) {
@@ -434,6 +434,7 @@ class ApplicantController extends Controller
                     $contact->save();
                 }
             }
+        }
 
         $applicant->update($request->all());
     }
