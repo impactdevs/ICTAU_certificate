@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Models\CurriculumVitae;
 use App\Models\CompanyLogo;
 use App\Models\ContactPerson;
+use Illuminate\Support\Facades\Validator;
 
 class ApplicantController extends Controller
 {
@@ -27,6 +28,9 @@ class ApplicantController extends Controller
      */
     public function create()
     {
+        //set the active tab to student
+        session(['activeTab' => 'student']);
+        
         return view('admin.applications.create');
     }
 
@@ -37,18 +41,49 @@ class ApplicantController extends Controller
     {
         //generate a unique id for the application
         $uuid = Str::uuid();
-        //validate email and phone number by checking if they are present and unique
-        $request->validate([
-            'email' => 'required|unique:applicants',
-            'phone_number' => 'required|unique:applicants'
-        ]);
+
 
         //check if the request has application_type as student
         if ($request->application_type == 'student') {
+            //validate email and phone number by checking if they are present and unique
+            $validate = Validator::make($request->all(), [
+                'email' => 'required|unique:applicants',
+                'phone_number' => 'required|unique:applicants',
+                'passport_photo' => 'required|mimes:png,jpg',
+                'payment_proof' => 'required|mimes:png,jpg',
+                'student_id' => 'required|mimes:png,jpg'
+            ]);
+            //check if validation fails
+            if ($validate->fails()) {
+                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'));
+            }
             $this->student($uuid);
         } else if ($request->application_type == 'professional') {
+            //validate email and phone number by checking if they are present and unique
+            $validate = Validator::make($request->all(), [
+                'email' => 'required|unique:applicants',
+                'phone_number' => 'required|unique:applicants',
+                'passport_photo' => 'required|mimes:png,jpg',
+                'curriculum_vitae' => 'required|mimes:pdf',
+                'payment_proof' => 'required|mimes:png,jpg'
+            ]);
+            //check if validation fails
+            if ($validate->fails()) {
+                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'));
+            }
             $this->professional($uuid);
         } else if ($request->application_type == 'company') {
+            //validate email and phone number by checking if they are present and unique
+            $validate = Validator::make($request->all(), [
+                'email' => 'required|unique:applicants',
+                'phone_number' => 'required|unique:applicants',
+                'company_logo' => 'required|mimes:png,jpg',
+                'payment_proof' => 'required|mimes:png,jpg'
+            ]);
+            //check if validation fails
+            if ($validate->fails()) {
+                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'));
+            }
             $this->company($uuid);
         } else {
             return redirect()->back()->with('error', 'Application Bio data submission failed. Please try again.');
@@ -413,7 +448,7 @@ class ApplicantController extends Controller
         //contact people
         $contact_people = request('contact_people');
 
-        if ($contact_people != null){
+        if ($contact_people != null) {
             foreach ($contact_people as $contact_person) {
                 //check if the contact already exists, if it does update it else create a new one
                 if (ContactPerson::where('id', $contact_person['id'])->exists()) {

@@ -11,6 +11,7 @@
 <x-forms.input name="email" label="Email" type="email" id="email" placeholder="Enter your email"
     value="{{ $applicant->email ?? '' }}" />
 <x-forms.upload name="curriculum_vitae" label="Curriculum Vitae" id="curriculum_vitae"
+    description="The file should be in pdf format." filetype="pdf"
     value="{{ $applicant->curriculumVitae->cv ?? '' }}" />
 <x-forms.upload name="passport_photo" label="Passport Photo" id="passport_photo_professional"
     value="{{ $applicant->passportPhoto->passport_photo ?? '' }}" />
