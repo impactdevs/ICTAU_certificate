@@ -29,8 +29,6 @@ class ApplicantController extends Controller
     public function create()
     {
         //set the active tab to student
-        session(['activeTab' => 'student']);
-        
         return view('admin.applications.create');
     }
 

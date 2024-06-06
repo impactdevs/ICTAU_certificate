@@ -18,8 +18,7 @@
                     class="img-fluid upload-icon mt-3">
             </label>
         @endif
-        <input type="file" name="{{ $name }}" id="{{ $id }}" class="form-control-file d-none"
-            @if (!$value) required @endif onchange="previewFile('{{ $id }}')">
+        <input type="file" name="{{ $name }}" id="{{ $id }}" class="form-control-file d-none">
         {{-- show validation errors --}}
         @error($name)
             <div class="invalid-feedback d-block">{{ $message }}</div>
