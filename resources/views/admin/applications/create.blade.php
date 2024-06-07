@@ -21,30 +21,36 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     <link id="pagestylecss" href="{{ asset('assets/css/custom-css.css?v=1.0.3') }}" rel="stylesheet" />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body class="bg-gray-100 m-3">
     <div class="text-center">
         <img src="{{ asset('assets/img/ictau-logo.jpg') }}" class="navbar-brand-img h-100" alt="...">
         <div class="card-header">Register With ICTAU</div>
-        <p class="text-center">Please fill in the form below to register with ICTAU. Select the category that best
+        <p class="text-center">Select the category that best
             describes you from the tabs below.</p>
-        <p class="text-center">All fields marked with <strong>*</strong> mandatory</p>
     </div>
 
     <nav class="">
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
             <button class="nav-link tab-color {{ session('activeTab') == 'student' ? 'active' : '' }}" id="student-tab"
                 data-bs-toggle="pill" data-bs-target="#student" type="button" role="tab" aria-controls="student"
-                aria-selected="{{ session('activeTab') == 'student' ? 'true' : 'false' }}">Student</button>
+                aria-selected="{{ session('activeTab') == 'student' ? 'true' : 'false' }}">
+                <i
+                    class="fa fa-address-card-o" aria-hidden="true"></i>
+                Student
+                </button>
             <button class="nav-link tab-color {{ session('activeTab') == 'professional' ? 'active' : '' }}"
                 id="professional-tab" data-bs-toggle="pill" data-bs-target="#professional" type="button" role="tab"
                 aria-controls="professional"
-                aria-selected="{{ session('activeTab') == 'professional' ? 'true' : 'false' }}">Professional</button>
+                aria-selected="{{ session('activeTab') == 'professional' ? 'true' : 'false' }}"><i
+                    class="fa fa-user-circle-o" aria-hidden="true"></i>
+                Professional</button>
             <button class="nav-link tab-color {{ session('activeTab') == 'company' ? 'active' : '' }}" id="company-tab"
                 data-bs-toggle="pill" data-bs-target="#company" type="button" role="tab" aria-controls="company"
-                aria-selected="{{ session('activeTab') == 'company' ? 'true' : 'false' }}">Company</button>
+                aria-selected="{{ session('activeTab') == 'company' ? 'true' : 'false' }}"><i class="fa fa-university"
+                    aria-hidden="true"></i>Company</button>
         </div>
     </nav>
     <div class="tab-content" id="pills-tabContent">
@@ -107,10 +113,77 @@
                 </div>
             </div>
         </div>
+
+        {{-- if there is no session --}}
+        @if (!session('activeTab'))
+            {{-- form requirements like a photo of student id for students etc. put them into sections[student, professional, and company] --}}
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Pre-Requirements</h5>
+                                <div class="row">
+                                    <div class="col-md-4 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center">Student</h5>
+                                                <p class="card-text">The following are a must requirements you must
+                                                    have to fill in your bio-data form.</p>
+                                                <ol>
+                                                    <li>Student ID screenshot in .png or .jpg format</li>
+                                                    <li>A passport size photograph in .png or .jpg format</li>
+                                                    <li>Membership payment prooof in .png or .jpg format</li>
+                                                </ol>
+
+                                                NB: All fields marked with <strong>*</strong> mandatory
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center">Professional</h5>
+                                                <p class="card-text">The following are a must requirements you must
+                                                    have to fill in your bio-data form.</p>
+                                                <ol>
+                                                    <li>A curriculum vitae in .pdf format</li>
+                                                    <li>A passport size photograph .png or .jpg format</li>
+                                                    <li>Membership payment prooof .png or .jpg format</li>
+                                                </ol>
+                                                NB: All fields marked with <strong>*</strong> mandatory
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center">Company</h5>
+                                                <p class="card-text">The following are a must requirements you must
+                                                    have to fill in your bio-data form.</p>
+                                                <ol>
+                                                    <li>Company logo .png or .jpg format</li>
+                                                    <li>Membership payment prooof</li>
+                                                    <li>Atleast one contact person details[first name, last name, email
+                                                        and phone number]. Maximum is three people</li>
+                                                </ol>
+                                                NB: All fields marked with <strong>*</strong> mandatory
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
+
+
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
