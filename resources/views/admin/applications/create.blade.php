@@ -229,14 +229,6 @@
 
                 });
             }
-
-            //trigger a tab when clicking register as student, professional or company
-            $('.btn').on('click', function() {
-                const targetSelector = $(this).attr('data-bs-target');
-                bootstrap.Tab.getInstance('student').show()
-                console.log(triggerEl);
-            });
-
             $('.form-control-file').on('change', function(event) {
                 const fileInput = $(this);
                 const previewContainer = $('#preview-' + fileInput.attr('id'));
