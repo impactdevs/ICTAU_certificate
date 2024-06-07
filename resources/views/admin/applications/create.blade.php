@@ -21,41 +21,40 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     <link id="pagestylecss" href="{{ asset('assets/css/custom-css.css?v=1.0.3') }}" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body class="bg-gray-100 m-3">
     <div class="text-center">
         <img src="{{ asset('assets/img/ictau-logo.jpg') }}" class="navbar-brand-img h-100" alt="...">
         <div class="card-header">Register With ICTAU</div>
-        <p class="text-center">Select the category that best
-            describes you from the tabs below.</p>
     </div>
 
     <nav class="">
+        <p class="text-center font-weight-bold h6">Select the category that best
+            describes you from the tabs below.</p>
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
-            <button class="nav-link tab-color {{ session('activeTab') == 'student' ? 'active' : '' }}" id="student-tab"
+            <button class="nav-link tab-color {{ $category == 'student' ? 'active' : '' }}" id="student-tab"
                 data-bs-toggle="pill" data-bs-target="#student" type="button" role="tab" aria-controls="student"
-                aria-selected="{{ session('activeTab') == 'student' ? 'true' : 'false' }}">
-                <i
-                    class="fa fa-address-card-o" aria-hidden="true"></i>
+                aria-selected="{{ $category == 'student' ? 'true' : 'false' }}">
+                <i class="fa fa-address-card-o" aria-hidden="true"></i>
                 Student
-                </button>
-            <button class="nav-link tab-color {{ session('activeTab') == 'professional' ? 'active' : '' }}"
-                id="professional-tab" data-bs-toggle="pill" data-bs-target="#professional" type="button" role="tab"
-                aria-controls="professional"
-                aria-selected="{{ session('activeTab') == 'professional' ? 'true' : 'false' }}"><i
+            </button>
+            <button class="nav-link tab-color {{ $category == 'professional' ? 'active' : '' }}" id="professional-tab"
+                data-bs-toggle="pill" data-bs-target="#professional" type="button" role="tab"
+                aria-controls="professional" aria-selected="{{ $category == 'professional' ? 'true' : 'false' }}"><i
                     class="fa fa-user-circle-o" aria-hidden="true"></i>
                 Professional</button>
-            <button class="nav-link tab-color {{ session('activeTab') == 'company' ? 'active' : '' }}" id="company-tab"
+            <button class="nav-link tab-color {{ $category == 'company' ? 'active' : '' }}" id="company-tab"
                 data-bs-toggle="pill" data-bs-target="#company" type="button" role="tab" aria-controls="company"
-                aria-selected="{{ session('activeTab') == 'company' ? 'true' : 'false' }}"><i class="fa fa-university"
+                aria-selected="{{ $category == 'company' ? 'true' : 'false' }}"><i class="fa fa-university"
                     aria-hidden="true"></i>Company</button>
         </div>
     </nav>
+
     <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade {{ session('activeTab') == 'student' ? 'show active' : '' }}" id="student"
-            role="tabpanel" aria-labelledby="student-tab">
+
+        <div class="tab-pane fade {{ $category == 'student' ? 'show active' : '' }}" id="student" role="tabpanel"
+            aria-labelledby="student-tab">
             <div class="content-wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -73,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade {{ session('activeTab') == 'professional' ? 'show active' : '' }}" id="professional"
+        <div class="tab-pane fade {{ $category == 'professional' ? 'show active' : '' }}" id="professional"
             role="tabpanel" aria-labelledby="professional-tab">
             <div class="content-wrapper">
                 <div class="row">
@@ -94,8 +93,8 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade {{ session('activeTab') == 'company' ? 'show active' : '' }}" id="company"
-            role="tabpanel" aria-labelledby="company-tab">
+        <div class="tab-pane fade {{ $category == 'company' ? 'show active' : '' }}" id="company" role="tabpanel"
+            aria-labelledby="company-tab">
             <div class="content-wrapper">
                 <div class="row">
                     <div class="col-sm-12">
@@ -113,11 +112,10 @@
                 </div>
             </div>
         </div>
-
         {{-- if there is no session --}}
-        @if (!session('activeTab'))
+        @if (!$category)
             {{-- form requirements like a photo of student id for students etc. put them into sections[student, professional, and company] --}}
-            <div class="content-wrapper">
+            <div class="content-wrapper requirements">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
@@ -135,7 +133,9 @@
                                                     <li>A passport size photograph in .png or .jpg format</li>
                                                     <li>Membership payment prooof in .png or .jpg format</li>
                                                 </ol>
-
+                                                <a href="{{ url('/apply?category=student') }}" class="btn btn-primary mt-2">Register as
+                                                    Student</a>
+                                                <br>
                                                 NB: All fields marked with <strong>*</strong> mandatory
                                             </div>
                                         </div>
@@ -151,6 +151,9 @@
                                                     <li>A passport size photograph .png or .jpg format</li>
                                                     <li>Membership payment prooof .png or .jpg format</li>
                                                 </ol>
+                                                <a href="{{ url('/apply?category=professional') }}" class="btn btn-primary mt-2">Register as
+                                                    Professional</a>
+                                                <br>
                                                 NB: All fields marked with <strong>*</strong> mandatory
                                             </div>
                                         </div>
@@ -167,6 +170,9 @@
                                                     <li>Atleast one contact person details[first name, last name, email
                                                         and phone number]. Maximum is three people</li>
                                                 </ol>
+                                                <a href="{{ url('/apply?category=company') }}" class="btn btn-primary mt-2">Register as
+                                                    Company</a>
+                                                <br>
                                                 NB: All fields marked with <strong>*</strong> mandatory
                                             </div>
                                         </div>
@@ -183,7 +189,9 @@
 
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -208,16 +216,26 @@
     <script>
         $(document).ready(function() {
             var tabEl = document.querySelectorAll('button[data-bs-toggle="pill"]');
-            var activated_pane = "{{ session('activeTab') ?? 'student' }}";
+            var activated_pane = "{{ $category ?? 'student' }}";
             for (i = 0; i < tabEl.length; i++) {
                 tabEl[i].addEventListener("shown.bs.tab", function(event) {
                     activated_pane = document.querySelector(
                         event.target.getAttribute("data-bs-target")
                     ).id;
                     $('input[name="activeTab"]').val(activated_pane);
-                    console.log(activated_pane);
+                    //hide the pre-requirements section when a tab is clicked
+
+                    $('.requirements').hide();
+
                 });
             }
+
+            //trigger a tab when clicking register as student, professional or company
+            $('.btn').on('click', function() {
+                const targetSelector = $(this).attr('data-bs-target');
+                bootstrap.Tab.getInstance('student').show()
+                console.log(triggerEl);
+            });
 
             $('.form-control-file').on('change', function(event) {
                 const fileInput = $(this);

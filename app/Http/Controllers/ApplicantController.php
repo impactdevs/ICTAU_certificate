@@ -28,8 +28,9 @@ class ApplicantController extends Controller
      */
     public function create()
     {
+        $category = request()->input('category');
         //set the active tab to student
-        return view('admin.applications.create');
+        return view('admin.applications.create', compact('category'));
     }
 
     /**
@@ -52,8 +53,12 @@ class ApplicantController extends Controller
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'))
+                // Assuming $validate contains the validation errors and $request contains the form input
+                return redirect()->to('apply?category=' . $request->input('application_type'))
+                    ->withInput()
+                    ->withErrors($validate)
                     ->with('error', 'Application Bio data submission failed. Please try again.');
+
             }
             $this->student($uuid);
         } else if ($request->application_type == 'professional') {
@@ -67,8 +72,12 @@ class ApplicantController extends Controller
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'))
+                // Assuming $validate contains the validation errors and $request contains the form input
+                return redirect()->to('apply?category=' . $request->input('application_type'))
+                    ->withInput()
+                    ->withErrors($validate)
                     ->with('error', 'Application Bio data submission failed. Please try again.');
+
             }
             $this->professional($uuid);
         } else if ($request->application_type == 'company') {
@@ -81,8 +90,12 @@ class ApplicantController extends Controller
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'))
+                // Assuming $validate contains the validation errors and $request contains the form input
+                return redirect()->to('apply?category=' . $request->input('application_type'))
+                    ->withInput()
+                    ->withErrors($validate)
                     ->with('error', 'Application Bio data submission failed. Please try again.');
+
             }
             $this->company($uuid);
         } else {
