@@ -40,7 +40,6 @@ class ApplicantController extends Controller
         //generate a unique id for the application
         $uuid = Str::uuid();
 
-
         //check if the request has application_type as student
         if ($request->application_type == 'student') {
             //validate email and phone number by checking if they are present and unique
@@ -53,7 +52,8 @@ class ApplicantController extends Controller
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'));
+                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'))
+                    ->with('error', 'Application Bio data submission failed. Please try again.');
             }
             $this->student($uuid);
         } else if ($request->application_type == 'professional') {
@@ -67,7 +67,8 @@ class ApplicantController extends Controller
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'));
+                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'))
+                    ->with('error', 'Application Bio data submission failed. Please try again.');
             }
             $this->professional($uuid);
         } else if ($request->application_type == 'company') {
@@ -80,14 +81,16 @@ class ApplicantController extends Controller
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'));
+                return redirect()->back()->withInput()->withErrors($validate)->with('activeTab', $request->input('application_type'))
+                    ->with('error', 'Application Bio data submission failed. Please try again.');
             }
             $this->company($uuid);
         } else {
             return redirect()->back()->with('error', 'Application Bio data submission failed. Please try again.');
         }
 
-        return redirect()->back()->with('success', 'Application Bio-data submitted successfully');
+        //route to application/$uuid
+        return redirect()->route('application.edit', $uuid)->with('success', 'Application Bio-data submitted successfully');
     }
 
     //save student
