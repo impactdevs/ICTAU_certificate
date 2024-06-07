@@ -9,6 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\FormbuilderController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
+    Route::resource('admin/formBuilder', 'App\Http\Controllers\FormbuilderController');
+    Route::post('admin/formBuilder/create_form', [FormbuilderController::class, 'store'])->name('create_form_post');
+    Route::post('admin/formBuilder/create_form_field/{id}', [FormbuilderController::class, 'addFormField'])->name('create_form_field');
+    Route::get('admin/formBuilder/form/{id}', [FormbuilderController::class, 'viewForm'])->name('view_form');
+    Route::get('admin/formBuilder/form/response/{form_id}', [FormbuilderController::class, 'viewResponse'])->name('view_response');
+    Route::post('admin/formBuilder/form/store_response/{form_id}', [FormbuilderController::class, 'storeResponse'])->name('store_response');
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);

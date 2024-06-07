@@ -36,6 +36,15 @@
     <!-- CSS Files -->
     <link id="pagestyle" href={{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }} rel="stylesheet" />
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .create-form {
+            display: none; 
+        }
+    </style>
     
 </head>
 
@@ -70,6 +79,21 @@
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
+    </script>
+
+    <script>
+      
+$(document).ready(function() {
+    $('#ajaxform').click(function() {
+
+        $('#createForm').show();
+
+        });
+
+      // $('#createForm').hide();
+     
+    }); 
+
     </script>
 
     <!-- Github buttons -->
