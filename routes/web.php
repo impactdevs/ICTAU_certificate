@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
+    Route::get('/admin/applicants', [ApplicantController::class, 'index']);
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
