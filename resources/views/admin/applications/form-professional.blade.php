@@ -18,6 +18,7 @@
 <x-forms.upload name="payment_proof" label="Payment Proof" id="payment_proof_professional"
     value="{{ $applicant->paymentProof->payment_proof ?? '' }}" />
 <x-forms.hidden name="application_type" id="application_type" value="professional" />
+<x-forms.checkbox />
 <div class="form-group">
     <input class="btn" style="background-color: #c61c1d; color:white" type="submit"
         value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
