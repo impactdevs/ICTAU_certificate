@@ -53,11 +53,11 @@
                     id="contact_person_id_{{ $i }}"
                     value="{{ isset($applicant) ? $applicant->contactPersons->toArray()[$i]['id'] : '' }}" />
 
-                <x-forms.checkbox />
+
             </div>
         @endfor
     </fieldset>
-
+    <x-forms.checkbox />
     <div class="form-group">
         <input class="btn" style="background-color: #c61c1d; color: white;" type="submit"
             value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
