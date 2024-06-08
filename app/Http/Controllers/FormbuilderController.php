@@ -28,25 +28,25 @@ class FormbuilderController extends Controller
     }
 
     //save the form 
-    public function store (Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        //dd("oeirngero;gngorng");
-        $validated = $request-> validate([
-            'name'=>'required|max:255'
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'name' => 'required|max:255',
         ]);
-
-        try{
+    
+        try {
+            // Create a new FormBuilder instance and save it
+            FormBuilder::create($validated);
+    
+            // Redirect to the formBuilder index route with a success message
+            return back()->with('success', 'Form created successfully.');
+        } catch (Exception $e) {
             
-            formBuilder::create($validated);
-            session()->flash('success', 'Form created successfully.');
-            return redirect()->route('admin.formBuilder.index');
-            //return redirect ('admin.formBuilder.index');
-        } catch (\Exception $e)
-           
-         {   
-            session()->flash('error', 'Failed to create new form.');
+            return back()->with('error', 'Failed to create the form.');
         }
     }
+    
 
     public function show(Request $request, $id)
     {
@@ -63,6 +63,23 @@ class FormbuilderController extends Controller
         return view('admin.formBuilder.show', compact('form', 'fieldTypes', 'formFields'));
     }
 
+    public function destroy($id)
+    {
+        $form = FormBuilder::find($id);
+
+        if (!$form) {
+            return redirect()->route('admin.formBuilder.index')->with('error', 'Form not found.');
+        }
+
+        try {
+            $form->delete();
+            return redirect()->back()->with('success', 'Form created successfully.');
+            
+        } catch (\Exception $e) {
+            return redirect()-> back()->with('error', 'Failed to create the form.');
+           
+        }
+    }
     public function addFormField(Request $request, $id): RedirectResponse
     {
         // Assuming $usr is the authenticated user
@@ -167,6 +184,26 @@ class FormbuilderController extends Controller
         {
             return redirect()->route('login')->with('error', __('Something went wrong.'));
         }
+    }
+
+    public function destroyResponse(formBuilder $form)
+    {
+
+        $form_id = $form->form->id;
+
+        if (!$form_id) {
+            return redirect()->route('admin.formBuilder.index')->with('error', 'Form not found.');
+        }
+
+        try {
+            $form_id->delete();
+            return redirect()->back()->with('success', 'Form created successfully.');
+            
+        } catch (\Exception $e) {
+            return redirect()-> back()->with('error', 'Failed to create the form.');
+           
+        }
+
     }
 
 

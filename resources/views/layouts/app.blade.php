@@ -83,19 +83,32 @@
 
     <script>
       
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#ajaxform').click(function() {
 
         $('#createForm').show();
 
         });
 
-      // $('#createForm').hide();
      
+     
+      
+      
     }); 
 
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var successAlert = document.getElementById('trigger');
+            if (successAlert) {
+                // Refresh the page 
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            }
+        });
+    </script>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->

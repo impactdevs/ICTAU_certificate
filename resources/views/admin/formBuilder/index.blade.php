@@ -10,11 +10,16 @@
                    <br>
                    <div class="message">
                     @if (session('success'))
+                    <div class="alert alert-success" id="trigger">
                         {{ session('success') }}
+                        </div>
                     @endif
                     @if (session('error'))
+                    <div class="alert alert-danger" id="trigger">
                         {{ session('error') }}
+                        </div>
                     @endif
+                    
                    </div>
                     <button class="btn btn-primary btn-sm" type="button" id="ajaxform">
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -68,9 +73,9 @@
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                                                 </button>
                                             </a>
-                                            <form method="POST" action="{{ url('/admin/formBuilder/' . $form->id) }}" accept-charset="UTF-8" style="display:inline">
-                                                {{ method_field('DELETE') }}
-                                                {{ csrf_field() }}
+                                            <form method="POST" action="{{ url('admin/formBuilder/form/delete_response/' .  $form->id) }}" accept-charset="UTF-8" style="display:inline">
+                                                @csrf
+                                                @method('DELETE')
                                                 <button type="submit" class="btn btn-danger" title="Delete form" onclick="return confirm('Confirm delete?')">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
                                                 </button>

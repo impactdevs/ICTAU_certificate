@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/formBuilder/form/{id}', [FormbuilderController::class, 'viewForm'])->name('view_form');
     Route::get('admin/formBuilder/form/response/{form_id}', [FormbuilderController::class, 'viewResponse'])->name('view_response');
     Route::post('admin/formBuilder/form/store_response/{form_id}', [FormbuilderController::class, 'storeResponse'])->name('store_response');
+    Route::get('admin/formBuilder/form/delete_response/{form_id}', [FormbuilderController::class, 'destroyResponse'])->name('destroy_response');
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
