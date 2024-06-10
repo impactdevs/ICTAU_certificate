@@ -40,11 +40,30 @@
 
                                     @if(Route::currentRouteName() == 'form_builder')
                                         @include('admin.formBuilder.create')
+                                    @elseif(Route::currentRouteName() == 'form_builder_edit_form')
+                                        @include('admin.formBuilder.edit')
                                     @endif
-                                    @if (Route::currentRouteName() == 'form_builder_edit_form')
-                                    @include('admin.formBuilder.edit')
-                                    @endif
+                                  
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="create-form" id="editForm" >   
+                    <div class="modal-body">             
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <h3>Edit form</h3>
+                            <div class="form">
+                            
+                                    @if(Route::currentRouteName() == 'form_builder')
+                                    @include('admin.formBuilder.edit')
+                                    
+                                    @endif
+                                  
+                             
                             </div>
                         </div>
                     </div>
@@ -75,8 +94,8 @@
                                                     <i class="fa fa-eye" aria-hidden="true"></i> View
                                                 </button>
                                             </a>
-                                            <a href="{{ url('admin/formBuilder/edit/' . $form->id) }}" title="Edit form">
-                                                <button class="btn btn-warning">
+                                            <a href="{{ url('/admin/formBuilder/edit/' . $form->id) }}" title="Edit form" >
+                                                <button class="btn btn-warning" id="ajaxeditForm">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                                                 </button>
                                             </a>

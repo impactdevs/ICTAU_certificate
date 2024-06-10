@@ -88,15 +88,12 @@
 
         $('#createForm').show();
 
-        });
-
-     
-     
-      
-      
+        });         
     }); 
 
+   
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -105,7 +102,7 @@
                 // Refresh the page 
                 setTimeout(function() {
                     window.location.reload();
-                }, 2000);
+                }, 1000);
             }
         });
     </script>
