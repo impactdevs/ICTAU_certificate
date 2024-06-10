@@ -30,7 +30,7 @@
     </div>
 
     <nav class="">
-        <p class="text-center font-weight-bold h6">Select the category that best
+        <p class="text-center font-weight-bold h6">Please select the category that best
             describes you from the tabs below.</p>
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
             <button class="nav-link tab-color {{ $category == 'student' ? 'active' : '' }}" id="student-tab"
@@ -126,8 +126,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Student</h5>
-                                                <p class="card-text">The following are a must requirements you must
-                                                    have to fill in your bio-data form.</p>
+                                                <p class="card-text">The following are required.</p>
                                                 <ol>
                                                     <li>Student ID screenshot in .png or .jpg format</li>
                                                     <li>A passport size photograph in .png or .jpg format</li>
@@ -136,7 +135,7 @@
                                                 <a href="{{ url('/apply?category=student') }}" class="btn btn-primary mt-2">Register as
                                                     Student</a>
                                                 <br>
-                                                NB: All fields marked with <strong>*</strong> mandatory
+                                                NB: All fields marked with <strong>*</strong> are mandatory
                                             </div>
                                         </div>
                                     </div>
@@ -144,8 +143,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Professional</h5>
-                                                <p class="card-text">The following are a must requirements you must
-                                                    have to fill in your bio-data form.</p>
+                                                <p class="card-text">The following are required.</p>
                                                 <ol>
                                                     <li>A curriculum vitae in .pdf format</li>
                                                     <li>A passport size photograph .png or .jpg format</li>
@@ -154,7 +152,7 @@
                                                 <a href="{{ url('/apply?category=professional') }}" class="btn btn-primary mt-2">Register as
                                                     Professional</a>
                                                 <br>
-                                                NB: All fields marked with <strong>*</strong> mandatory
+                                                NB: All fields marked with <strong>*</strong> are mandatory
                                             </div>
                                         </div>
                                     </div>
@@ -162,8 +160,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Company</h5>
-                                                <p class="card-text">The following are a must requirements you must
-                                                    have to fill in your bio-data form.</p>
+                                                <p class="card-text">The following are required.</p>
                                                 <ol>
                                                     <li>Company logo .png or .jpg format</li>
                                                     <li>Membership payment prooof</li>
@@ -173,7 +170,7 @@
                                                 <a href="{{ url('/apply?category=company') }}" class="btn btn-primary mt-2">Register as
                                                     Company</a>
                                                 <br>
-                                                NB: All fields marked with <strong>*</strong> mandatory
+                                                NB: All fields marked with <strong>*</strong> are mandatory
                                             </div>
                                         </div>
                                     </div>

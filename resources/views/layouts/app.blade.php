@@ -36,7 +36,7 @@
     <!-- CSS Files -->
     <link id="pagestyle" href={{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }} rel="stylesheet" />
 
-    
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -46,13 +46,6 @@
     @guest
         @yield('guest')
     @endguest
-
-    @if (session()->has('success'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-            class="position-fixed bg-success rounded right-3 text-sm py-2 px-4">
-            <p class="m-0">{{ session('success') }}</p>
-        </div>
-    @endif
     <!--   Core JS Files   -->
     <script src={{ asset('assets/js/core/popper.min.js') }}></script>
     <script src={{ asset('assets/js/core/bootstrap.min.js') }}></script>
@@ -76,6 +69,28 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src={{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.3') }}></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        //show swal alert
+        @if (session('success'))
+            swal({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                icon: "success",
+                button: "OK",
+            });
+        @elseif (session('error'))
+            swal({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                icon: "error",
+                button: "OK",
+            });
+        @endif
+    </script>
 </body>
 
 </html>

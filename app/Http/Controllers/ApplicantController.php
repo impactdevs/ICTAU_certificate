@@ -12,6 +12,10 @@ use App\Models\CurriculumVitae;
 use App\Models\CompanyLogo;
 use App\Models\ContactPerson;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationApproved;
+use App\Mail\ApplicationRejected;
+use App\Mail\Welcome;
 
 class ApplicantController extends Controller
 {
@@ -21,7 +25,7 @@ class ApplicantController extends Controller
     public function index()
     {
         // Fetch applicants with pagination (10 per page)
-        $applicants = Applicant::paginate(10);
+        $applicants = Applicant::paginate(15);
 
         // Pass the applicants data to the view
         return view('admin.applications.index', compact('applicants'));
@@ -499,4 +503,32 @@ class ApplicantController extends Controller
     {
         //
     }
+
+    public function approve(Request $request)
+    {
+        try {
+            $applicant = Applicant::where('application_id', $request->application_id)->first();
+            $applicant->application_status = $request->status;
+            $update_status = $applicant->save();
+
+            //if the application status is approved, send an email to the applicant
+            if ($update_status) {
+                //check if the status is approved or rejected
+                if ($request->status == 'approve') {
+                    //send an email to the applicant
+                    Mail::to($applicant->email)->send(new ApplicationApproved($applicant->first_name, $applicant->application_type));
+
+                    //send a welcome email to the applicant after 5 minutes
+                    Mail::to($applicant->email)->later(now()->addMinutes(5), new Welcome($applicant));
+                } else {
+                    //send an email to the applicant
+                    Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type));
+                }
+            }
+            return redirect()->back()->with('success', 'Application approved successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Application approval failed. Please try again.');
+        }
+    }
+
 }

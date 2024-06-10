@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('academic_documents');
         Schema::create('academic_documents', function (Blueprint $table) {
             $table->id();
             $table->uuid('application_id');//foreign key

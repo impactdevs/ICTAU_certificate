@@ -19,6 +19,7 @@
                     <th>Date of Birth</th>
                     <th>Profession</th>
                     <th>Application Type</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +38,24 @@
                         <td>{{ $applicant->date_of_birth }}</td>
                         <td>{{ $applicant->profession }}</td>
                         <td>{{ $applicant->application_type }}</td>
+                        <td>
+                            @if ($applicant->application_status == 'pending')
+                                <a href="{{ '/approve?status=approve&application_id=' . $applicant->application_id }}"
+                                    class="btn btn-success">Approve</a>
+                                <a href="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}"
+                                    class="btn btn-danger">Reject</a>
+                            @endif
+
+                            @if ($applicant->application_status == 'reject')
+                                {{-- show a font awesome cancel --}}
+                                <i class="fas fa-times-circle text-danger"></i>
+                            @endif
+
+                            @if ($applicant->application_status == 'approve')
+                                {{-- show a font awesome check --}}
+                                <i class="fas fa-check-circle text-success"></i>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
