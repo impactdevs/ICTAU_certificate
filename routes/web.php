@@ -11,6 +11,7 @@ use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\ApplicantController;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GeneralSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +47,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/login', function () {
         return view('dashboard');
     })->name('sign-up');
-});
 
+    Route::get('admin/general-settings', [GeneralSettingsController::class, 'edit'])->name('admin.general_settings.update');
+    Route::put('admin/general-settings-update', [GeneralSettingsController::class, 'update']);
+});
 Route::get('apply', [ApplicantController::class, 'create']);
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');

@@ -201,12 +201,12 @@ class MemberController extends Controller
         $image->toPng();
 
         //save the image to the public folder
-        $image->save(public_path('images/certificate-generated_'.request()->id.'.png'));
+        $image->save(public_path('images/certificate-generated_' . request()->id . '.png'));
 
         // $img = file_get_contents(public_path('images/certificate-generated.png'));
 
         // return response($img)->header('Content-Type', 'image/png');
-        return response()->download(public_path('images/certificate-generated_'.request()->id.'.png'))->deleteFileAfterSend(true);
+        return response()->download(public_path('images/certificate-generated_' . request()->id . '.png'))->deleteFileAfterSend(true);
     }
 
     public function generate_qr($memberId)
@@ -220,9 +220,9 @@ class MemberController extends Controller
         $img = QrCode::format('png')->size(230)->generate($qrText);
 
         // Save the QR code to the public folder
-        file_put_contents(public_path('images/qrcode_'.$memberId.'.png'), $img);
+        file_put_contents(public_path('images/qrcode_' . $memberId . '.png'), $img);
         //return the qr path
-        return public_path('images/qrcode_'.$memberId.'.png');
+        return public_path('images/qrcode_' . $memberId . '.png');
     }
 
     public function member_verification($id)

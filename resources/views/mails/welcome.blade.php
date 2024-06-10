@@ -1,52 +1,104 @@
-<div>
-    @if ($applicant->application_type == 'student' || $applicant->application_type == 'professional')
-        <pre>
-        Congratulations on becoming a {{ $applicant->application_type }} Member of the ICT
-        Association of Uganda (ICTAU) for 2024. Your membership enriches our community with your
-        unique skills and dedication to the ICT sector.
+<!DOCTYPE html>
+<html lang="en">
 
-        As a member, you join a network committed to promoting innovation and excellence in
-        Uganda's ICT ecosystem. You have access to networking events, professional development
-        opportunities, and a platform to share insights and collaborate on initiatives that drive our
-        sector forward.
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
 
-        We count on you to uphold the highest standards of professionalism and ethical conduct,
-        contributing positively to our collective mission of advancing the ICT landscape in Uganda.
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-        We look forward to your contributions and the impact we will create together.
+        .header {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
 
-        Nkurunungi Gideon
+        .content {
+            padding: 30px;
+            line-height: 1.6;
+        }
 
-        Chief Executive Officer
-        ICT Association of Uganda
-    </pre>
-    @endif
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+        }
 
-    @if ($applicant->application_type == 'company')
-        <pre>
-Welcome to the ICT Association of Uganda (ICTAU). We are honored to have {{$applicant->company_name}}
-as a Corporate Member for the year 2024. Your support plays a pivotal role in our
-mission to foster a robust and innovative ICT sector in Uganda.
+        .signature strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
 
-Corporate membership with ICTAU not only signifies your company's commitment to
-technological advancement but also positions you as a key player in shaping the future of the
-ICT ecosystem.  You now have unparalleled access to a network of professionals,
-opportunities for industry collaboration, and platforms for showcasing your leadership in
-tech-driven initiatives.
+<body>
 
-As part of our community, we encourage {{$applicant->company_name}} to actively engage in ICTAU
-activities, share expertise, and collaborate on projects that drive sector growth.
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to ICTAU</h1>
+        </div>
+        <div class="content">
+            <!-- Student or Professional Membership Confirmation -->
+            @if ($applicant->application_type == 'student' || $applicant->application_type == 'professional')
+                <p>Congratulations on becoming a {{ $applicant->application_type }} Member of the ICT Association of
+                    Uganda (ICTAU) for 2024. Your membership enriches our community with your unique skills and
+                    dedication to the ICT sector.</p>
 
-We also emphasize the importance of ethical conduct and social responsibility in all
-endeavors. As a corporate member, you lead by example, setting standards for integrity,
-innovation, and impact in the ICT domain.
+                <p>As a member, you join a network committed to promoting innovation and excellence in Uganda's ICT
+                    ecosystem. You have access to networking events, professional development opportunities, and a
+                    platform to share insights and collaborate on initiatives that drive our sector forward.</p>
 
-Once again, welcome to ICTAU.Your insights and contributions are invaluable to our collective success.
+                <p>We count on you to uphold the highest standards of professionalism and ethical conduct, contributing
+                    positively to our collective mission of advancing the ICT landscape in Uganda.</p>
 
-Nkurunungi Gideon
+                <p>We look forward to your contributions and the impact we will create together.</p>
+            @endif
 
-Chief Executive Officer
-ICT Association of Uganda
-        </pre>
-    @endif
-</div>
+            <!-- Company Membership Confirmation -->
+            @if ($applicant->application_type == 'company')
+                <p>Welcome to the ICT Association of Uganda (ICTAU). We are honored to have
+                    {{ $applicant->company_name }} as a Corporate Member for the year 2024. Your support plays a pivotal
+                    role in our mission to foster a robust and innovative ICT sector in Uganda.</p>
+
+                <p>Corporate membership with ICTAU not only signifies your company's commitment to technological
+                    advancement but also positions you as a key player in shaping the future of the ICT ecosystem. You
+                    now have unparalleled access to a network of professionals, opportunities for industry
+                    collaboration, and platforms for showcasing your leadership in tech-driven initiatives.</p>
+
+                <p>As part of our community, we encourage {{ $applicant->company_name }} to actively engage in ICTAU
+                    activities, share expertise, and collaborate on projects that drive sector growth.</p>
+
+                <p>We also emphasize the importance of ethical conduct and social responsibility in all endeavors. As a
+                    corporate member, you lead by example, setting standards for integrity, innovation, and impact in
+                    the ICT domain.</p>
+
+                <p>Once again, welcome to ICTAU. Your insights and contributions are invaluable to our collective
+                    success.</p>
+            @endif
+
+            <div class="signature">
+                <strong>Nkurunungi Gideon</strong>
+                Chief Executive Officer<br>
+                ICT Association of Uganda
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

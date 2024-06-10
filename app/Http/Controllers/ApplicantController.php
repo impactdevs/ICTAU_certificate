@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CertificateSent;
 use App\Models\Applicant;
+use App\Models\Membership_Type;
 use Illuminate\Http\Request;
 use App\Models\PassportPhoto;
 use App\Models\PaymentProof;
@@ -16,6 +18,13 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ApplicationApproved;
 use App\Mail\ApplicationRejected;
 use App\Mail\Welcome;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+use App\Models\Member;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\DB;
+//import the general settings model
+use App\Models\GeneralSettings;
 
 class ApplicantController extends Controller
 {
@@ -506,29 +515,179 @@ class ApplicantController extends Controller
 
     public function approve(Request $request)
     {
+        $applicant = Applicant::where('application_id', $request->application_id)->first();
+        $isMember = Member::where('email', $applicant->email)->first();
+        $settings = GeneralSettings::first();
+
+        $applicant->application_status = $request->status;
+        $update_status = $applicant->save();
+        DB::beginTransaction();
+
         try {
-            $applicant = Applicant::where('application_id', $request->application_id)->first();
-            $applicant->application_status = $request->status;
-            $update_status = $applicant->save();
+            if (!$isMember) {
+                //if the application status is approved, send an email to the applicant
+                if ($update_status) {
+                    //check if the status is approved or rejected
+                    if ($request->status == 'approve') {
+                        $membershipTypes = Membership_Type::all();
 
-            //if the application status is approved, send an email to the applicant
-            if ($update_status) {
-                //check if the status is approved or rejected
-                if ($request->status == 'approve') {
-                    //send an email to the applicant
-                    Mail::to($applicant->email)->send(new ApplicationApproved($applicant->first_name, $applicant->application_type));
+                        if ($applicant->application_type == 'student') {
+                            $membershipType = $membershipTypes->where('membership_type_name', 'Student')->first();
+                            //if its null, create the membership type
+                            if ($membershipType == null) {
+                                $membershipType = new Membership_Type();
+                                $membershipType->membership_type_name = 'Student';
+                                $membershipType->save();
+                            }
+                        } else if ($applicant->application_type == 'professional') {
+                            $membershipType = $membershipTypes->where('membership_type_name', 'Professional')->first();
+                            //if its null, create the membership type
+                            if ($membershipType == null) {
+                                $membershipType = new Membership_Type();
+                                $membershipType->membership_type_name = 'Professional';
+                                $membershipType->save();
+                            }
+                        } else if ($applicant->application_type == 'company') {
+                            $membershipType = $membershipTypes->where('membership_type_name', 'Private Company')->first();
+                            //if its null, create the membership type
+                            if ($membershipType == null) {
+                                $membershipType = new Membership_Type();
+                                $membershipType->membership_type_name = 'Private Company';
+                                $membershipType->save();
+                            }
+                        } else {
+                            //create the membership type before saving the member
+                            $membershipType = new Membership_Type();
+                            $membershipType->membership_type_name = $applicant->application_type;
+                            $membershipType->save();
+                        }
 
-                    //send a welcome email to the applicant after 5 minutes
-                    Mail::to($applicant->email)->later(now()->addMinutes(5), new Welcome($applicant));
-                } else {
-                    //send an email to the applicant
-                    Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type));
+                        // Get the last membership code and increment it
+                        $lastMembership = Member::orderBy('id', 'desc')->first();
+                        $lastCode = $lastMembership ? intval(substr($lastMembership->membership_id, -3)) : 299;
+                        $newCode = $lastCode + 1;
+
+                        // Get the last two figures of the current year
+                        $currentYear = date('y');
+
+                        // Generate the membership code
+                        $membershipCode = 'ICTAU/' . $currentYear . '/' . str_pad($newCode, 3, '0', STR_PAD_LEFT);
+                        //add the applicant to the members table
+                        $member = new Member();
+                        if ($applicant->application_type == 'student' || $applicant->application_type == 'professional') {
+                            $member->first_name = $applicant->first_name;
+                            $member->last_name = $applicant->last_name;
+                        } else {
+                            $member->first_name = $applicant->company_name;
+                            $member->last_name = '';
+                        }
+                        $member->email = $applicant->email;
+                        $member->phone = $applicant->phone_number;
+                        $member->membership_type_id = $membershipType->id;
+                        $member->membership_id = $membershipCode;
+                        $member->save();
+                        //send an email to the applicant
+                        Mail::to($applicant->email)->send(new ApplicationApproved($applicant->first_name, $applicant->application_type));
+
+                        //send a welcome email to the applicant after 5 minutes
+                        Mail::to($applicant->email)->later(now()->addMinutes($settings->send_welcome_email_after*24*60), new Welcome($applicant));
+
+                        //generate the certificate
+                        $path = $this->generateCertificate($member->id);
+
+                        //send the certificate to the applicant after 10 minutes
+                        Mail::to($applicant->email)->later(now()->addMinutes($settings->send_certificate_after*24*60), new CertificateSent($applicant, $path));
+                    } else {
+                        //send an email to the applicant
+                        Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type));
+                    }
                 }
+
+                DB::commit();
+
+                return redirect()->back()->with('success', 'Application approved successfully');
+            } else {
+                DB::rollBack();
+                return redirect()->back()->with('success', 'Applicant is already a member');
             }
-            return redirect()->back()->with('success', 'Application approved successfully');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Application approval failed. Please try again.');
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function generateCertificate($user_id)
+    {
+        $manager = new ImageManager(new Driver());
+
+        $image = $manager->read(public_path('images/certificate-template.jpeg'));
+
+        //find the member details with the id from the request
+        $member = Member::find($user_id);
+
+        $image->text($member->first_name . ' ' . $member->last_name, 800, 630, function ($font) {
+            $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
+            $font->color('#000000');
+            $font->size(40);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(2.0);
+        });
+
+        $image->text(strtoupper("2024/2025"), 1316, 709, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Thin.ttf'));
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text($member->membershipType->membership_type_name, 880, 780, function ($font) {
+            $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        $image->text($member->membership_id, 800, 990, function ($font) {
+            $font->filename(public_path('fonts/Roboto-Bold.ttf'));
+            $font->color('#f15822');
+            $font->size(30);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
+        //generate the qr code
+        $qrPath = $this->generate_qr($user_id);
+
+        //add the qr code to the certificate
+        $image->place($qrPath, 'top-right', 52, 55);
+
+        $image->toPng();
+
+        //save the image to the public folder
+        $image->save(public_path('images/certificate-generated_' . $user_id . '.png'));
+
+        //return the path to the generated certificate
+        return public_path('images/certificate-generated_' . $user_id . '.png');
+    }
+
+    public function generate_qr($memberId)
+    {
+        //check if the member exists
+
+        $member = Member::find($memberId);
+        $qrText = url('member/' . $member->id);
+
+        // Generate QR code
+        $img = QrCode::format('png')->size(230)->generate($qrText);
+
+        // Save the QR code to the public folder
+        file_put_contents(public_path('images/qrcode_' . $memberId . '.png'), $img);
+        //return the qr path
+        return public_path('images/qrcode_' . $memberId . '.png');
     }
 
 }

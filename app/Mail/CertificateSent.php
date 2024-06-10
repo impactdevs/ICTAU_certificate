@@ -2,9 +2,11 @@
 
 namespace App\Mail;
 
+use App\Models\Applicant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -13,12 +15,18 @@ class CertificateSent extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public Applicant $applicant;
+    public string $certificate;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
-        //
+    public function __construct(
+        Applicant $applicant,
+        string $certificate
+    ) {
+        $this->applicant = $applicant;
+        $this->certificate = $certificate;
     }
 
     /**
@@ -27,7 +35,7 @@ class CertificateSent extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Certificate Sent',
+            subject: 'RE: CERTIFICATE OF MEMBERSHIP',
         );
     }
 
@@ -37,7 +45,7 @@ class CertificateSent extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'mails.certificate-sent',
         );
     }
 
@@ -48,6 +56,8 @@ class CertificateSent extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+           Attachment::fromPath($this->certificate)
+        ];
     }
 }

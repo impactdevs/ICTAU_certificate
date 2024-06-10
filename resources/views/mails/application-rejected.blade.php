@@ -22,6 +22,6 @@
 
         Chief Executive Officer
         ICT Association of Uganda
-            <pre>
+    <pre>
 
 </div>
