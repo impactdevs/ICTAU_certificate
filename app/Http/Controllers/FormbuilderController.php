@@ -28,26 +28,28 @@ class FormbuilderController extends Controller
     }
 
     //save the form 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, FormBuilder $form)
     {
-        // Validate the incoming request data
+        //created form fields 
+        $formFields = $form->formFields;
+        $fieldTypes = FormBuilder::$fieldTypes;
+
         $validated = $request->validate([
             'name' => 'required|max:255',
         ]);
     
-        try {
-            // Create a new FormBuilder instance and save it
+        if ($validated && !empty($validated)) {
+    
             FormBuilder::create($validated);
     
-            // Redirect to the formBuilder index route with a success message
-            return back()->with('success', 'Form created successfully.');
-        } catch (Exception $e) {
-            
+            // return back()->with('success', 'Form created successfully.');
+            return view('admin.formBuilder.show', compact('form', 'formFields','fieldTypes'));
+        } else {
+    
             return back()->with('error', 'Failed to create the form.');
         }
     }
     
-
     public function show(Request $request, $id)
     {
 
@@ -63,6 +65,37 @@ class FormbuilderController extends Controller
         return view('admin.formBuilder.show', compact('form', 'fieldTypes', 'formFields'));
     }
 
+    public function edit(Request $request, $id)
+    {
+
+        $form = FormBuilder::find($id);
+
+        return view('admin.formBuilder.edit', compact ('form'));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $form = FormBuilder::find($id);
+
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+        ]);
+    
+        if ($validated && !empty($validated)) {
+    
+            $form->name = $validated['name'];
+            $form->save();
+    
+             return back()->with('success', 'Form updated successfully.');
+            //return view('admin.formBuilder.show', compact('form', 'formFields','fieldTypes'));
+        } else {
+    
+            return back()->with('error', 'Failed to update the form.');
+        }
+
+    }
+
     public function destroy($id)
     {
         $form = FormBuilder::find($id);
@@ -73,10 +106,10 @@ class FormbuilderController extends Controller
 
         try {
             $form->delete();
-            return redirect()->back()->with('success', 'Form created successfully.');
+            return redirect()->back()->with('success', 'Form deleted successfully.');
             
         } catch (\Exception $e) {
-            return redirect()-> back()->with('error', 'Failed to create the form.');
+            return redirect()-> back()->with('error', 'Failed to delete form.');
            
         }
     }

@@ -30,8 +30,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
-    Route::resource('admin/formBuilder', 'App\Http\Controllers\FormbuilderController');
+    //Route::resource('admin/formBuilder/{id}', 'App\Http\Controllers\FormbuilderController');
+    Route::get('admin/formBuilder/', [FormbuilderController::class, 'index'])->name('form_builder');
+    Route::get('admin/formBuilder/create/', [FormbuilderController::class, 'create']);
+    Route::get('admin/formBuilder/edit/{id}', [FormbuilderController::class, 'edit'])->name('form_builder_edit_form');
+    Route::put('admin/formBuilder/update/{id}', [FormbuilderController::class, 'update']);
+    Route::delete('admin/formBuilder/delete/{id}', [FormbuilderController::class, 'destroy']);
     Route::post('admin/formBuilder/create_form', [FormbuilderController::class, 'store'])->name('create_form_post');
+    Route::get('admin/formBuilder/show_form/{id}', [FormbuilderController::class, 'show'])->name('show_form');
     Route::post('admin/formBuilder/create_form_field/{id}', [FormbuilderController::class, 'addFormField'])->name('create_form_field');
     Route::get('admin/formBuilder/form/{id}', [FormbuilderController::class, 'viewForm'])->name('view_form');
     Route::get('admin/formBuilder/form/response/{form_id}', [FormbuilderController::class, 'viewResponse'])->name('view_response');
