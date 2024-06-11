@@ -293,7 +293,14 @@ class ApplicantController extends Controller
      */
     public function show(Applicant $applicant)
     {
-        //
+        if ($applicant->application_type == 'student') {
+            $applicant->load('passportPhoto', 'paymentProof', 'studentId');
+        } else if ($applicant->application_type == 'professional') {
+            $applicant->load('passportPhoto', 'paymentProof', 'curriculumVitae');
+        } else if ($applicant->application_type == 'company') {
+            $applicant->load('companyLogo', 'paymentProof', 'contactPersons');
+        }
+        return view('admin.applications.show', compact('applicant'));
     }
 
     /**
@@ -589,13 +596,13 @@ class ApplicantController extends Controller
                         Mail::to($applicant->email)->send(new ApplicationApproved($applicant->first_name, $applicant->application_type));
 
                         //send a welcome email to the applicant after 5 minutes
-                        Mail::to($applicant->email)->later(now()->addMinutes($settings->send_welcome_email_after*24*60), new Welcome($applicant));
+                        Mail::to($applicant->email)->later(now()->addMinutes($settings->send_welcome_email_after * 24 * 60), new Welcome($applicant));
 
                         //generate the certificate
                         $path = $this->generateCertificate($member->id);
 
                         //send the certificate to the applicant after 10 minutes
-                        Mail::to($applicant->email)->later(now()->addMinutes($settings->send_certificate_after*24*60), new CertificateSent($applicant, $path));
+                        Mail::to($applicant->email)->later(now()->addMinutes($settings->send_certificate_after * 24 * 60), new CertificateSent($applicant, $path));
                     } else {
                         //send an email to the applicant
                         Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type));

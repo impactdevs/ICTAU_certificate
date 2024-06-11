@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
     Route::get('/admin/applicants', [ApplicantController::class, 'index']);
+    Route::get('/admin/applicants/{applicant}', [ApplicantController::class, 'show']);
     Route::get('/approve', [ApplicantController::class, 'approve']);
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
