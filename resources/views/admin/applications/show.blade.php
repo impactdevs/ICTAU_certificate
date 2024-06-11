@@ -176,12 +176,12 @@
 
                             @if ($applicant->application_status == 'reject')
                                 {{-- show a font awesome cancel --}}
-                                <i class="fas fa-times-circle text-danger"></i>
+                                <i class="fas fa-times-circle text-danger"></i>Rejected. Awaiting update from the applicant
                             @endif
 
                             @if ($applicant->application_status == 'approve')
                                 {{-- show a font awesome check --}}
-                                <i class="fas fa-check-circle text-success"></i>
+                                <i class="fas fa-check-circle text-success"></i>Approved, everything is okay
                             @endif
                         </div>
                     </div>
