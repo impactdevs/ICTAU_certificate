@@ -33,7 +33,7 @@ class ApplicationApproved extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'RE: THANK YOU FOR EXPRESSING INTEREST TO JOIN THE ICT ASSOCIATION OF UGANDA',
-            from: 'info@ippu.org',
+            from: 'nsengiyumvawilberforce@gmail.com',
         );
     }
 
