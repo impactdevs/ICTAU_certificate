@@ -23,7 +23,6 @@ use Intervention\Image\ImageManager;
 use App\Models\Member;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\DB;
-//import the general settings model
 use App\Models\GeneralSettings;
 
 class ApplicantController extends Controller
