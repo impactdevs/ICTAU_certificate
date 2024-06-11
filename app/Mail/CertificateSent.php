@@ -36,6 +36,7 @@ class CertificateSent extends Mailable
     {
         return new Envelope(
             subject: 'RE: CERTIFICATE OF MEMBERSHIP',
+            from: 'info@ippu.org',
         );
     }
 
