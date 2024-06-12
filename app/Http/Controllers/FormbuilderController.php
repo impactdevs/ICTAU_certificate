@@ -7,12 +7,13 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\formBuilder;
-use App\Models\formField;
+use App\Models\FormField;
 use App\Models\FormResponse;
 use Illuminate\Support\Facades\Validator;
 
 class FormbuilderController extends Controller
 {
+    
     //
     public function index ()
     {
@@ -87,8 +88,8 @@ class FormbuilderController extends Controller
             $form->name = $validated['name'];
             $form->save();
     
-             return back()->with('success', 'Form updated successfully.');
-            //return view('admin.formBuilder.show', compact('form', 'formFields','fieldTypes'));
+            return back()->with('success', 'Form updated successfully.');
+            //return view('admin.formBuilder.index')->with ('success', 'Form updated successfully.');
         } else {
     
             return back()->with('error', 'Failed to update the form.');
@@ -113,7 +114,7 @@ class FormbuilderController extends Controller
            
         }
     }
-    public function addFormField(Request $request, $id): RedirectResponse
+    public function addFormField(Request $request, $id)
     {
      
         $usr = auth()->user();
@@ -126,7 +127,7 @@ class FormbuilderController extends Controller
 
             // Check if the form builder was found
             if (!$formbuilder) {
-                return redirect()->route('admin.formBuilder.index')->with('error', 'Form not found.');
+                return back()->with('error', 'Form not found.');
             }
 
             // Get the names and types from the request
@@ -152,44 +153,54 @@ class FormbuilderController extends Controller
             
             DB::commit();
 
-            session()->flash('success', 'Fields added successfully.');
-            return redirect()->route('admin.formBuilder.show', $id);
+            return redirect()->back()->with('success', 'Form Field added successfully.');
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            session()->flash('error', 'Failed to add fields.');
-            return redirect()->back();
+            
+            return redirect()->back()->with('error', 'Form Field was not created.');
         }
     }
     public function viewForm($id)
     {
+        
         // Find the form builder by ID
         $form = FormBuilder::find($id);
 
         // Check if the form exists
         if ($form) {
-            // Check if the form is active
-           // if ($form->is_active == 1) {
-                // Retrieve the related form fields using the relationship
+         
                 $formFields = $form->formFields;
 
                 // Pass the form and its fields to the view
                 return view('admin.formBuilder.show_form', compact('formFields', 'id', 'form'));
-            // } else {
-            //     // If the form is not active, still pass the form to the view
-            //     return view('admin.formBuilder.show_form', compact('id', 'form'));
-            // }
+        
         } else {
             // Redirect to login with an error if the form is not found
             return redirect()->route('login')->with('error', __('Form not found. Please contact the admin.'));
         }
+
     }
 
-    public function editFormField($id)
+    public function editFormField( $id)
     {
+       
+        $usr = \Auth::user();
+        
         $form = FormBuilder::find($id);
 
-        return view('admin.formBuilder.edit', compact ('form'));
+        $types  = $form->formFields;
+      
+        if(!empty($types))
+        {
+            $field_id = $types->id;
+           
+            return view('admin.formBuilder.edit_form_field', compact( 'types', 'form'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Field not found.'));
+        }
+
     }
 
     public function updateFormField()
@@ -208,7 +219,7 @@ class FormbuilderController extends Controller
             }
 
             // Get the names and types from the request
-            $names = $request->input('question');
+            $question = $request->input('question');
             $types = $request->input('fieldTypes');
 
             // Validate that names and types are arrays and have the same length
@@ -217,13 +228,13 @@ class FormbuilderController extends Controller
             }
 
             // Iterate over the names and types and create form fields
-            foreach ($names as $index => $name) {
+            foreach ($names as $index => $question) {
                 $type = $types[$index];
 
                 // Create a new form field
                 $formField = new FormField();
                 $formField->form_id = $formbuilder->id;
-                $formField->question = $name;
+                $formField->question = $question;
                 $formField->type = $type;
                 $formField->save();
             }
@@ -263,9 +274,6 @@ class FormbuilderController extends Controller
                     'response' => json_encode($arrFieldResp),
                 ]
             );
-
-           
-
             return redirect()->back()->with('success', __('Data submit successfully.'));
         }
         else
@@ -273,6 +281,50 @@ class FormbuilderController extends Controller
             return redirect()->route('login')->with('error', __('Something went wrong.'));
         }
     }
+
+    // public function viewResponse($form_id)
+    // {
+    //     $form = FormBuilder::findOrFail($form_id);
+       
+    //     if(!$form) {
+    //         return redirect()->back()->with('error', __('Form not found.'));
+    //     }
+    
+    //     $formResponses = $form->response;
+        
+    //     $formField = $form->question;
+    
+    //     if($formResponses->isNotEmpty()) {
+    //         return view('admin.formBuilder.response', compact('form', 'formResponses'));
+    //     } else {
+    //         return redirect()->back()->with('error', __('Response not found.'));
+    //     }
+    // }
+    
+
+ 
+
+    public function viewDetailResponse($id)
+    {
+        // Eager load the formFields and their responses for the FormBuilder model
+        $form = FormBuilder::with(['formFields.response'])->findOrFail($id);
+        $res = FormResponse::find($id);
+
+        // Access the form fields and their responses
+        $formFields = $form->formFields;
+        $formResponse = $form->response;
+        
+        // Check if the form exists and is not empty
+        if (!$res ) {
+            return redirect()->back()->with('error', __('Response and form ID not found.'));
+        } else {
+            // Return the view with form fields and their responses
+            $responses = json_decode($res->response, true);
+            return view('admin.formBuilder.response_detail', compact('responses','formFields'));
+        }
+    }
+    
+ 
 
     public function destroyResponse(formBuilder $form)
     {

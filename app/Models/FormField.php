@@ -15,4 +15,15 @@ class FormField extends Model
         'type'
     ];
 
+    // public function response()
+    // {
+    //     return $this->hasMany('App\Models\FormResponse', 'form_id', 'id');
+    // }
+
+    
+    public function response()
+    {
+        return $this->hasMany(FormResponse::class, 'form_id', 'id');
+    }
+
 }

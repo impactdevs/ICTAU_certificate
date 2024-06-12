@@ -8,7 +8,7 @@
 </div>
 <div class="col-12 form-group">
     {{ Form::label('type', __('Type'),['class'=>'form-label']) }}
-    {{ Form::select('fieldTypes[]', $fieldTypes,null, array('class' => 'form-control select2','id'=>'choices-multiple1','required'=>'required')) }}
+    {{ Form::select('fieldTypes[]', $fieldTypes, array('class' => 'form-control select2','id'=>'choices-multiple1','required'=>'required')) }}
 </div>
 </div>
 <div class="mb-3">

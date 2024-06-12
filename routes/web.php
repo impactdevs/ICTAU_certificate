@@ -40,8 +40,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/formBuilder/show_form/{id}', [FormbuilderController::class, 'show'])->name('show_form');
     Route::post('admin/formBuilder/create_form_field/{id}', [FormbuilderController::class, 'addFormField'])->name('create_form_field');
     Route::get('admin/formBuilder/form/{id}', [FormbuilderController::class, 'viewForm'])->name('view_form');
+    Route::get('admin/formBuilder/edit_form/{id}', [FormbuilderController::class,'editFormField'])->name('edit_form_field');
+    Route::put('admin/formBuilder/update_form_field/{id}', [FormbuilderController::class,'updateFormField'])->name('update_form_field');
     Route::get('admin/formBuilder/form/response/{form_id}', [FormbuilderController::class, 'viewResponse'])->name('view_response');
+    Route::get('admin/formBuilder/form/response/detail/{id}', [FormbuilderController::class, 'viewDetailResponse'])->name('view_response_detail');
     Route::post('admin/formBuilder/form/store_response/{form_id}', [FormbuilderController::class, 'storeResponse'])->name('store_response');
+  
     Route::get('admin/formBuilder/form/delete_response/{form_id}', [FormbuilderController::class, 'destroyResponse'])->name('destroy_response');
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);

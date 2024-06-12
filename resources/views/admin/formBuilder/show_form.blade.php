@@ -1,14 +1,25 @@
+@extends('layouts.app')
 
-
-@extends('layouts.user_type.auth')
-
-@section('content')
-<div class="content-wrapper">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
+@section('form_content')
+<div class="container mt-5">
+    <div class="content">       
+    <div class="content-wrapper mt-5">
+        <div class="row">
+            <div class="col-sm-12">
+             <div class="card">
                 <div class="card-header bg-primary text-light">
-                    <h3> Form : {{ $form->name }}</h3></div>
+                    <h3> Form : {{ $form->name }}
+
+                    <div class="form float-end">
+                        <a href="{{ url('/admin/formBuilder') }}" title="Form builder">
+                            <button class="btn btn-success">
+                                <i class="fa fa-eye" aria-hidden="true"></i> Back to home
+                            </button>
+                        </a>
+                    </div>
+                    </h3> 
+                </div>
+                    
                 <div class="card-body">
             <div class="card shadow zindex-100 mb-0">
                 {{ Form::open(['url' => 'admin/formBuilder/form/store_response/'.$form->id, 'method' => 'post']) }}
@@ -50,6 +61,8 @@
                 {{ Form::close() }}
             </div>
         </div>
+    </div>
+</div>
     </div>
 </div>
 @endsection

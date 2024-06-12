@@ -29,14 +29,15 @@ class formBuilder extends Model
         return $this->hasMany('App\Models\FormField', 'form_id', 'id');
     }
 
-    public function formFields()
+
+     public function formFields()
     {
-        return $this->hasMany(formField::class, 'form_id');
+        return $this->hasMany(formField::class, 'form_id', 'id');
     }
 
     public function response()
     {
-        return $this->hasMany('App\Models\FormResponse', 'form_id', 'id');
+        return $this->hasMany(FormResponse::class, 'form_id', 'id');
     }
 
 }

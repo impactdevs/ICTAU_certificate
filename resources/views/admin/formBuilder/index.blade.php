@@ -25,6 +25,7 @@
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
                     </button>
                    <br>
+                   
                    <div class="create-form" id="createForm" >   
                     <div class="modal-body">             
                     <div class="row">
@@ -40,8 +41,6 @@
 
                                     @if(Route::currentRouteName() == 'form_builder')
                                         @include('admin.formBuilder.create')
-                                    @elseif(Route::currentRouteName() == 'form_builder_edit_form')
-                                        @include('admin.formBuilder.edit')
                                     @endif
                                   
                                 </form>
@@ -51,25 +50,8 @@
                     </div>
                     </div>
                     <br>
-                    <div class="create-form" id="editForm" >   
-                    <div class="modal-body">             
-                    <div class="row">
-                        <div class="col-12 form-group">
-                            <h3>Edit form</h3>
-                            <div class="form">
-                            
-                                    @if(Route::currentRouteName() == 'form_builder')
-                                    @include('admin.formBuilder.edit')
-                                    
-                                    @endif
-                                  
-                             
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    <br>
+                    
+                    
                    
                     <div class="table-responsive">
                     <table class="table">
@@ -85,21 +67,25 @@
                                 @forelse ($forms as $form)
                                     <tr>
                                         <td class="text-center">{{ $form->id }}</td>
-                                        <td class="text-center">{{ $form->name }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ url('admin/formBuilder/form/response/detail/'. $form->id ) }}">
+                                            {{ $form->name }}
+                                            </a> 
+                                        </td>
                                         <td class="text-center">{{ $form->response->count() }}</td>
                                         
                                         <td class="text-center">
-                                            <a href="{{ url('/admin/formBuilder/form/' . $form->id) }}" title="View form">
+                                            <a href="{{ url('/admin/formBuilder/show_form/' . $form->id) }}" title="View form">
                                                 <button class="btn btn-success">
                                                     <i class="fa fa-eye" aria-hidden="true"></i> View
                                                 </button>
                                             </a>
-                                            <a href="{{ url('/admin/formBuilder/edit/' . $form->id) }}" title="Edit form" >
-                                                <button class="btn btn-warning" id="ajaxeditForm">
+                                            <a href="{{ url('/admin/formBuilder/edit/' . $form->id) }}" title="View form">
+                                                <button type="button" class="btn btn-warning " id="editForm" value="{{ $form->id }}" >
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                                                 </button>
                                             </a>
-                                            <form method="POST" action="{{ url('admin/formBuilder/delete/' .  $form->id) }}" accept-charset="UTF-8" style="display:inline">
+                                            <form method="POST" action="{{ url('/admin/formBuilder/delete/' .  $form->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger" title="Delete form" onclick="return confirm('Confirm delete?')">
