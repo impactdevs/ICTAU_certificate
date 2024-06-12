@@ -36,7 +36,7 @@ class CertificateSent extends Mailable
     {
         return new Envelope(
             subject: 'RE: CERTIFICATE OF MEMBERSHIP',
-            from: 'nsengiyumvawilberforce@gmail.com',
+            from: 'secretariat@ictau.ug',
         );
     }
 

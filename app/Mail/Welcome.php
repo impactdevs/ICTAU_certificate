@@ -34,7 +34,7 @@ class Welcome extends Mailable implements ShouldQueue
         return new Envelope(
             subject: 'RE: ELECTION AS A ' . $this->applicant->application_type . ' MEMBER OF THE ICT ASSOCIATION OF UGANDA
 ',
-from: 'info@ippu.org',
+            from: 'secretariat@ictau.ug',
         );
     }
 

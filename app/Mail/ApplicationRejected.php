@@ -36,7 +36,7 @@ class ApplicationRejected extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'RE: THANK YOU FOR EXPRESSING INTEREST TO JOIN THE ICT ASSOCIATION OF UGANDA',
-            from: 'nsengiyumvawilberforce@gmail.com',
+            from: 'secretariat@ictau.ug',
         );
     }
 
