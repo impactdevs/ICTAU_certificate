@@ -20,6 +20,11 @@ class FormField extends Model
     //     return $this->hasMany('App\Models\FormResponse', 'form_id', 'id');
     // }
 
+    public function formbuilder (): BelongsTo
+    {
+        return $this -> belongsTo(formBuilder::class);
+    }
+
     
     public function response()
     {

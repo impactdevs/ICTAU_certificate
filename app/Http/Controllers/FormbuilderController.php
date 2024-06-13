@@ -88,8 +88,7 @@ class FormbuilderController extends Controller
             $form->name = $validated['name'];
             $form->save();
     
-            return back()->with('success', 'Form updated successfully.');
-            //return view('admin.formBuilder.index')->with ('success', 'Form updated successfully.');
+            return redirect()->route('form_builder');
         } else {
     
             return back()->with('error', 'Failed to update the form.');
@@ -261,12 +260,12 @@ class FormbuilderController extends Controller
             if(!is_null($request->field) && (is_array($request->field) || is_object($request->field))){
                 foreach($request->field as $key => $value)
                 {
-                    $arrFieldResp[FormField::find($key)->name] = (!empty($value)) ? $value : '-';
+                    $arrFieldResp[FormField::find($key)->question] = (!empty($value)) ? $value : '-';
                 }
             } else {
                 return redirect()->back()->with('error', __('Request is missing a required field and you can not be forwarded to next page.'));
             }
-
+            
             // store response
             FormResponse::create(
                 [
@@ -301,28 +300,48 @@ class FormbuilderController extends Controller
     //     }
     // }
     
-
- 
-
     public function viewDetailResponse($id)
     {
-        // Eager load the formFields and their responses for the FormBuilder model
-        $form = FormBuilder::with(['formFields.response'])->findOrFail($id);
-        $res = FormResponse::find($id);
-
-        // Access the form fields and their responses
-        $formFields = $form->formFields;
-        $formResponse = $form->response;
+        $formBuilder = formBuilder::find($id);
         
-        // Check if the form exists and is not empty
-        if (!$res ) {
+        $formField = formField::where('form_id', $id)->first();
+        
+        if (!$formBuilder || !$formField) {
             return redirect()->back()->with('error', __('Response and form ID not found.'));
-        } else {
-            // Return the view with form fields and their responses
-            $responses = json_decode($res->response, true);
-            return view('admin.formBuilder.response_detail', compact('responses','formFields'));
         }
+        
+       
+        $responses = json_decode($formField->response, true);
+    
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return redirect()->back()->with('error', __('Invalid JSON response data.'));
+        }
+    
+        $data = array();
+    
+        foreach ($responses as $response) {
+            if (isset($response['response'])) {
+                $decodedResponse = json_decode($response['response'], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    foreach ($decodedResponse as $question => $answer) {
+                        $data[] = array(
+                            'question' => $question,
+                            'response' => $answer
+                        );
+                    }
+                } else {
+                   
+                }
+            }
+        }
+ 
+        //dd($data);
+        
+        return view('admin.formBuilder.response_detail', compact('formField', 'responses', 'data', 'formBuilder'));
     }
+    
+    
     
  
 

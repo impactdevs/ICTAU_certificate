@@ -6,27 +6,31 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header bg-primary text-light">
-                    Response details
-                    <div class="form float-end">
-                        <a href="{{ url('/admin/formBuilder') }}" title="Form builder">
-                            <button class="btn btn-success">
-                                <i class="fa fa-eye" aria-hidden="true"></i> Back to home
-                            </button>
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="m-0">{{ $formBuilder->name }}</h3>
+                        <br>
+                        <h6> Form Details </h6>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{{ url('/admin/formBuilder') }}" class="btn btn-success">
+                            <i class="fa fa-eye" aria-hidden="true"></i> Back to Home
                         </a>
                     </div>
                 </div>
+                </div>
                 <div class="card-body">
                     <div class="text">
-                        @if($formFields)
-                            @foreach($formFields as $field)
+                        @if($responses)   
+                        <div>     
+                        </div>       
                             <div class="mb-3">
-                                <p><strong>{{ $field->question }}</strong></p>
-                                @foreach($responses as $que => $ans)
-                                <p>{{ $que }}</p>
-                                <li>{{ $ans }}</li>
+                                @foreach($data as $response)            
+                                <p><strong>{{ $response['question']}}</strong></p>
+                                <li>{{ $response['response'] }}</li>
+                                <hr>
                                 @endforeach
                             </div>
-                            @endforeach
                         @else
                             <p>No form fields found.</p>
                         @endif
