@@ -607,8 +607,6 @@ class ApplicantController extends Controller
                     } else {
                         //send an email to the applicant
                         Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type, $request->rejection_comments, url('application/' . $applicant->application_id)));
-
-                        return redirect()->back()->with('error', 'Application rejected successfully');
                     }
                 }
 
