@@ -17,15 +17,23 @@ class ApplicationRejected extends Mailable implements ShouldQueue
 
     public string $application_type;
 
+    public string $reason;
+
+    public string $update_link;
+
     /**
      * Create a new message instance.
      */
     public function __construct(
         string $first_name,
-        string $application_type
+        string $application_type,
+        string $reason,
+        string $update_link
     ) {
         $this->first_name = $first_name;
         $this->application_type = $application_type;
+        $this->reason = $reason;
+        $this->update_link = $update_link;
     }
 
 
@@ -36,7 +44,7 @@ class ApplicationRejected extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'RE: THANK YOU FOR EXPRESSING INTEREST TO JOIN THE ICT ASSOCIATION OF UGANDA',
-            from: 'secretariat@ictau.ug',
+            from: 'nsengiyumvawilberforce@gmail.com',
         );
     }
 

@@ -605,7 +605,7 @@ class ApplicantController extends Controller
                         Mail::to($applicant->email)->later(now()->addMinutes($settings->send_certificate_after * 24 * 60), new CertificateSent($applicant, $path));
                     } else {
                         //send an email to the applicant
-                        Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type));
+                        Mail::to($applicant->email)->send(new ApplicationRejected($applicant->first_name, $applicant->application_type, $request->rejection_comments, url('application/' . $applicant->application_id)));
                     }
                 }
 

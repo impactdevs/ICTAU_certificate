@@ -47,8 +47,10 @@
                             @if ($applicant->application_status == 'pending')
                                 <a href="{{ '/approve?status=approve&application_id=' . $applicant->application_id }}"
                                     class="btn btn-success">Approve</a>
-                                <a href="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}"
-                                    class="btn btn-danger">Reject</a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Reject
+                                </button>
                             @endif
 
                             @if ($applicant->application_status == 'reject')
@@ -110,8 +112,11 @@
                             @if ($applicant->application_status == 'pending')
                                 <a href="{{ '/approve?status=approve&application_id=' . $applicant->application_id }}"
                                     class="btn btn-success">Approve</a>
-                                <a href="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}"
-                                    class="btn btn-danger">Reject</a>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Reject
+                                </button>
                             @endif
 
                             @if ($applicant->application_status == 'reject')
@@ -170,8 +175,10 @@
                             @if ($applicant->application_status == 'pending')
                                 <a href="{{ '/approve?status=approve&application_id=' . $applicant->application_id }}"
                                     class="btn btn-success">Approve</a>
-                                <a href="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}"
-                                    class="btn btn-danger">Reject</a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Reject
+                                </button>
                             @endif
 
                             @if ($applicant->application_status == 'reject')
@@ -189,4 +196,57 @@
             </div>
         </div>
     @endif
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}"
+                        >
+                        {{-- hiddedn application_id field --}}
+                        <input type="hidden" name="application_id" value="{{ $applicant->application_id }}">
+
+                        {{-- status hidden field --}}
+                        <input type="hidden" name="status" value="reject">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="container">
+                                <label for="rejectionComments">Reasons:</label>
+                                <textarea id="rejectionComments" name="rejection_comments" rows="20"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Reject Application</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    {{-- CKEditor CDN --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+
+    {{-- load rejectcomments with ckeditor --}}
+    <script>
+        ClassicEditor
+            .create(
+                document.querySelector('#rejectionComments')
+
+            )
+            .catch(error => {
+                console.error(error);
+            });
+        console.log('loaded');
+    </script>
+@endpush

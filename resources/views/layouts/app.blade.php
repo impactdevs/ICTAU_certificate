@@ -93,6 +93,9 @@
             });
         @endif
     </script>
+
+    {{-- create a tsack to push scripts --}}
+    @stack('scripts')
 </body>
 
 </html>

@@ -67,9 +67,9 @@
         </div>
         <div class="content">
             <h1>Congratulations, {{ $applicant->first_name }}</h1>
-            <p>We are pleased to present you with this certificate of IPPU Membership</p>
-            <p>We hope to work with yo in a great and an amazing journey to make technology better.</p>
-            <p>Keep up the great work!</p>
+            <p>We are pleased to present you with this certificate of ICTAU Membership</p>
+            <p>We hope to walk with you on this amazing journey as we work to make the ICT sector better in Uganda
+                Once again, welcome to the Association!
         </div>
         <div class="footer">
             <pre>

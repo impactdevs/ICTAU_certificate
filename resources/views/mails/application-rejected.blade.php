@@ -1,23 +1,23 @@
 <div>
+    @if ($application_type == 'student' || $application_type == 'professional')
+        {{-- reason for rejection --}}
+        <p>Dear {{ $first_name }}</p>
 
-    <p>Dear {{ $first_name }}</p>
+        <p>Your application has been reviewed and the submitted bio-data information rejected to join the ICTAU
+            community as
+            a {{ $application_type }}.</p>
 
-    <p>Your application has been reviewed and the submitted bio-data information rejected to join the ICTAU community as
-        a {{ $application_type }}.</p>
+        {{-- reason for rejection --}}
+        <p>Reason for rejection:</p>
 
-    <p>Our committee will hold an election meeting to determine the next steps. We will keep you updated on the
-        progress.</p>
+        <p>{!! $reason !!}</p>
+        {{-- reason for rejection --}}
 
-    <div>
-        <p>
-            We shall respond as soon as possible and look forward to welcoming you to our esteemed association.
-            <br>
-            Congratulations!
-
-        </p>
-    </div>
-
-    <pre>
+        {{-- update the bio-data info from this link --}}
+        <p>Kindly update your bio-data information from the link below and resubmit your application.</p>
+        <a href="{{ $update_link }}">Update Bio-data</a>
+        {{-- update the bio-data info from this link --}}
+        <pre>
         Nkurunungi Gideon
 
         Chief Executive Officer
