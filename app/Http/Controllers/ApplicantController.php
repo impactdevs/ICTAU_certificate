@@ -521,6 +521,7 @@ class ApplicantController extends Controller
 
     public function approve(Request $request)
     {
+
         $applicant = Applicant::where('application_id', $request->application_id)->first();
         $isMember = Member::where('email', $applicant->email)->first();
         $settings = GeneralSettings::first();
