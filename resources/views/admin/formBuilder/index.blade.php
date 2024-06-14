@@ -50,9 +50,6 @@
                     </div>
                     </div>
                     <br>
-                    
-                    
-                   
                     <div class="table-responsive">
                     <table class="table">
                             <thead>
@@ -75,6 +72,12 @@
                                         <td class="text-center">{{ $form->response->count() }}</td>
                                         
                                         <td class="text-center">
+
+                                            <a href="#" class="cp_link" data-link="{{url('/form/'.$form->id)}}" data-bs-toggle="tooltip" title="{{__('Click to copy link')}}">
+                                                <button class="btn btn-info" id="copy_button">
+                                                    <i class="fa fa-link" aria-hidden="true"></i> copy
+                                                </button>
+                                            </a>
                                             <a href="{{ url('/admin/formBuilder/show_form/' . $form->id) }}" title="View form">
                                                 <button class="btn btn-success">
                                                     <i class="fa fa-eye" aria-hidden="true"></i> View

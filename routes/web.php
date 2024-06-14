@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/formBuilder/form/response/{form_id}', [FormbuilderController::class, 'viewResponse'])->name('view_response');
     Route::get('admin/formBuilder/form/response/detail/{id}', [FormbuilderController::class, 'viewDetailResponse'])->name('view_response_detail');
     Route::post('admin/formBuilder/form/store_response/{form_id}', [FormbuilderController::class, 'storeResponse'])->name('store_response');
-  
+
     Route::get('admin/formBuilder/form/delete_response/{form_id}', [FormbuilderController::class, 'destroyResponse'])->name('destroy_response');
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 Route::get('apply', [ApplicantController::class, 'create']);
 Route::post('application-store', [ApplicantController::class, 'store']);
-
+Route::get('form/thank_you', [FormbuilderController::class, 'thankYou'] )->name('thank_you_page');
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);

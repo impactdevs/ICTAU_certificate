@@ -41,10 +41,11 @@ class FormbuilderController extends Controller
     
         if ($validated && !empty($validated)) {
     
-            FormBuilder::create($validated);
+            $form = FormBuilder::create($validated);
     
-            // return back()->with('success', 'Form created successfully.');
-            return view('admin.formBuilder.show', compact('form', 'formFields','fieldTypes'));
+            return redirect()->route('show_form', ['id'=> $form->id])->with('success', 'Form created successfully.');
+           // return view('admin.formBuilder.show', compact('form', 'formFields','fieldTypes'));
+
         } else {
     
             return back()->with('error', 'Failed to create the form.');
@@ -273,7 +274,7 @@ class FormbuilderController extends Controller
                     'response' => json_encode($arrFieldResp),
                 ]
             );
-            return redirect()->back()->with('success', __('Data submit successfully.'));
+            return redirect()->route('thank_you_page')->with('success', 'Response submited successfully.');
         }
         else
         {
@@ -341,9 +342,10 @@ class FormbuilderController extends Controller
         return view('admin.formBuilder.response_detail', compact('formField', 'responses', 'data', 'formBuilder'));
     }
     
-    
-    
- 
+    public function thankYou()
+    {
+        return view ('admin.formBuilder.thank_you');
+    }
 
     public function destroyResponse(formBuilder $form)
     {

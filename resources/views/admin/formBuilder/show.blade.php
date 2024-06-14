@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header bg-primary text-light">Form : {{ $form->name }}</div>
+                <div class="card-header bg-primary text-light">Form : <h3>{{ $form->name }}</h3></div>
                 <div class="card-body">
                     <div class="message">
                         @if (session('success'))
