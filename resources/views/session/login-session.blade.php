@@ -9,7 +9,10 @@
           <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
               <div class="card card-plain mt-8">
-                <div class="card-header pb-0 text-left bg-transparent">
+              <div class="card-header pb-0 text-left bg-transparent">
+                <div class="container-fluid text-center py-3">
+                    <img class="rounded mb-3 img-fluid mx-auto d-block shadow-sm" src="{{ asset('assets/img/ictaulogo.jpg') }}" alt="ICTAU Logo">
+                </div>
                 </div>
                 <div class="card-body">
                   <form role="form" method="POST" action="/session">
@@ -39,11 +42,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/curved6.jpg')"></div>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>
