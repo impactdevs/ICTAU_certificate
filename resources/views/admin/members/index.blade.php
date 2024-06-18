@@ -47,9 +47,16 @@
                                                 {{ csrf_field() }}
                                                 <button type="submit" class="btn btn-danger" title="Delete member" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                             </form>
-                                            <a href={{"/get-certificate?id=".$item->id}} class="btn btn-primary">Certificate</a>
-                                            {{-- share the certificate --}}
-                                            
+
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Certificate
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                  <li><button class="dropdown-item" type="button"><a class="dropdown-item" href="{{ url('/get-certificate?id=' . $item->id . '&file_type=png') }}">PNG</a></button></li>
+                                                  <li><button class="dropdown-item" type="button"><a class="dropdown-item" href="{{ url('/get-certificate?id=' . $item->id . '&file_type=pdf') }}">PDF</a></button></li>
+                                                </ul>
+                                              </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -63,4 +70,4 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection

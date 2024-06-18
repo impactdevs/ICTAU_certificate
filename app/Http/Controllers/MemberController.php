@@ -9,7 +9,7 @@ use App\Models\Membership_Type;
 use Illuminate\Http\Request;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -197,16 +197,18 @@ class MemberController extends Controller
 
         //add the qr code to the certificate
         $image->place($qrPath, 'top-right', 52, 55);
-
         $image->toPng();
+        $imagePath = public_path('images/certificate-generated_' . request()->id . '.png');
+        $id = request()->id;
+        $image->save($imagePath);
+        if (request()->file_type == 'pdf') {
+            pdf::loadView('admin.members.certificate', ['id' => $id])->download('certificate.pdf');
+        } else {
+            // $img = file_get_contents(public_path('images/certificate-generated.png'));
 
-        //save the image to the public folder
-        $image->save(public_path('images/certificate-generated_' . request()->id . '.png'));
-
-        // $img = file_get_contents(public_path('images/certificate-generated.png'));
-
-        // return response($img)->header('Content-Type', 'image/png');
-        return response()->download(public_path('images/certificate-generated_' . request()->id . '.png'))->deleteFileAfterSend(true);
+            // return response($img)->header('Content-Type', 'image/png');
+            return response()->download(public_path('images/certificate-generated_' . request()->id . '.png'))->deleteFileAfterSend(true);
+        }
     }
 
     public function generate_qr($memberId)
