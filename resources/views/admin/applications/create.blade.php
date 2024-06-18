@@ -25,7 +25,7 @@
 
 <body class="bg-gray-100 m-3">
     <div class="text-center">
-        <img src="{{ asset('assets/img/ictau-logo.jpg') }}" class="navbar-brand-img h-100" alt="...">
+        <img src="{{ asset('assets/img/ictaulogo.jpg') }}" class="navbar-brand-img h-25 w-25" alt="...">
         <div class="card-header">Register With ICTAU</div>
     </div>
 
