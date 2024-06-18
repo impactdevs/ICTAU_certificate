@@ -202,7 +202,12 @@ class MemberController extends Controller
         $id = request()->id;
         $image->save($imagePath);
         if (request()->file_type == 'pdf') {
-            pdf::loadView('admin.members.certificate', ['id' => $id])->save(public_path('images/certificate-generated_' . request()->id . '.pdf'));
+            //set page to landscape
+
+
+            pdf::loadView('admin.members.certificate', ['id' => $id])
+            ->setPaper('a4', 'landscape')
+            ->save(public_path('images/certificate-generated_' . request()->id . '.pdf'));
             return response()->download(public_path('images/certificate-generated_' . request()->id . '.pdf'))->deleteFileAfterSend(true);
         } else {
             // $img = file_get_contents(public_path('images/certificate-generated.png'));
