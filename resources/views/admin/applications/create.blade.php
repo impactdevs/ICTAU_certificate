@@ -30,12 +30,6 @@
     </div>
 
     <nav class="">
-        {{-- logged in as --}}
-        @auth
-            <div class="text-center">
-                <p class="text-center lead font-weight-bold">Logged in as {{ Auth::user()->name }}</p>
-            </div>
-        @endauth
         <p class="text-center font-weight-bold h6">Please select the category that best
             describes you from the tabs below.</p>
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
