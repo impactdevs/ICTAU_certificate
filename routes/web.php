@@ -25,7 +25,7 @@ use App\Http\Controllers\GeneralSettingsController;
 */
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
@@ -53,10 +53,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/general-settings', [GeneralSettingsController::class, 'edit'])->name('admin.general_settings.update');
     Route::put('admin/general-settings-update', [GeneralSettingsController::class, 'update']);
 });
-Route::get('apply', [ApplicantController::class, 'create']);
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
 Route::put('/application-update/{applicant}', [ApplicantController::class, 'update']);
+Route::get('apply', [ApplicantController::class, 'create'])->middleware('auth');
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
