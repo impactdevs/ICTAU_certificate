@@ -56,7 +56,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
 Route::put('/application-update/{applicant}', [ApplicantController::class, 'update']);
-Route::get('apply', [ApplicantController::class, 'create'])->middleware('auth');
+Route::get('apply', [ApplicantController::class, 'create']);
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
