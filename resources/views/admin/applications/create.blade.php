@@ -126,16 +126,22 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Student</h5>
-                                                <p class="card-text">The following are required.</p>
+                                                <p class="card-text">Benefits of being a student member: <a
+                                                        href="https://ictau.ug/#:~:text=ITEM-,Students,-Ugx.%2050%2C000/year">Checkout
+                                                        all the benefits</a></p>
                                                 <ol>
-                                                    <li>Student ID screenshot in .png or .jpg format</li>
-                                                    <li>A passport size photograph in .png or .jpg format</li>
-                                                    <li>Membership payment prooof in .png or .jpg format</li>
+                                                    <li>Subscription to ICTAU Newsletter.</li>
+                                                    <li>Attendance at ICTAU Events.</li>
+                                                    <li>Voting Rights & Decision-Making</li>
+                                                    <li>Local & International ICT Opportunities</li>
+                                                    <li>Social Gatherings for Networking</li>
+                                                    <li>Discounted Entry to ICTAU Events & Workshops</li>
+                                                    <li>Graduate Training Sessions & Workshops</li>
                                                 </ol>
-                                                <a href="{{ url('/apply?category=student') }}" class="btn btn-primary mt-2">Register as
+                                                <a href="{{ url('/apply-to-become-a-member/student') }}"
+                                                    class="btn btn-primary mt-2">Register as
                                                     Student</a>
                                                 <br>
-                                                NB: All fields marked with <strong>*</strong> are mandatory
                                             </div>
                                         </div>
                                     </div>
@@ -143,16 +149,20 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Professional</h5>
-                                                <p class="card-text">The following are required.</p>
+                                                <p class="card-text">The following are required.<a
+                                                        href="https://ictau.ug/#:~:text=Ugx.%2050%2C000/year-,Professionals,-Ugx.%20200%2C000/year">Checkout
+                                                        all the benefits</a></p>
                                                 <ol>
-                                                    <li>A curriculum vitae in .pdf format</li>
-                                                    <li>A passport size photograph .png or .jpg format</li>
-                                                    <li>Membership payment prooof .png or .jpg format</li>
+                                                    <li>Subscription to ICTAU Newsletter.</li>
+                                                    <li>Attendance at ICTAU Events.</li>
+                                                    <li>Voting Rights & Decision-Making</li>
+                                                    <li>Local & International ICT Opportunities</li>
+                                                    <li>Social Gatherings for Networking</li>
                                                 </ol>
-                                                <a href="{{ url('/apply?category=professional') }}" class="btn btn-primary mt-2">Register as
+                                                <a href="{{ url('/apply-to-become-a-member/professional') }}"
+                                                    class="btn btn-primary mt-2">Register as
                                                     Professional</a>
                                                 <br>
-                                                NB: All fields marked with <strong>*</strong> are mandatory
                                             </div>
                                         </div>
                                     </div>
@@ -160,17 +170,20 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Company</h5>
-                                                <p class="card-text">The following are required.</p>
+                                                <p class="card-text">The following are required.<a
+                                                        href="https://ictau.ug/#:~:text=Ugx.%20200%2C000/year-,Companies,-Ugx.%202%2C000%2C000/year">Checkout
+                                                        all the benefits</a></p>
                                                 <ol>
-                                                    <li>Company logo .png or .jpg format</li>
-                                                    <li>Membership payment prooof</li>
-                                                    <li>Atleast one contact person details[first name, last name, email
-                                                        and phone number]. Maximum is three people</li>
+                                                    <li>Enhanced Visibility (Logo Display)</li>
+                                                    <li>Access to Exclusive Opportunities & Financial Support</li>
+                                                    <li>Recognition through appearances on promotional materials</li>
+                                                    <li>Access to ICTAU’s network of professionals</li>
+                                                    <li>Recognition in Promotional Materials</li>
                                                 </ol>
-                                                <a href="{{ url('/apply?category=company') }}" class="btn btn-primary mt-2">Register as
+                                                <a href="{{ url('/apply-to-become-a-member/company') }}"
+                                                    class="btn btn-primary mt-2">Register as
                                                     Company</a>
                                                 <br>
-                                                NB: All fields marked with <strong>*</strong> are mandatory
                                             </div>
                                         </div>
                                     </div>
@@ -182,8 +195,6 @@
             </div>
         @endif
     </div>
-
-
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -49,6 +49,12 @@ class ApplicantController extends Controller
         return view('admin.applications.create', compact('category'));
     }
 
+    public function step1(Request $request, $application_type)
+    {
+        //redirect to apply-to-become-a-member with the application type
+        return view('admin.applications.apply', compact('application_type'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -63,9 +69,6 @@ class ApplicantController extends Controller
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
                 'phone_number' => 'required|unique:applicants',
-                'passport_photo' => 'required|mimes:png,jpg',
-                'payment_proof' => 'required|mimes:png,jpg',
-                'student_id' => 'required|mimes:png,jpg'
             ]);
             //check if validation fails
             if ($validate->fails()) {
@@ -73,7 +76,7 @@ class ApplicantController extends Controller
                 return redirect()->to('apply?category=' . $request->input('application_type'))
                     ->withInput()
                     ->withErrors($validate)
-                    ->with('error', 'Application Bio data submission failed. Please try again.');
+                    ->with('error', 'Registration failed. Please try again.');
 
             }
             $this->student($uuid);
@@ -82,9 +85,6 @@ class ApplicantController extends Controller
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
                 'phone_number' => 'required|unique:applicants',
-                'passport_photo' => 'required|mimes:png,jpg',
-                'curriculum_vitae' => 'required|mimes:pdf',
-                'payment_proof' => 'required|mimes:png,jpg'
             ]);
             //check if validation fails
             if ($validate->fails()) {
@@ -92,7 +92,7 @@ class ApplicantController extends Controller
                 return redirect()->to('apply?category=' . $request->input('application_type'))
                     ->withInput()
                     ->withErrors($validate)
-                    ->with('error', 'Application Bio data submission failed. Please try again.');
+                    ->with('error', 'Registration Failed. Please try again.');
 
             }
             $this->professional($uuid);
@@ -101,8 +101,6 @@ class ApplicantController extends Controller
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
                 'phone_number' => 'required|unique:applicants',
-                'company_logo' => 'required|mimes:png,jpg',
-                'payment_proof' => 'required|mimes:png,jpg'
             ]);
             //check if validation fails
             if ($validate->fails()) {
@@ -115,11 +113,11 @@ class ApplicantController extends Controller
             }
             $this->company($uuid);
         } else {
-            return redirect()->back()->with('error', 'Application Bio data submission failed. Please try again.');
+            return redirect()->back()->with('error', 'Registration failed. Please try again.');
         }
 
         //route to application/$uuid
-        return redirect()->route('application.edit', $uuid)->with('success', 'Application Bio-data submitted successfully');
+        return redirect()->to('application/' . $uuid)->with('success', 'Application Bio data submitted successfully');
     }
 
     //save student

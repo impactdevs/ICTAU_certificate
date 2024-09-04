@@ -20,17 +20,26 @@
                                     <p><strong>Email:</strong> {{ $applicant->email }}</p>
                                     <div class="mb-3">
                                         <label><strong>Company Logo:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->companyLogo->logo) }}" alt="Company Logo"
-                                                class="img-fluid" style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->companyLogo))
+                                            <div>
+                                                <img src="{{ asset($applicant->companyLogo->logo) }}" alt="Company Logo"
+                                                    class="img-fluid" style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No company logo uploaded</p>
+                                        @endif
                                     </div>
                                     <div class="mb-3">
                                         <label><strong>Payment Proof:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->paymentProof->payment_proof) }}"
-                                                alt="Payment Proof" class="img-fluid" style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->paymentProof))
+                                            <div>
+                                                <img src="{{ asset($applicant->paymentProof->payment_proof) }}"
+                                                    alt="Payment Proof" class="img-fluid"
+                                                    style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No payment proof uploaded</p>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -88,24 +97,38 @@
                                     <p><strong>Date of Birth:</strong> {{ $applicant->date_of_birth }}</p>
                                     <div class="mb-3">
                                         <label><strong>Student ID:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->studentId->student_id) }}" alt="Student ID"
-                                                class="img-fluid" style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->studentId))
+                                            <div>
+                                                <img src="{{ asset($applicant->studentId->student_id) }}" alt="Student ID"
+                                                    class="img-fluid" style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No student ID uploaded</p>
+                                        @endif
                                     </div>
                                     <div class="mb-3">
                                         <label><strong>Passport Photo:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->passportPhoto->passport_photo) }}"
-                                                alt="Passport Photo" class="img-fluid" style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->passportPhoto))
+                                            <div>
+                                                <img src="{{ asset($applicant->passportPhoto->passport_photo) }}"
+                                                    alt="Passport Photo" class="img-fluid"
+                                                    style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No passport photo uploaded</p>
+                                        @endif
                                     </div>
                                     <div class="mb-3">
                                         <label><strong>Payment Proof:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->paymentProof->payment_proof) }}"
-                                                alt="Payment Proof" class="img-fluid" style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->paymentProof))
+                                            <div>
+                                                <img src="{{ asset($applicant->paymentProof->payment_proof) }}"
+                                                    alt="Payment Proof" class="img-fluid"
+                                                    style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No payment proof uploaded</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -157,18 +180,27 @@
                                     </p>
                                     <div class="mb-3">
                                         <label><strong>Passport Photo:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->passportPhoto->passport_photo) }}"
-                                                alt="Passport Photo" class="img-fluid" style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->passportPhoto))
+                                            <div>
+                                                <img src="{{ asset($applicant->passportPhoto->passport_photo) }}"
+                                                    alt="Passport Photo" class="img-fluid"
+                                                    style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No passport photo uploaded</p>
+                                        @endif
                                     </div>
                                     <div class="mb-3">
                                         <label><strong>Payment Proof:</strong></label>
-                                        <div>
-                                            <img src="{{ asset($applicant->paymentProof->payment_proof) }}"
-                                                alt="Payment Proof" class="img-thumbnail"
-                                                style="width: 250px; height: 250px;">
-                                        </div>
+                                        @if (filled($applicant->paymentProof))
+                                            <div>
+                                                <img src="{{ asset($applicant->paymentProof->payment_proof) }}"
+                                                    alt="Payment Proof" class="img-fluid"
+                                                    style="width: 250px; height: 250px;">
+                                            </div>
+                                        @else
+                                            <p>No payment proof uploaded</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -206,8 +238,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}"
-                        >
+                    <form action="{{ '/approve?status=reject&application_id=' . $applicant->application_id }}">
                         {{-- hiddedn application_id field --}}
                         <input type="hidden" name="application_id" value="{{ $applicant->application_id }}">
 

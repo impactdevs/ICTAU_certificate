@@ -56,7 +56,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
 Route::put('/application-update/{applicant}', [ApplicantController::class, 'update']);
-Route::get('apply', [ApplicantController::class, 'create']);
+
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
@@ -67,6 +67,9 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
     Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
     Route::get('/member/{id}', [MemberController::class, 'member_verification']);
+
+    Route::get('apply', [ApplicantController::class, 'create']);
+    Route::get('/apply-to-become-a-member/{application_type}', [ApplicantController::class, 'step1']);
 });
 
 Route::get('/login', function () {
