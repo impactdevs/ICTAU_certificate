@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CertificateSent;
+use App\Mail\Registered;
 use App\Models\Applicant;
 use App\Models\Membership_Type;
 use Illuminate\Http\Request;
@@ -115,6 +116,10 @@ class ApplicantController extends Controller
         } else {
             return redirect()->back()->with('error', 'Registration failed. Please try again.');
         }
+
+        $first_name = $request->first_name != null ? $request->first_name ?? '' : $request->company_name ?? '';
+
+        Mail::to($request->email)->send(new Registered($first_name, $request->application_type, url('application/' . $uuid)));
 
         //route to application/$uuid
         return redirect()->to('application/' . $uuid)->with('success', 'Application Bio data submitted successfully');
