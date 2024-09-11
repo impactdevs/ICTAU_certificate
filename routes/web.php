@@ -58,7 +58,7 @@ Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->na
 Route::put('/application-update/{applicant}', [ApplicantController::class, 'update']);
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/register', [RegisterController::class, 'create']);
+    // Route::get('/register', [RegisterController::class, 'create']);
     // Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [SessionsController::class, 'create']);
     Route::post('/session', [SessionsController::class, 'store']);
