@@ -175,11 +175,12 @@
                                     <p><strong>Profession:</strong> {{ $applicant->profession }}</p>
                                     <p><strong>Date of Birth:</strong> {{ $applicant->date_of_birth }}</p>
                                     <p><strong>Curriculum Vitae:</strong>
-                                        @if (filled($applicant->curriculumVitae))
-                                        <a href="{{ asset($applicant->curriculumVitae->cv) }}" target="_blank"
-                                            class="btn btn-outline-primary btn-sm">View CV</a>
+                                        @if (!is_null($applicant->curriculumVitae))
+                                            <a href="{{ asset($applicant->curriculumVitae->cv) }}" target="_blank"
+                                                class="btn btn-outline-primary btn-sm">View CV</a>
                                         @else
                                             <p>No CV uploaded</p>
+                                        @endif
                                     </p>
                                     <div class="mb-3">
                                         <label><strong>Passport Photo:</strong></label>

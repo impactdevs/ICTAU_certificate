@@ -303,6 +303,7 @@ class ApplicantController extends Controller
         } else if ($applicant->application_type == 'company') {
             $applicant->load('companyLogo', 'paymentProof', 'contactPersons');
         }
+
         return view('admin.applications.show', compact('applicant'));
     }
 
