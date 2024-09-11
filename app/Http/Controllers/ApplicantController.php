@@ -348,55 +348,101 @@ class ApplicantController extends Controller
         if ($request->hasFile('passport_photo')) {
             //delete the old passport photo
             $old_passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
-            //deleting the old passport photo
-            if (file_exists($old_passport_photo->passport_photo)) {
-                unlink(filename: $old_passport_photo->passport_photo);
-            }
-            $file = request()->file('passport_photo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/passport_photos', $filename);
+            //if $old_passport_photo is null, create a new one
+            if ($old_passport_photo == null) {
+                $passport_photo = new PassportPhoto();
+                $file = request()->file('passport_photo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/passport_photos', $filename);
 
-            //get the passport photo related to the application
-            $passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
-            $passport_photo->passport_photo = 'uploads/applications/passport_photos/' . $filename;
-            $passport_photo->save();
+                //get the passport photo related to the application
+                $passport_photo->passport_photo = 'uploads/applications/passport_photos/' . $filename;
+                $passport_photo->application_id = $applicant->application_id;
+                $passport_photo->save();
+            } else {
+                //deleting the old passport photo
+                if (file_exists($old_passport_photo->passport_photo)) {
+                    unlink(filename: $old_passport_photo->passport_photo);
+                }
+                $file = request()->file('passport_photo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/passport_photos', $filename);
+
+                //get the passport photo related to the application
+                $passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
+                $passport_photo->passport_photo = 'uploads/applications/passport_photos/' . $filename;
+                $passport_photo->save();
+            }
         }
 
         if ($request->hasFile('payment_proof')) {
             //delete the old payment proof
             $old_payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
 
-            //check if the file exists
-            if (file_exists($old_payment_proof->payment_proof)) {
-                unlink($old_payment_proof->payment_proof);
-            }
-            //deleting the old payment proof
-            $file = request()->file('payment_proof');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/payment_proofs', $filename);
+            //if $old_payment_proof is null, create a new one
+            if ($old_payment_proof == null) {
+                $payment_proof = new PaymentProof();
+                $file = request()->file('payment_proof');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/payment_proofs', $filename);
 
-            //get the payment proof related to the application
-            $payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
-            $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
-            $payment_proof->save();
+                //get the payment proof related to the application
+                $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
+                $payment_proof->application_id = $applicant->application_id;
+                $payment_proof->save();
+            } else {
+                //check if the file exists
+                if (file_exists($old_payment_proof->payment_proof)) {
+                    unlink($old_payment_proof->payment_proof);
+                }
+                //deleting the old payment proof
+                $file = request()->file('payment_proof');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/payment_proofs', $filename);
+
+                //get the payment proof related to the application
+                $payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
+                $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
+                $payment_proof->save();
+            }
         }
 
         //student_id
         if ($request->hasFile('student_id')) {
             //delete the old student id
             $old_student_id = StudentId::where('application_id', $applicant->application_id)->first();
-            //deleting the old student id
-            $file = $request->file('student_id');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/student_ids', $filename);
+            //if $old_student_id is null, create a new one
+            if ($old_student_id == null) {
+                $student_id = new StudentId();
+                $file = request()->file('student_id');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/student_ids', $filename);
 
-            //get the student related to the application
-            $student_id = StudentId::where('application_id', $applicant->application_id)->first();
-            $student_id->student_id = 'uploads/applications/student_ids/' . $filename;
-            $student_id->save();
+                //get the student related to the application
+                $student_id->student_id = 'uploads/applications/student_ids/' . $filename;
+                $student_id->application_id = $applicant->application_id;
+                $student_id->save();
+            } else {
+                //check if a file exists
+                if (file_exists($old_student_id->student_id)) {
+                    unlink($old_student_id->student_id);
+                }
+                //deleting the old student id
+                $file = $request->file('student_id');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/student_ids', $filename);
+
+                //get the student related to the application
+                $student_id = StudentId::where('application_id', $applicant->application_id)->first();
+                $student_id->student_id = 'uploads/applications/student_ids/' . $filename;
+                $student_id->save();
+            }
         }
 
         $applicant->update($request->all());
@@ -408,58 +454,100 @@ class ApplicantController extends Controller
         if ($request->hasFile('passport_photo')) {
             //delete the old passport photo
             $old_passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
-            //check if a file exists
-            if (file_exists($old_passport_photo->passport_photo)) {
-                unlink($old_passport_photo->passport_photo);
-            }
-            $file = request()->file('passport_photo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/passport_photos', $filename);
+            //if $old_passport_photo is null, create a new one
+            if ($old_passport_photo == null) {
+                $passport_photo = new PassportPhoto();
+                $file = request()->file('passport_photo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/passport_photos', $filename);
 
-            //get the passport photo related to the application
-            $passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
-            $passport_photo->passport_photo = 'uploads/applications/passport_photos/' . $filename;
-            $passport_photo->save();
+                //get the passport photo related to the application
+                $passport_photo->passport_photo = 'uploads/applications/passport_photos/' . $filename;
+                $passport_photo->application_id = $applicant->application_id;
+                $passport_photo->save();
+            } else {
+                //deleting the old passport photo
+                if (file_exists($old_passport_photo->passport_photo)) {
+                    unlink(filename: $old_passport_photo->passport_photo);
+                }
+                $file = request()->file('passport_photo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/passport_photos', $filename);
+
+                //get the passport photo related to the application
+                $passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
+                $passport_photo->passport_photo = 'uploads/applications/passport_photos/' . $filename;
+                $passport_photo->save();
+            }
         }
 
         if ($request->hasFile('curriculum_vitae')) {
             //delete the old curriculum vitae
             $old_cv = CurriculumVitae::where('application_id', $applicant->application_id)->first();
-            //check if a file exists
-            if (file_exists($old_cv->cv)) {
-                unlink($old_cv->cv);
-            }
-            $file = request()->file('curriculum_vitae');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/cvs', $filename);
+            //check if $old_cv is null, create a new one
+            if ($old_cv == null) {
+                $cv = new CurriculumVitae();
+                $file = request()->file('curriculum_vitae');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/cvs/', $filename);
 
-            //get the cv related to the application
-            $cv = CurriculumVitae::where('application_id', $applicant->application_id)->first();
-            $cv->cv = 'uploads/applications/cvs/' . $filename;
-            $cv->save();
+                //get the cv related to the application
+                $cv->cv = 'uploads/applications/cvs/' . $filename;
+                $cv->application_id = $applicant->application_id;
+                $cv->save();
+            } else {
+                //check if a file exists
+                if (file_exists($old_cv->cv)) {
+                    unlink($old_cv->cv);
+                }
+                $file = request()->file('curriculum_vitae');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/cvs', $filename);
+
+                //get the cv related to the application
+                $cv = CurriculumVitae::where('application_id', $applicant->application_id)->first();
+                $cv->cv = 'uploads/applications/cvs/' . $filename;
+                $cv->save();
+            }
         }
 
         if ($request->hasFile('payment_proof')) {
             //delete the old payment proof
             $old_payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
-            //check if a file exists
-            if (file_exists($old_payment_proof->payment_proof)) {
-                unlink($old_payment_proof->payment_proof);
+
+            //if $old_payment_proof is null, create a new one
+            if ($old_payment_proof == null) {
+                $payment_proof = new PaymentProof();
+                $file = request()->file('payment_proof');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/payment_proofs', $filename);
+
+                //get the payment proof related to the application
+                $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
+                $payment_proof->application_id = $applicant->application_id;
+                $payment_proof->save();
+            } else {
+                //check if the file exists
+                if (file_exists($old_payment_proof->payment_proof)) {
+                    unlink($old_payment_proof->payment_proof);
+                }
+                //deleting the old payment proof
+                $file = request()->file('payment_proof');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/payment_proofs', $filename);
+
+                //get the payment proof related to the application
+                $payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
+                $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
+                $payment_proof->save();
             }
-            //deleting the old payment proof
-            $file = request()->file('payment_proof');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/payment_proofs', $filename);
-
-            //get the payment proof related to the application
-            $payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
-            $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
-            $payment_proof->save();
         }
-
         $applicant->update($request->all());
     }
 
@@ -469,39 +557,70 @@ class ApplicantController extends Controller
         if ($request->hasFile('company_logo')) {
             //delete the old company logo
             $old_company_logo = CompanyLogo::where('application_id', $applicant->application_id)->first();
-            //check if a file exists
-            if (file_exists($old_company_logo->logo)) {
-                unlink($old_company_logo->logo);
-            }
-            //deleting the old company logo
-            $file = request()->file('company_logo');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/company_logos', $filename);
 
-            //get the company logo related to the application
-            $company_logo = CompanyLogo::where('application_id', $applicant->application_id)->first();
-            $company_logo->logo = 'uploads/applications/company_logos/' . $filename;
-            $company_logo->save();
+            //if $old_company_logo is null, create a new one
+            if ($old_company_logo == null) {
+                $company_logo = new CompanyLogo();
+                $file = request()->file('company_logo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/company_logos', $filename);
+
+                //get the company logo related to the application
+                $company_logo->logo = 'uploads/applications/company_logos/' . $filename;
+                $company_logo->application_id = $applicant->application_id;
+                $company_logo->save();
+            } else {
+                //check if a file exists
+                if (file_exists($old_company_logo->logo)) {
+                    unlink($old_company_logo->logo);
+                }
+                //deleting the old company logo
+                $file = request()->file('company_logo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/company_logos', $filename);
+
+                //get the company logo related to the application
+                $company_logo = CompanyLogo::where('application_id', $applicant->application_id)->first();
+                $company_logo->logo = 'uploads/applications/company_logos/' . $filename;
+
+                $company_logo->save();
+            }
         }
 
         if ($request->hasFile('payment_proof')) {
             //delete the old payment proof
             $old_payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
-            //check if a file exists
-            if (file_exists($old_payment_proof->payment_proof)) {
-                unlink($old_payment_proof->payment_proof);
-            }
-            //deleting the old payment proof
-            $file = request()->file('payment_proof');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move('uploads/applications/payment_proofs', $filename);
 
-            //get the payment proof related to the application
-            $payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
-            $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
-            $payment_proof->save();
+            //if $old_payment_proof is null, create a new one
+            if ($old_payment_proof == null) {
+                $payment_proof = new PaymentProof();
+                $file = request()->file('payment_proof');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/payment_proofs', $filename);
+
+                //get the payment proof related to the application
+                $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
+                $payment_proof->application_id = $applicant->application_id;
+                $payment_proof->save();
+            } else {
+                //check if the file exists
+                if (file_exists($old_payment_proof->payment_proof)) {
+                    unlink($old_payment_proof->payment_proof);
+                }
+                //deleting the old payment proof
+                $file = request()->file('payment_proof');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/applications/payment_proofs', $filename);
+
+                //get the payment proof related to the application
+                $payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
+                $payment_proof->payment_proof = 'uploads/applications/payment_proofs/' . $filename;
+                $payment_proof->save();
+            }
         }
 
         //contact people
