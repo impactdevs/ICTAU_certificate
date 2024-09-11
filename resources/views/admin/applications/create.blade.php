@@ -53,7 +53,7 @@
 
     <div class="tab-content" id="pills-tabContent">
 
-        <div class="tab-pane fade {{ $category == 'student' ? 'show active' : '' }}" id="student" role="tabpanel"
+        <div class="tab-pane fade {{ $category == 'student' ? 'show active' : '' }}" id="#" role="tabpanel"
             aria-labelledby="student-tab">
             <div class="content-wrapper">
                 <div class="row">
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade {{ $category == 'professional' ? 'show active' : '' }}" id="professional"
+        <div class="tab-pane fade {{ $category == 'professional' ? 'show active' : '' }}" id="#"
             role="tabpanel" aria-labelledby="professional-tab">
             <div class="content-wrapper">
                 <div class="row">
@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade {{ $category == 'company' ? 'show active' : '' }}" id="company" role="tabpanel"
+        <div class="tab-pane fade {{ $category == 'company' ? 'show active' : '' }}" id="#" role="tabpanel"
             aria-labelledby="company-tab">
             <div class="content-wrapper">
                 <div class="row">
