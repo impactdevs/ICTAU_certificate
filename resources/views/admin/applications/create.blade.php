@@ -120,7 +120,7 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Pre-Requirements</h5>
+                                <h5 class="card-title text-center">Benefits of being a member</h5>
                                 <div class="row">
                                     <div class="col-md-4 mt-3">
                                         <div class="card">

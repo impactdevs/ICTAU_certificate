@@ -39,9 +39,9 @@
                                             <label class="form-check-label" for="rememberMe">Remember me</label>
                                         </div>
                                         {{-- don't have an acount --}}
-                                        <div class="text-center">
+                                        {{-- <div class="text-center">
                                             <a href="/register" class="text-sm">Don't have an account? Sign up</a>
-                                        </div>
+                                        </div> --}}
                                         <div class="text-center">
                                             <button type="submit" class="btn bg-warning w-100 mt-4 mb-0 text-white">Sign
                                                 in</button>
