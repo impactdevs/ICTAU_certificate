@@ -349,7 +349,9 @@ class ApplicantController extends Controller
             //delete the old passport photo
             $old_passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
             //deleting the old passport photo
-            unlink($old_passport_photo->passport_photo);
+            if (file_exists($old_passport_photo->passport_photo)) {
+                unlink(filename: $old_passport_photo->passport_photo);
+            }
             $file = request()->file('passport_photo');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -364,9 +366,12 @@ class ApplicantController extends Controller
         if ($request->hasFile('payment_proof')) {
             //delete the old payment proof
             $old_payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
-            //deleting the old payment proof
-            unlink($old_payment_proof->payment_proof);
 
+            //check if the file exists
+            if (file_exists($old_payment_proof->payment_proof)) {
+                unlink($old_payment_proof->payment_proof);
+            }
+            //deleting the old payment proof
             $file = request()->file('payment_proof');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -403,8 +408,10 @@ class ApplicantController extends Controller
         if ($request->hasFile('passport_photo')) {
             //delete the old passport photo
             $old_passport_photo = PassportPhoto::where('application_id', $applicant->application_id)->first();
-            //deleting the old passport photo
-            unlink($old_passport_photo->passport_photo);
+            //check if a file exists
+            if (file_exists($old_passport_photo->passport_photo)) {
+                unlink($old_passport_photo->passport_photo);
+            }
             $file = request()->file('passport_photo');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -419,8 +426,10 @@ class ApplicantController extends Controller
         if ($request->hasFile('curriculum_vitae')) {
             //delete the old curriculum vitae
             $old_cv = CurriculumVitae::where('application_id', $applicant->application_id)->first();
-            //deleting the old curriculum vitae
-            unlink($old_cv->cv);
+            //check if a file exists
+            if (file_exists($old_cv->cv)) {
+                unlink($old_cv->cv);
+            }
             $file = request()->file('curriculum_vitae');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -435,8 +444,11 @@ class ApplicantController extends Controller
         if ($request->hasFile('payment_proof')) {
             //delete the old payment proof
             $old_payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
+            //check if a file exists
+            if (file_exists($old_payment_proof->payment_proof)) {
+                unlink($old_payment_proof->payment_proof);
+            }
             //deleting the old payment proof
-            unlink($old_payment_proof->payment_proof);
             $file = request()->file('payment_proof');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -457,8 +469,11 @@ class ApplicantController extends Controller
         if ($request->hasFile('company_logo')) {
             //delete the old company logo
             $old_company_logo = CompanyLogo::where('application_id', $applicant->application_id)->first();
+            //check if a file exists
+            if (file_exists($old_company_logo->logo)) {
+                unlink($old_company_logo->logo);
+            }
             //deleting the old company logo
-            unlink($old_company_logo->logo);
             $file = request()->file('company_logo');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -473,8 +488,11 @@ class ApplicantController extends Controller
         if ($request->hasFile('payment_proof')) {
             //delete the old payment proof
             $old_payment_proof = PaymentProof::where('application_id', $applicant->application_id)->first();
+            //check if a file exists
+            if (file_exists($old_payment_proof->payment_proof)) {
+                unlink($old_payment_proof->payment_proof);
+            }
             //deleting the old payment proof
-            unlink($old_payment_proof->payment_proof);
             $file = request()->file('payment_proof');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
