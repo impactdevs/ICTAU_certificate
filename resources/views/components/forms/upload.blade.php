@@ -3,7 +3,8 @@
     <div class="upload-container text-center">
         @if (old($name, $value) && $filetype == 'image')
             <label for="{{ $id }}">
-                <img src="{{ asset(old($name, $value)) }}" alt="current image" class="img-fluid mt-3" id="current-{{ $id }}">
+                <img src="{{ asset(old($name, $value)) }}" alt="current image" class="img-fluid mt-3"
+                    id="current-{{ $id }}">
             </label>
         @elseif (old($name, $value) && $filetype == 'pdf')
             <label for="{{ $id }}">

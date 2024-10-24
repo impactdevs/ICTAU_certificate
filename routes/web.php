@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\ApplicantController;
@@ -35,6 +35,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('/admin/applicants/{applicant}', [ApplicantController::class, 'show']);
     Route::get('/approve', [ApplicantController::class, 'approve']);
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
+    Route::get('/get-attendance-certificate', [AttendanceController::class, 'generateCertificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
     Route::get('dashboard', function () {
@@ -52,10 +53,14 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
 
     Route::get('admin/general-settings', [GeneralSettingsController::class, 'edit'])->name('admin.general_settings.update');
     Route::put('admin/general-settings-update', [GeneralSettingsController::class, 'update']);
+    Route::get('admin/attendance', [AttendanceController::class, 'index']);
 });
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
 Route::put('/application-update/{applicant}', [ApplicantController::class, 'update']);
+Route::get('/summit-attendance-registration', [AttendanceController::class, 'register'])->name('attendance.register');
+Route::post('/record-attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+
 
 Route::group(['middleware' => 'guest'], function () {
     // Route::get('/register', [RegisterController::class, 'create']);
@@ -67,6 +72,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
     Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
     Route::get('/member/{id}', [MemberController::class, 'member_verification']);
+    Route::get('/attendance/{id}', [AttendanceController::class, 'attendance_verification']);
 
     Route::get('apply', [ApplicantController::class, 'create']);
     Route::get('/apply-to-become-a-member/{application_type}', [ApplicantController::class, 'step1']);

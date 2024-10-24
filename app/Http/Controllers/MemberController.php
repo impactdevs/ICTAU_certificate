@@ -206,8 +206,8 @@ class MemberController extends Controller
 
 
             pdf::loadView('admin.members.certificate', ['id' => $id])
-            ->setPaper('a4', 'landscape')
-            ->save(public_path('images/certificate-generated_' . request()->id . '.pdf'));
+                ->setPaper('a4', 'landscape')
+                ->save(public_path('images/certificate-generated_' . request()->id . '.pdf'));
             return response()->download(public_path('images/certificate-generated_' . request()->id . '.pdf'))->deleteFileAfterSend(true);
         } else {
             // $img = file_get_contents(public_path('images/certificate-generated.png'));

@@ -5,13 +5,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">Members</div>
+                    <div class="card-header bg-primary text-light">Attendence Management</div>
                     <div class="card-body">
-                        <a href="{{ url('/admin/member/create') }}" class="btn btn-primary btn-sm" title="Add New member">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                        </a>
-
-                        <form method="GET" action="{{ url('/admin/member') }}" accept-charset="UTF-8"
+                        <form method="GET" action="{{ url('/admin/attendance') }}" accept-charset="UTF-8"
                             class="form-inline my-2 my-lg-0 float-right" role="search">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Search..."
@@ -30,30 +26,31 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Membership ID</th>
+                                        <th>#</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
-                                        <th>Membership Type</th>
+                                        <th>Email</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($member as $item)
+                                    @foreach ($attendances as $attendance)
                                         <tr>
-                                            <td>{{ $item->membership_id }}</td>
-                                            <td>{{ $item->first_name }}</td>
-                                            <td>{{ $item->last_name }}</td>
-                                            <td>{{ $item->membershipType->membership_type_name }}</td>
+                                            <td>{{ $attendance->id }}</td>
+                                            <td>{{ $attendance->first_name }}</td>
+                                            <td>{{ $attendance->last_name }}</td>
+                                            <td>{{ $attendance->email }}</td>
                                             <td>
-                                                <a href="{{ url('/admin/member/' . $item->id) }}"
+                                                <a href="{{ url('/admin/member/' . $attendance->id) }}"
                                                     title="View member"><button class="btn btn-success"><i class="fa fa-eye"
                                                             aria-hidden="true"></i> View</button></a>
-                                                <a href="{{ url('/admin/member/' . $item->id . '/edit') }}"
+                                                <a href="{{ url('/admin/member/' . $attendance->id . '/edit') }}"
                                                     title="Edit member"><button class="btn btn-warning"><i
                                                             class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                         Edit</button></a>
 
-                                                <form method="POST" action="{{ url('/admin/member' . '/' . $item->id) }}"
+                                                <form method="POST"
+                                                    action="{{ url('/admin/member' . '/' . $attendance->id) }}"
                                                     accept-charset="UTF-8" style="display:inline">
                                                     {{ method_field('DELETE') }}
                                                     {{ csrf_field() }}
@@ -70,11 +67,11 @@
                                                     <ul class="dropdown-menu">
                                                         <li><button class="dropdown-item" type="button"><a
                                                                     class="dropdown-item"
-                                                                    href="{{ url('/get-certificate?id=' . $item->id . '&file_type=png') }}">PNG</a></button>
+                                                                    href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=png') }}">PNG</a></button>
                                                         </li>
                                                         <li><button class="dropdown-item" type="button"><a
                                                                     class="dropdown-item"
-                                                                    href="{{ url('/get-certificate?id=' . $item->id . '&file_type=pdf') }}">PDF</a></button>
+                                                                    href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=pdf') }}">PDF</a></button>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -83,7 +80,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $member->appends(['search' => Request::get('search')])->render() !!} </div>
+                            <div class="pagination-wrapper"> {!! $attendances->appends(['search' => Request::get('search')])->render() !!} </div>
                         </div>
 
                     </div>
