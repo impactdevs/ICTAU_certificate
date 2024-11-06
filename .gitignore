@@ -3,6 +3,7 @@
 /public/storage
 /public/images
 /public/uploads
+/public/jack
 /storage/*.key
 /vendor
 .env

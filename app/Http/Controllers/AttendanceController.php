@@ -230,49 +230,6 @@ class AttendanceController extends Controller
         }
     }
 
-    public function certificate()
-    {
-        //increase execution time to 10 minutes
-        set_time_limit(600);
-        $manager = new ImageManager(new Driver());
-
-        $image = $manager->read(public_path('jack/jack.jpeg'));
-
-        $name = 'Nsengiyumva Wilberforce';
-
-        //convert to capital letters
-
-        $name = strtoupper($name);
-
-
-        //find the member details with the id from the request
-
-        $image->text($name, 900, 750, function ($font) {
-            $font->filename(public_path('fonts/POPPINS-BOLD.TTF'));
-            $font->color('#F4CECE');
-            $font->size(50);
-            $font->align('center');
-            $font->valign('middle');
-            $font->lineHeight(2.0);
-        });
-        $name = str_replace(' ', '_', $name);
-        $image->toPng();
-        $imagePath = public_path('jack/' . $name . '.png');
-        $image->save($imagePath);
-        if (request()->file_type == 'pdf') {
-            //set page to landscape
-            pdf::loadView('admin.attendances.certificate', ['id' => $name])
-                ->setPaper('a4', 'portrait')
-                ->save(public_path('jack/' . $name . '.pdf'));
-            return response()->download(public_path('jack/' . $name . '.pdf'))->deleteFileAfterSend(true);
-        } else {
-            $img = file_get_contents(public_path('jack/' . $name . '.png'));
-
-            return response($img)->header('Content-Type', 'image/png');
-            // return response()->download(public_path('images/certificate-generated_' . request()->id . '.png'))->deleteFileAfterSend(true);
-        }
-    }
-
     public function generate_qr($memberId)
     {
         //check if the member exists
