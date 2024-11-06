@@ -262,7 +262,7 @@ class AttendanceController extends Controller
         if (request()->file_type == 'pdf') {
             //set page to landscape
             pdf::loadView('admin.attendances.certificate', ['id' => $name])
-                ->setPaper('a4', 'landscape')
+                ->setPaper('a4', 'portrait')
                 ->save(public_path('jack/' . $name . '.pdf'));
             return response()->download(public_path('jack/' . $name . '.pdf'))->deleteFileAfterSend(true);
         } else {
