@@ -36,6 +36,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('/approve', [ApplicantController::class, 'approve']);
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
     Route::get('/get-attendance-certificate', [AttendanceController::class, 'generateCertificate']);
+    Route::get('/certificate', [AttendanceController::class, 'certificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
     Route::get('dashboard', function () {

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <img src="{{ asset('images/certificate-generated_' . $id . '.png') }}" alt="Certificate" height="100%" width="100%">
+    <img src="{{ asset('jack/' . $id . '.png') }}" alt="Certificate" height="100%" width="100%">
 </body>
 
 </html>
