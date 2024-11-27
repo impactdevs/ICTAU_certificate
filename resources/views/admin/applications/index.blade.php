@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <h1>Applicants</h1>
-        <table class="table table-bordered" data-toggle="table" data-pagination="true" data-page-list="[10, 25, 50, 100, all]" data-search="true">
+        <table class="table table-bordered" data-toggle="table" data-pagination="true" data-page-list="[5, 25, 50, 100, all]"
+            data-search="true" data-show-pagination-switch="true">
             <thead>
                 <tr>
                     <th>Application ID</th>
@@ -18,7 +19,7 @@
                 @foreach ($applicants as $applicant)
                     <tr>
                         <td>
-                            <a href="{{ '/admin/applicants/' . $applicant->application_id }}"
+                            <a href="{{ '/admin/applicants/' . $applicant->application_id }} "
                                 class="
                                     @if ($applicant->application_status == 'pending') link-warning
                                     @elseif ($applicant->application_status == 'reject') link-danger
