@@ -3,9 +3,10 @@
 @section('content')
     <div class="container">
         <h1>Applicants</h1>
-        <table class="table table-bordered">
+        <table class="table table-bordered" data-toggle="table" data-pagination="true" data-page-list="[10, 25, 50, 100, all]" data-search="true" data-show-export="true">
             <thead>
                 <tr>
+                    <th>#</th> <!-- For the row number -->
                     <th>Application ID</th>
                     <th>Phone Number</th>
                     <th>Email</th>
@@ -15,15 +16,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($applicants as $applicant)
+                @foreach ($applicants as $index => $applicant)
                     <tr>
+                        <td>{{ $index + 1 }}</td> <!-- Display row count (1, 2, 3, etc.) -->
                         <td>
                             <a href="{{ '/admin/applicants/' . $applicant->application_id }}"
-                                class="
-                                    @if ($applicant->application_status == 'pending') link-warning
-                                    @elseif ($applicant->application_status == 'reject') link-danger
-                                    @elseif ($applicant->application_status == 'approve') link-success @endif
-                                ">
+                               class="
+                                   @if ($applicant->application_status == 'pending') link-warning
+                                   @elseif ($applicant->application_status == 'reject') link-danger
+                                   @elseif ($applicant->application_status == 'approve') link-success @endif
+                               ">
                                 {{ $applicant->application_id }}
                             </a>
                         </td>

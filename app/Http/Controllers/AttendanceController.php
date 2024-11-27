@@ -230,6 +230,49 @@ class AttendanceController extends Controller
         }
     }
 
+
+    public function certificate()
+    {
+        //increase execution time to 10 minutes
+        set_time_limit(2000);
+        //get column names from the csv
+        $file = public_path('jack/invites.csv');
+        $csv = array_map('str_getcsv', file($file));
+
+        //set excution time to 5 minutes
+        for ($i = 3; $i < count($csv); $i++) {
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read(public_path('jack/jack.jpeg'));
+
+            $name = $csv[$i][1];
+
+            //convert to capital letters
+            $name = strtoupper($name);
+            //find the member details with the id from the request
+            $image->text($name, 900, 750, function ($font) {
+                $font->filename(public_path('fonts/POPPINS-BOLD.TTF'));
+                $font->color('#F4CECE');
+                $font->size(50);
+                $font->align('center');
+                $font->valign('middle');
+                $font->lineHeight(2.0);
+            });
+            $name = str_replace(' ', '_', $name);
+            $image->toPng();
+            $imagePath = public_path('generated/' . $name . '.png');
+            $image->save($imagePath);
+            if (request()->file_type == 'pdf') {
+                //set page to landscape
+                pdf::loadView('admin.attendances.certificate', ['id' => $name])
+                    ->setPaper('a4', 'portrait')
+                    ->save(public_path('jack/' . $name . '.pdf'));
+                //delete the png file
+                unlink(public_path('generated/' . $name . '.png'));
+            }
+        }
+    }
+
+
     public function generate_qr($memberId)
     {
         //check if the member exists

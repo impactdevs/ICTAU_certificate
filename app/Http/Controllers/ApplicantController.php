@@ -34,7 +34,7 @@ class ApplicantController extends Controller
     public function index()
     {
         // Fetch applicants with pagination (10 per page)
-        $applicants = Applicant::paginate(15);
+        $applicants = Applicant::latest()->paginate(10);
 
         // Pass the applicants data to the view
         return view('admin.applications.index', compact('applicants'));
