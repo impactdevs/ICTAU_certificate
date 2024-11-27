@@ -38,10 +38,5 @@
                 @endforeach
             </tbody>
         </table>
-
-        {{-- pagination --}}
-        <div class="d-flex justify-content-center">
-            {!! $applicants->links() !!}
-        </div>
     </div>
 @endsection
