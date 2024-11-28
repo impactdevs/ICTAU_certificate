@@ -66,22 +66,20 @@ class ApplicantController extends Controller
 
         //check if the request has application_type as student
         if ($request->application_type == 'student') {
-            //validate email and phone number by checking if they are present and unique
+            // Validate email and phone number by checking if they are present and unique
             $validate = Validator::make($request->all(), [
-                'email' => 'required|unique:applicants',
-                'phone_number' => 'required|unique:applicants',
+                'email' => 'required|email|unique:applicants,email',
+                'phone_number' => 'required|unique:applicants,phone_number',  // Corrected field name
             ]);
-            //check if validation fails
-            if ($validate->fails()) {
-                // Assuming $validate contains the validation errors and $request contains the form input
-                return redirect()->to('apply?category=' . $request->input('application_type'))
-                    ->withInput()
-                    ->withErrors($validate)
-                    ->with('error', 'Registration failed. Please try again.');
 
+            // Check if validation fails
+            if ($validate->fails()) {
+                return redirect()->back()->withInput()->withErrors($validate);  // Pass errors back to the form
             }
+
             $this->student($uuid);
-        } else if ($request->application_type == 'professional') {
+        }
+         else if ($request->application_type == 'professional') {
             //validate email and phone number by checking if they are present and unique
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
@@ -91,7 +89,7 @@ class ApplicantController extends Controller
             if ($validate->fails()) {
                 //return errors here
                 // $errors = $validate->errors();
-                return redirect()->back()->with(['error' => 'Registration failed. Please try again.', 'errors' => $validate->errors()]);
+                return redirect()->back()->withInput()->withErrors($validate);  // Pass errors back to the form
             }
             $this->professional($uuid);
         } else if ($request->application_type == 'company') {
@@ -106,7 +104,7 @@ class ApplicantController extends Controller
                 //return errors here
                 // $errors = $validate->errors();
                 // return $errors;
-                return redirect()->back()->with(['error' => 'Registration failed. Please try again.', 'errors' => $validate->errors()]);
+                return redirect()->back()->withInput()->withErrors($validate);  // Pass errors back to the form
 
             }
             $this->company($uuid);
