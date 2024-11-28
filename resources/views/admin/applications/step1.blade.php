@@ -12,10 +12,10 @@
 @elseif($application_type == 'company')
     <x-forms.input name="company_name" label="Company Name" type="text" id="company_name"
         placeholder="Enter your company name" value="{{ $applicant->company_name ?? '' }}" />
-    <x-forms.input name="company_phone_number" label="Company Phone Number" type="tel" id="company_phone_number"
+    <x-forms.input name="phone_number" label="Company Phone Number" type="tel" id="company_phone_number"
         placeholder="Enter your company phone number eg 0786065399"
         value="{{ $applicant->company_phone_number ?? '' }}" />
-    <x-forms.input name="company_email" label="Company Email" type="email" id="company_email"
+    <x-forms.input name="email" label="Company Email" type="email" id="company_email"
         placeholder="Enter your company email" value="{{ $applicant->company_email ?? '' }}" />
     <x-forms.hidden name="application_type" id="application_type" value="company" />
     <x-forms.checkbox />
