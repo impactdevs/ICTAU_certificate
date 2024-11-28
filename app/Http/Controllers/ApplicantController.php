@@ -100,16 +100,14 @@ class ApplicantController extends Controller
         } else if ($request->application_type == 'company') {
             //validate email and phone number by checking if they are present and unique
             $validate = Validator::make($request->all(), [
-                'email' => 'required|unique:applicants',
-                'phone_number' => 'required|unique:applicants',
+                'company_email' => 'required|unique:applicants',
+                'company_phone_number' => 'required|unique:applicants',
             ]);
             //check if validation fails
             if ($validate->fails()) {
-                // Assuming $validate contains the validation errors and $request contains the form input
-                return redirect()->to('apply?category=' . $request->input('application_type'))
-                    ->withInput()
-                    ->withErrors($validate)
-                    ->with('error', 'Application Bio data submission failed. Please try again.');
+                //return errors here
+                // $errors = $validate->errors();
+                return redirect()->back()->with('error', 'Registration failed. Please try again.');
 
             }
             $this->company($uuid);
