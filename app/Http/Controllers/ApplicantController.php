@@ -78,8 +78,7 @@ class ApplicantController extends Controller
             }
 
             $this->student($uuid);
-        }
-         else if ($request->application_type == 'professional') {
+        } else if ($request->application_type == 'professional') {
             //validate email and phone number by checking if they are present and unique
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
