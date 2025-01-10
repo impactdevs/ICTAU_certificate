@@ -776,7 +776,7 @@ class ApplicantController extends Controller
             $font->lineHeight(2.0);
         });
 
-        $image->text(strtoupper("2024/2025"), 1316, 709, function ($font) {
+        $image->text(strtoupper("2025/2026"), 1316, 709, function ($font) {
             $font->filename(public_path('fonts/Roboto-Thin.ttf'));
             $font->size(30);
             $font->align('center');
