@@ -16,11 +16,13 @@
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/fontawesome.min.js" integrity="sha512-j12pXc2gXZL/JZw5Mhi6LC7lkiXL0e2h+9ZWpqhniz0DkDrO01VNlBrG3LkPBn6DgG2b8CDjzJT+lxfocsS1Vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     <link id="pagestylecss" href="{{ asset('assets/css/custom-css.css?v=1.0.3') }}" rel="stylesheet" />
+    <script async src="https://www.google.com/recaptcha/api.js"></script>
+
 </head>
 
 <body class="bg-gray-100 m-3">
@@ -39,6 +41,9 @@
                             @csrf
                             <input type="hidden" name="activeTab" value="professional">
                             @include ('admin.applications.step1')
+
+                          <!-- Google Recaptcha Widget-->
+<div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
                         </form>
                     </div>
                 </div>

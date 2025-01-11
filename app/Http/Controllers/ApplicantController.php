@@ -70,6 +70,7 @@ class ApplicantController extends Controller
             $validate = Validator::make($request->all(), [
                 'email' => 'required|email|unique:applicants,email',
                 'phone_number' => 'required|unique:applicants,phone_number',  // Corrected field name
+                'g-recaptcha-response' => 'required|captcha',
             ]);
 
             // Check if validation fails
@@ -83,6 +84,7 @@ class ApplicantController extends Controller
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
                 'phone_number' => 'required|unique:applicants',
+                'g-recaptcha-response' => 'required|captcha',
             ]);
             //check if validation fails
             if ($validate->fails()) {
@@ -96,6 +98,7 @@ class ApplicantController extends Controller
             $validate = Validator::make($request->all(), [
                 'email' => 'required|unique:applicants',
                 'phone_number' => 'required|unique:applicants',
+                'g-recaptcha-response' => 'required|captcha',
             ]);
             //check if validation fails
             if ($validate->fails()) {
