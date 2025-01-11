@@ -62,6 +62,8 @@
         @endfor
 
     </fieldset>
+
+    <div class="g-recaptcha mt-4" data-sitekey={{ config('services.recaptcha.key') }}></div>
     <x-forms.checkbox />
     <div class="form-group">
         <input class="btn" style="background-color: #c61c1d; color: white;" type="submit"

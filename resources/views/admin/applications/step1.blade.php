@@ -31,6 +31,8 @@
     <x-forms.hidden name="application_type" id="application_type" value="professional" />
     <x-forms.checkbox />
 @endif
+
+<div class="g-recaptcha mt-4" data-sitekey={{ config('services.recaptcha.key') }}></div>
 <div class="form-group">
     <input class="btn" style="background-color: #c61c1d; color: white;" type="submit" value="Submit">
 </div>

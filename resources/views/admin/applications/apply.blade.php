@@ -43,9 +43,6 @@
                             @csrf
                             <input type="hidden" name="activeTab" value="professional">
                             @include ('admin.applications.step1')
-
-                            <!-- Google Recaptcha Widget-->
-                            <div class="g-recaptcha mt-4" data-sitekey={{ config('services.recaptcha.key') }}></div>
                         </form>
                     </div>
                 </div>
