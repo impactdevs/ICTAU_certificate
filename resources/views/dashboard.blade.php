@@ -10,8 +10,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Memberships</p>
                 <h5 class="font-weight-bolder mb-0">
-                  200
-                  {{-- <span class="text-success text-sm font-weight-bolder">+55%</span> --}}
+                  {{ $memberships }}
                 </h5>
               </div>
             </div>
@@ -33,7 +32,6 @@
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Certifiate downloads</p>
                 <h5 class="font-weight-bolder mb-0">
                 300
-                  {{-- <span class="text-success text-sm font-weight-bolder">100</span> --}}
                 </h5>
               </div>
             </div>
@@ -55,7 +53,6 @@
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Links shared</p>
                 <h5 class="font-weight-bolder mb-0">
                   430
-                  {{-- <span class="text-danger text-sm font-weight-bolder">-2%</span> --}}
                 </h5>
               </div>
             </div>
@@ -77,7 +74,6 @@
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Mails</p>
                 <h5 class="font-weight-bolder mb-0">
                   150
-                  {{-- <span class="text-success text-sm font-weight-bolder">+5%</span> --}}
                 </h5>
               </div>
             </div>

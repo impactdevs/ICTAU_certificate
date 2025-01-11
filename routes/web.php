@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\MemberController;
@@ -39,9 +40,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('/certificate', [AttendanceController::class, 'certificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard',  [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/share-receipt', [PaymentController::class, 'ShareWidget']);
 
