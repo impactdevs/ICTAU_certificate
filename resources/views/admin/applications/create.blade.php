@@ -65,6 +65,7 @@
                                     @csrf
                                     <input type="hidden" name="activeTab" value="student">
                                     @include ('admin.applications.form-student', ['formMode' => 'create'])
+                                    <div class="g-recaptcha mt-4" data-sitekey={{ config('services.recaptcha.key') }}></div>
                                 </form>
                             </div>
                         </div>
@@ -86,6 +87,7 @@
                                     @include ('admin.applications.form-professional', [
                                         'formMode' => 'create',
                                     ])
+                                    <div class="g-recaptcha mt-4" data-sitekey={{ config('services.recaptcha.key') }}></div>
                                 </form>
                             </div>
                         </div>
@@ -105,6 +107,7 @@
                                     @csrf
                                     <input type="hidden" name="activeTab" value="company">
                                     @include ('admin.applications.form-company', ['formMode' => 'create'])
+                                    <div class="g-recaptcha mt-4" data-sitekey={{ config('services.recaptcha.key') }}></div>
                                 </form>
                             </div>
                         </div>
