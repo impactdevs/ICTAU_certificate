@@ -27,11 +27,18 @@
             color: #fff;
             padding: 20px;
             text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .header h1 {
+            margin: 0;
         }
 
         .content {
             padding: 30px;
             line-height: 1.6;
+            background-color: #f9f9f9;
         }
 
         .signature {
@@ -43,6 +50,34 @@
             display: block;
             margin-bottom: 5px;
         }
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #333;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .footer .payment-details p {
+            margin: 5px 0;
+        }
+
+        .footer .payment-details strong {
+            color: #4CAF50;
+        }
+
+        .footer .payment-details a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer .payment-details a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 
@@ -96,6 +131,20 @@
                 Chief Executive Officer<br>
                 ICT Association of Uganda
             </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <div class="payment-details">
+            <p><strong>Payment Details</strong></p>
+            <p><strong>Bank:</strong> Housing Finance Bank</p>
+            <p><strong>Account Number:</strong> 1040006744842</p>
+            <p><strong>Account Name:</strong> ICT Association of Uganda</p>
+            <p><strong>Students:</strong> UGX 5,000</p>
+            <p><strong>Professionals:</strong> UGX 200,000</p>
+            <p><strong>Companies & MDAs:</strong> UGX 2,000,000</p>
+            <p>For payment, please use the details above or <a href="mailto:info@ictau.org" target="_blank">contact us</a> for assistance.</p>
         </div>
     </div>
 

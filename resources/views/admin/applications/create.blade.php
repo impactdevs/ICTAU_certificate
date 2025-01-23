@@ -15,12 +15,58 @@
     <!-- Nucleo Icons -->
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+ <!-- Add this to your head section to load Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     <link id="pagestylecss" href="{{ asset('assets/css/custom-css.css?v=1.0.3') }}" rel="stylesheet" />
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .payment-info p,
+        .payment-categories p {
+            font-size: 1rem;
+            margin: 0.25rem 0;
+        }
+
+        .payment-info p strong,
+        .payment-categories p strong {
+            color: #0056b3;
+        }
+
+        .text-primary {
+            color: #007bff !important;
+        }
+
+        .shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-5 {
+            margin-top: 3rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 m-3">
@@ -194,91 +240,137 @@
                 </div>
             </div>
         @endif
-    </div>
-    <!--   Core JS Files   -->
-    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    @stack('rtl')
-    @stack('dashboard')
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = {
-                damping: '0.5'
-            }
-            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
-    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.3') }}"></script>
 
-    <script>
-        $(document).ready(function() {
-            var tabEl = document.querySelectorAll('button[data-bs-toggle="pill"]');
-            var activated_pane = "{{ $category ?? 'student' }}";
-            for (i = 0; i < tabEl.length; i++) {
-                tabEl[i].addEventListener("shown.bs.tab", function(event) {
-                    activated_pane = document.querySelector(
-                        event.target.getAttribute("data-bs-target")
-                    ).id;
-                    $('input[name="activeTab"]').val(activated_pane);
-                    //hide the pre-requirements section when a tab is clicked
+        <div class="container mt-5">
+            <h1 class="text-center mb-4">Payment Details</h1>
 
-                    $('.requirements').hide();
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-4">Payment Details</h5>
 
-                });
-            }
-            $('.form-control-file').on('change', function(event) {
-                const fileInput = $(this);
-                const previewContainer = $('#preview-' + fileInput.attr('id'));
+                            <div class="payment-info mb-4">
+                                <p><strong>Bank:</strong> Housing Finance Bank</p>
+                                <p><strong>Account Number:</strong> 1040006744842</p>
+                                <p><strong>Account Name:</strong> ICT Association of Uganda</p>
+                            </div>
 
-                previewContainer.empty(); // Clear previous preview
+                            <div class="payment-categories">
+                                <p><strong>Students:</strong> UGX 5,000</p>
+                                <p><strong>Professionals:</strong> UGX 200,000</p>
+                                <p><strong>Companies & MDAs:</strong> UGX 2,000,000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const file = fileInput[0].files[0];
+        <!-- Footer Section -->
+        <footer class="footer bg-dark text-white py-4">
+            <div class="container text-center">
+                <p class="mb-2">© 2025 ICT Association of Uganda. All rights reserved.</p>
+                <p>Designed and Developed by <a href="https://www.impactoutsourcing.co.ug/" class="text-white">Impact Outsourcing</a>
+                </p>
+                <div class="social-icons mt-3">
+                    <a href="https://www.facebook.com/yourpage" class="text-white mx-2" target="_blank"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.twitter.com/yourprofile" class="text-white mx-2" target="_blank"><i
+                            class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/yourprofile" class="text-white mx-2" target="_blank"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </footer>
 
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const imgElement = $('<img>').attr('src', e.target.result).addClass(
-                                'img-fluid mt-2');
-                            previewContainer.append(imgElement);
-                        };
-                        reader.readAsDataURL(file);
-                    } else {
-                        const fileInfo = $('<div>').text('Selected file: ' + file.name);
-                        previewContainer.append(fileInfo);
-                    }
+
+
+
+        <!--   Core JS Files   -->
+        <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+        <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+        <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+            integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        @stack('rtl')
+        @stack('dashboard')
+        <script>
+            var win = navigator.platform.indexOf('Win') > -1;
+            if (win && document.querySelector('#sidenav-scrollbar')) {
+                var options = {
+                    damping: '0.5'
                 }
-            });
-        });
+                Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+            }
+        </script>
+        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+        <script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.3') }}"></script>
 
-        //show swal alert
-        @if (session('success'))
-            swal({
-                title: "Success!",
-                text: "{{ session('success') }}",
-                icon: "success",
-                button: "OK",
+        <script>
+            $(document).ready(function() {
+                var tabEl = document.querySelectorAll('button[data-bs-toggle="pill"]');
+                var activated_pane = "{{ $category ?? 'student' }}";
+                for (i = 0; i < tabEl.length; i++) {
+                    tabEl[i].addEventListener("shown.bs.tab", function(event) {
+                        activated_pane = document.querySelector(
+                            event.target.getAttribute("data-bs-target")
+                        ).id;
+                        $('input[name="activeTab"]').val(activated_pane);
+                        //hide the pre-requirements section when a tab is clicked
+
+                        $('.requirements').hide();
+
+                    });
+                }
+                $('.form-control-file').on('change', function(event) {
+                    const fileInput = $(this);
+                    const previewContainer = $('#preview-' + fileInput.attr('id'));
+
+                    previewContainer.empty(); // Clear previous preview
+
+                    if (fileInput[0].files && fileInput[0].files[0]) {
+                        const file = fileInput[0].files[0];
+
+                        if (file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const imgElement = $('<img>').attr('src', e.target.result).addClass(
+                                    'img-fluid mt-2');
+                                previewContainer.append(imgElement);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            const fileInfo = $('<div>').text('Selected file: ' + file.name);
+                            previewContainer.append(fileInfo);
+                        }
+                    }
+                });
             });
-        @elseif (session('error'))
-            swal({
-                title: "Error!",
-                text: "{{ session('error') }}",
-                icon: "error",
-                button: "OK",
-            });
-        @endif
-    </script>
+
+            //show swal alert
+            @if (session('success'))
+                swal({
+                    title: "Success!",
+                    text: "{{ session('success') }}",
+                    icon: "success",
+                    button: "OK",
+                });
+            @elseif (session('error'))
+                swal({
+                    title: "Error!",
+                    text: "{{ session('error') }}",
+                    icon: "error",
+                    button: "OK",
+                });
+            @endif
+        </script>
 </body>
 
 </html>
