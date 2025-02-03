@@ -1,6 +1,12 @@
-<x-forms.input name="topic" label="First Name" type="text" id="topic" placeholder="Event Topic" value="{{ $event->topic ?? '' }}" />
+<x-forms.input name="topic" label="Event Topic" type="text" id="topic" placeholder="Event Topic" value="{{ $event->topic ?? '' }}" />
 
     <x-forms.input name="event_date" label="Event Date" type="date" id="event_date" value="{{ $event->event_date ?? '' }}" />
+
+
+<!-- Error Message for Event Date -->
+@if ($errors->has('event_date'))
+    <span class="text-danger">{{ $errors->first('event_date') }}</span>
+@endif
 
     {{-- Online or physical checkboxes --}}
     <div class="form-group">

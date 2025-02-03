@@ -40,12 +40,14 @@
                                         <td>{{ $item->venue }}</td>
                                         <td>
                                             <a href="{{ url('/admin/events/' . $item->id) }}" title="View Event"><button class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                            <a href="{{ url('/admin/events/' . $item->id . '/edit') }}" title="Edit Event"><button class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                            <a href="{{ url('/admin/attendance/' . $item->id) }}" title="Attendence"><button class="btn btn-primary"><i class="fa fa-users" aria-hidden="true"></i>Attendence</button></a>
+                                            
+                                            <a href="{{ url('/admin/events/' . $item->id . '/edit') }}" title="Edit Event"><button class="btn btn-warning"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</button></a>
 
                                             <form method="POST" action="{{ url('/admin/events' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="btn btn-danger" title="Delete event" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                                <button type="submit" class="btn btn-danger" title="Delete event" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                             </form>
                                         </td>
                                     </tr>

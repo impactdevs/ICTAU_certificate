@@ -39,6 +39,13 @@ class TrainingController extends Controller
     public function store(Request $request)
     {
 
+        // Validate event_date to ensure it's not a past date
+    $request->validate([
+        'event_date' => 'required|date|after_or_equal:today',
+    ], [
+        'event_date.after_or_equal' => 'The event date cannot be in the past.',
+    ]);
+
         $training = new Training();
 
         $training->topic = $request->topic;
@@ -87,6 +94,13 @@ class TrainingController extends Controller
      */
     public function update(Request $request, Training $event)
     {
+
+        // Validate event_date to ensure it's not a past date
+    $request->validate([
+        'event_date' => 'required|date|after_or_equal:today',
+    ], [
+        'event_date.after_or_equal' => 'The event date cannot be in the past.',
+    ]);
         $training = Training::where('id', $event->id)->first();
 
         //check if the request contains any of the files

@@ -31,6 +31,9 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
     Route::resource('admin/events', 'App\Http\Controllers\TrainingController');
+    
+    Route::resource('admin/attendances', 'App\Http\Controllers\AttendanceController');
+
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
     Route::get('/admin/applicants', [ApplicantController::class, 'index']);
     Route::get('/admin/applicants/{applicant}', [ApplicantController::class, 'show']);
@@ -76,6 +79,8 @@ Route::group(['middleware' => 'guest'], function () {
 
     Route::get('apply', [ApplicantController::class, 'create']);
     Route::get('/apply-to-become-a-member/{application_type}', [ApplicantController::class, 'step1']);
+
+    
 });
 
 Route::get('/login', function () {
