@@ -42,6 +42,8 @@
                                             <a href="{{ url('/admin/events/' . $item->id) }}" title="View Event"><button class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/attendance/' . $item->id) }}" title="Attendence"><button class="btn btn-primary"><i class="fa fa-users" aria-hidden="true"></i>Attendence</button></a>
                                             
+                                           
+                                            
                                             <a href="{{ url('/admin/events/' . $item->id . '/edit') }}" title="Edit Event"><button class="btn btn-warning"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</button></a>
 
                                             <form method="POST" action="{{ url('/admin/events' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">

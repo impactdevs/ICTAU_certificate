@@ -113,6 +113,25 @@
             });
         });
 
+
+        // In your Attendance model (attendance.php)
+
+class Attendance extends Model
+{
+    protected $fillable = [
+        'attendee_name', // assuming this is the field you already have
+        'event_id',      // Add the event_id field
+        // Add any other necessary fields here
+    ];
+
+    // If you have an Event model, define the relationship
+    public function event()
+    {
+        return $this->belongsTo(Event::class);  // Assuming you have an Event model
+    }
+}
+
+
         //show swal alert
         @if (session('success'))
             swal({

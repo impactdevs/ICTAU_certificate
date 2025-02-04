@@ -18,4 +18,10 @@ class Training extends Model
     ];
 
     protected $table = 'trainings';
+
+    // Add the relationship to Attendance
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

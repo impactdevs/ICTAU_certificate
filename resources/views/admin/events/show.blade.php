@@ -15,18 +15,22 @@
                             </a>
                             <div>
                                 <a href="{{ url('/admin/events/' . $event->id . '/edit') }}" class="btn btn-success" title="Edit Event">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Certificate Generator
+                                    <i class="fa fa-certificate" aria-hidden="true"></i> Certificate Generator
                                 </a>
 
-                                <a href="{{ url('/admin/events/' . $event->id . '/edit') }}" class="btn btn-warning" title="Edit Event">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                <a href="{{ url('/admin/events/' . $event->id . '/edit') }}
+                                    " class="btn btn-warning" title="Edit Event">
+                                    <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
                                 </a>
                                 <form method="POST" action="{{ url('admin/events/' . $event->id) }}" accept-charset="UTF-8" style="display:inline">
                                     {{ method_field('DELETE') }}
                                     {{ csrf_field() }}
-                                    <button type="submit" class="btn btn-danger" title="Delete Event" onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
-                                    </button>
+
+                                     <button type="submit" class="btn btn-danger" title="Delete Event" onclick="return confirm(&quot;Confirm delete?&quot;)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </button> 
+                                    
+                                        
                                 </form>
                             </div>
                         </div>

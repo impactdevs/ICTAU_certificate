@@ -31,6 +31,8 @@ class AttendanceController extends Controller
         return view('admin.attendances.create');
     }
 
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -70,6 +72,8 @@ class AttendanceController extends Controller
         $manager = new ImageManager(new Driver());
 
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
+        // $image = $manager->make(public_path('images/attendance-template.jpeg'));
+
 
         //find the member details with the id from the request
         $member = DB::table('attendances')->where('id', $id)->first();
@@ -130,7 +134,15 @@ class AttendanceController extends Controller
      */
     public function show(string $id)
     {
-        //
+         // Fetch attendance record
+    $attendance = DB::table('attendances')->where('id', $id)->first();
+
+    if (!$attendance) {
+        return redirect()->route('admin.attendances.index')->with('error', 'Record not found');
+    }
+
+    // Return a view to display the details
+    return view('admin.attendances.show', compact('attendance'));
     }
 
     /**
@@ -138,7 +150,16 @@ class AttendanceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+      // Fetch the attendance record
+    $attendance = DB::table('attendances')->where('id', $id)->first();
+
+    // Check if the record exists
+    if (!$attendance) {
+        return redirect()->route('admin.attendances.index')->with('error', 'Record not found');
+    }
+
+    // Return the edit view with attendance details
+    return view('admin.attendances.edit', compact('attendance'));
     }
 
     /**
@@ -146,7 +167,26 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       // Validate request data
+    $validatedData = $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:attendances,email,' . $id,
+    ]);
+
+    // Update record in the database
+    $updated = DB::table('attendances')->where('id', $id)->update([
+        'first_name' => $validatedData['first_name'],
+        'last_name' => $validatedData['last_name'],
+        'email' => $validatedData['email'],
+        'updated_at' => now(),
+    ]);
+
+    if ($updated) {
+        return redirect()->route('admin.attendances.index')->with('success', 'Record updated successfully');
+    } else {
+        return redirect()->back()->with('error', 'Failed to update record');
+    }
     }
 
     /**
@@ -154,7 +194,15 @@ class AttendanceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+    
+        // Find and delete the record
+    $deleted = DB::table('attendances')->where('id', $id)->delete();
+
+    if ($deleted) {
+        return redirect()->route('admin.attendances.index')->with('success', 'Record deleted successfully');
+    } else {
+        return redirect()->back()->with('error', 'Failed to delete record');
+    }
     }
 
     public function register()
@@ -162,11 +210,46 @@ class AttendanceController extends Controller
         return view('admin.applications.attendance');
     }
 
+
+    public function showAttendance($eventId)
+{
+    // Fetch the attendance records for the specific event
+    $attendances = DB::table('attendances')->where('event_id', $eventId)->get();
+
+    // Check if there are attendances for the event
+    if ($attendances->isEmpty()) {
+        return redirect()->route('admin.attendances.index')->with('error', 'No attendance records found for this event');
+    }
+
+    // Return a view to display the attendance records
+    return view('admin.attendances.show', compact('attendances', 'eventId'));
+}
+
+    
+public function attendanceForm($eventId)
+{
+    // Fetch the event details
+    $event = DB::table('events')->find($eventId);
+
+    // If event does not exist, redirect back
+    if (!$event) {
+        return redirect()->route('admin.attendances.index')->with('error', 'Event not found.');
+    }
+
+    // Generate the attendance form URL
+    $attendanceFormUrl = route('attendance.form', ['eventId' => $eventId]);
+
+    // Return the view with the event and form URL
+    return view('admin.attendances.form', compact('event', 'attendanceFormUrl'));
+}
+
+
     public function generateCertificate()
     {
         $manager = new ImageManager(new Driver());
 
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
+        // $image = $manager->make(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
         $member = DB::table('attendances')->where('id', request()->id)->first();

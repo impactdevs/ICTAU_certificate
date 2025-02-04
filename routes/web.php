@@ -33,6 +33,17 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::resource('admin/events', 'App\Http\Controllers\TrainingController');
     
     Route::resource('admin/attendances', 'App\Http\Controllers\AttendanceController');
+    Route::post('/admin/attendance', [AttendanceController::class, 'store']);
+    Route::get('/admin/attendance/{id}', [AttendanceController::class, 'show']);
+    Route::get('/admin/attendance/{id}/edit', [AttendanceController::class, 'edit']); 
+    Route::delete('/admin/attendance/{id}', [AttendanceController::class, 'destroy']); 
+    Route::patch('/admin/attendance/{id}', [AttendanceController::class, 'update']);
+    Route::get('admin/attendances', 'App\Http\Controllers\AttendanceController@index')->name('admin.attendances.index');
+
+    Route::get('/admin/attendances/{id}', [AttendanceController::class, 'show'])->name('admin.attendances');
+    Route::get('/admin/attendance/{eventId}', [AttendanceController::class, 'showAttendance'])->name('attendance.show');
+    Route::get('/admin/attendance/form/{eventId}', [AttendanceController::class, 'attendanceForm'])->name('attendance.form');
+
 
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
     Route::get('/admin/applicants', [ApplicantController::class, 'index']);
