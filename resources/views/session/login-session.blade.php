@@ -17,7 +17,7 @@
                                 <div class="card-body">
                                     <form role="form" method="POST" action="/session">
                                         @csrf
-                                        <label>Email</label>
+                                        <label>Email-Test</label>
                                         <div class="mb-3">
                                             <input type="email" class="form-control" name="email" id="email"
                                                 placeholder="Email" aria-label="Email" aria-describedby="email-addon">
