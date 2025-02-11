@@ -50,3 +50,24 @@ jobs:
           script: |
             sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/storage /var/www/ictau.impact-outsourcing.com/bootstrap/cache
             sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/storage /var/www/ictau.impact-outsourcing.com/bootstrap/cache
+            # set right permissions for images directory in public, make sure its readable and writable
+
+      - name: Set proper permissions for images directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/public/images
+            sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/public/images
+            sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/public/uploads/applications/company_logos
+            sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/public/uploads/applications/company_logos
+            sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/public/uploads/applications/cvs
+            sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/public/uploads/applications/cvs
+            sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/public/uploads/applications/passport_photos
+            sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/public/uploads/applications/passport_photos
+            sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/public/uploads/applications/payment_proofs
+            sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/public/uploads/applications/payment_proofs
+            sudo chgrp -R www-data /var/www/ictau.impact-outsourcing.com/public/uploads/applications/student_ids
+            sudo chmod -R ug+rwx /var/www/ictau.impact-outsourcing.com/public/uploads/applications/student_ids
