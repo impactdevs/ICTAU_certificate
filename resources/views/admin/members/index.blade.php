@@ -11,18 +11,29 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
 
+                        <form method="GET" action="{{ url('/admin/member') }}" accept-charset="UTF-8"
+                            class="form-inline my-2 my-lg-0 float-right" role="search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" placeholder="Search..."
+                                    value="{{ request('search') }}">
+                                <span style="margin-left:5px">
+                                    <button class="btn btn-primary" type="submit" style="height:34px">
+                                        Search
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+
+                        <br />
+                        <br />
                         <div class="table-responsive">
-                            <table class="table table-bordered" 
-                                   data-toggle="table" 
-                                   data-pagination="true" 
-                                   data-page-list="[5, 25, 50, 100, all]" 
-                                   data-search="true">
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th data-sortable="true">Membership ID</th>
-                                        <th data-sortable="true">First Name</th>
-                                        <th data-sortable="true">Last Name</th>
-                                        <th data-sortable="true">Membership Type</th>
+                                        <th>Membership ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Membership Type</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -34,35 +45,36 @@
                                             <td>{{ $item->last_name }}</td>
                                             <td>{{ $item->membershipType->membership_type_name }}</td>
                                             <td>
-                                                <a href="{{ url('/admin/member/' . $item->id) }}" title="View member">
-                                                    <button class="btn btn-success">
-                                                        <i class="fa fa-eye" aria-hidden="true"></i> View
-                                                    </button>
-                                                </a>
-                                                <a href="{{ url('/admin/member/' . $item->id . '/edit') }}" title="Edit member">
-                                                    <button class="btn btn-warning">
-                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                                    </button>
-                                                </a>
+                                                <a href="{{ url('/admin/member/' . $item->id) }}"
+                                                    title="View member"><button class="btn btn-success"><i class="fa fa-eye"
+                                                            aria-hidden="true"></i> View</button></a>
+                                                <a href="{{ url('/admin/member/' . $item->id . '/edit') }}"
+                                                    title="Edit member"><button class="btn btn-warning"><i
+                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                        Edit</button></a>
 
-                                                <form method="POST" action="{{ url('/admin/member' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                                <form method="POST" action="{{ url('/admin/member' . '/' . $item->id) }}"
+                                                    accept-charset="UTF-8" style="display:inline">
                                                     {{ method_field('DELETE') }}
                                                     {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-danger" title="Delete member" onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                                        <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
-                                                    </button>
+                                                    <button type="submit" class="btn btn-danger" title="Delete member"
+                                                        onclick="return confirm(&quot;Confirm delete?&quot;)"><i
+                                                            class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                                 </form>
 
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
                                                         Certificate
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ url('/get-certificate?id=' . $item->id . '&file_type=png') }}">PNG</a>
+                                                        <li><button class="dropdown-item" type="button"><a
+                                                                    class="dropdown-item"
+                                                                    href="{{ url('/get-certificate?id=' . $item->id . '&file_type=png') }}">PNG</a></button>
                                                         </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{ url('/get-certificate?id=' . $item->id . '&file_type=pdf') }}">PDF</a>
+                                                        <li><button class="dropdown-item" type="button"><a
+                                                                    class="dropdown-item"
+                                                                    href="{{ url('/get-certificate?id=' . $item->id . '&file_type=pdf') }}">PDF</a></button>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -71,7 +83,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="pagination-wrapper"> {!! $member->appends(['search' => Request::get('search')])->render() !!} </div>
                         </div>
+
                     </div>
                 </div>
             </div>

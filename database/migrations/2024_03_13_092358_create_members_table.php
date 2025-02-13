@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('members', function (Blueprint $table) {
@@ -13,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->unsignedBigInteger('membership_type_id');
-            $table->foreign('membership_type_id')->references('id')->on('membership_types'); // Changed from membership__types to membership_types
+            $table->foreign('membership_type_id')->references('id')->on('membership__types');
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('membership_id')->unique();
@@ -21,6 +24,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('members');
