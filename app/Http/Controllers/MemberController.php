@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Models\Member;
-use App\Models\Membership_Type;
+use App\Models\MembershipType;  // Updated this line
 use Illuminate\Http\Request;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -48,7 +48,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        $membershipTypes = Membership_Type::all();
+        $membershipTypes = MembershipType::all();
 
         // Get the last membership code and increment it
         $lastMembership = Member::orderBy('id', 'desc')->first();
@@ -106,7 +106,7 @@ class MemberController extends Controller
     public function edit($id)
     {
         $member = Member::findOrFail($id);
-        $membershipTypes = Membership_Type::all();
+        $membershipTypes = MembershipType::all();
 
 
         return view('admin.members.edit', compact('member', 'membershipTypes'));

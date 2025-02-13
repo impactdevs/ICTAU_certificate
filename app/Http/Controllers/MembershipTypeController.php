@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Membership_Type;
+use App\Models\MembershipType;;
 use Illuminate\Http\Request;
 
 class MembershipTypeController extends Controller
@@ -18,10 +18,10 @@ class MembershipTypeController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $member_type = Membership_Type::where('membership_type_name', 'LIKE', "%$keyword%")
+            $member_type = MembershipType::where('membership_type_name', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
         } else {
-            $member_type = Membership_Type::latest()->paginate($perPage);
+            $member_type = MembershipType::latest()->paginate($perPage);
         }
 
         return view('admin.member-types.index', compact('member_type'));
@@ -47,7 +47,7 @@ class MembershipTypeController extends Controller
     public function store(Request $request)
     {
         $requestData = $request->all();
-        Membership_Type::create($requestData);
+        MembershipType::create($requestData);
 
         return redirect('admin/member_type')->with('flash_message', 'Member added!');
     }
@@ -62,7 +62,7 @@ class MembershipTypeController extends Controller
     public function show($id)
     {
 
-        $member_type = Membership_Type::findOrFail($id);
+        $member_type = MembershipType::findOrFail($id);
 
         return view('admin.member-types.show', compact('member_type'));
     }
@@ -76,7 +76,7 @@ class MembershipTypeController extends Controller
      */
     public function edit($id)
     {
-        $member_type = Membership_Type::findOrFail($id);
+        $member_type = MembershipType::findOrFail($id);
 
         return view('admin.member-types.edit', compact('member_type'));
     }
@@ -94,7 +94,7 @@ class MembershipTypeController extends Controller
 
         $requestData = $request->all();
 
-        $member_type = Membership_Type::findOrFail($id);
+        $member_type = MembershipType::findOrFail($id);
         $member_type->update($requestData);
 
         return redirect('admin/member_type')->with('flash_message', 'Member updated!');
@@ -108,7 +108,7 @@ class MembershipTypeController extends Controller
      */
     public function destroy($id)
     {
-        Membership_Type::destroy($id);
+        MembershipType::destroy($id);
 
         return redirect('admin/member_type')->with('flash_message', 'Member deleted!');
     }
