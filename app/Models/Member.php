@@ -21,6 +21,6 @@ class Member extends Model
     //a member has a membership type
     public function membershipType()
     {
-        return $this->belongsTo(Membership_Type::class);
+        return $this->belongsTo(MembershipType::class);
     }
 }
