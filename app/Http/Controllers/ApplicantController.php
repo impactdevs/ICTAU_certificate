@@ -25,6 +25,8 @@ use App\Models\Member;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\DB;
 use App\Models\GeneralSettings;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class ApplicantController extends Controller
 {
@@ -72,6 +74,28 @@ class ApplicantController extends Controller
                 'phone_number' => 'required|unique:applicants,phone_number',  // Corrected field name
                 'g-recaptcha-response' => 'required',
             ]);
+
+            $recaptcha = $request->input('g-recaptcha-response');
+
+            $url = "https://www.google.com/recaptcha/api/siteverify";
+
+            $params = [
+                'secret' => config('services.recaptcha.secret'),
+                'response' => $recaptcha,
+                'remoteip' => IpUtils::anonymize($request->ip())
+            ];
+
+            // Make the HTTP request
+            $response = Http::asForm()->post($url, $params);
+
+            // Decode response
+            $result = $response->json(); // Instead of json_decode($response)
+
+            // Check if reCAPTCHA verification failed
+            if (!($response->successful() && ($result['success'] ?? false) == true)) {
+                $request->session()->flash('message', "Please complete the reCAPTCHA again to proceed.");
+                return redirect()->back();
+            }
 
             // Check if validation fails
             if ($validate->fails()) {
