@@ -63,6 +63,27 @@ class ApplicantController extends Controller
      */
     public function store(Request $request)
     {
+        $recaptcha = $request->input('g-recaptcha-response');
+
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+
+        $params = [
+            'secret' => config('services.recaptcha.secret'),
+            'response' => $recaptcha,
+            'remoteip' => IpUtils::anonymize($request->ip())
+        ];
+
+        // Make the HTTP request
+        $response = Http::asForm()->post($url, $params);
+
+        // Decode response
+        $result = $response->json(); // Instead of json_decode($response)
+
+        // Check if reCAPTCHA verification failed
+        if (!($response->successful() && ($result['success'] ?? false) == true)) {
+            $request->session()->flash('message', "Please complete the reCAPTCHA again to proceed.");
+            return redirect()->back();
+        }
         //generate a unique id for the application
         $uuid = Str::uuid();
 
@@ -75,27 +96,7 @@ class ApplicantController extends Controller
                 'g-recaptcha-response' => 'required',
             ]);
 
-            $recaptcha = $request->input('g-recaptcha-response');
 
-            $url = "https://www.google.com/recaptcha/api/siteverify";
-
-            $params = [
-                'secret' => config('services.recaptcha.secret'),
-                'response' => $recaptcha,
-                'remoteip' => IpUtils::anonymize($request->ip())
-            ];
-
-            // Make the HTTP request
-            $response = Http::asForm()->post($url, $params);
-
-            // Decode response
-            $result = $response->json(); // Instead of json_decode($response)
-
-            // Check if reCAPTCHA verification failed
-            if (!($response->successful() && ($result['success'] ?? false) == true)) {
-                $request->session()->flash('message', "Please complete the reCAPTCHA again to proceed.");
-                return redirect()->back();
-            }
 
             // Check if validation fails
             if ($validate->fails()) {
