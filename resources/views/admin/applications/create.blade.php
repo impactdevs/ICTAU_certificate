@@ -257,7 +257,7 @@
                             </div>
 
                             <div class="payment-categories">
-                                <p><strong>Students:</strong> UGX 5,000</p>
+                                <p><strong>Students:</strong> UGX 20,000</p>
                                 <p><strong>Professionals:</strong> UGX 200,000</p>
                                 <p><strong>Companies & MDAs:</strong> UGX 2,000,000</p>
                             </div>
