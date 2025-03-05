@@ -69,5 +69,17 @@
     border-radius: 5px;
 }
 
+.table-sm td, 
+.table-sm th {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.table-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    margin: 2px;
+}
+
 
 

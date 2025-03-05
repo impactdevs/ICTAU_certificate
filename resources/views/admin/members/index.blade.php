@@ -5,27 +5,14 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">Members</div>
-                    <div class="card-body">
+                    <div class="card-header bg-primary text-light d-flex flex-row justify-content-between">
+                        <p>Members</p>
                         <a href="{{ url('/admin/member/create') }}" class="btn btn-primary btn-sm" title="Add New member">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
-
-                        <form method="GET" action="{{ url('/admin/member') }}" accept-charset="UTF-8"
-                            class="form-inline my-2 my-lg-0 float-right" role="search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="search" placeholder="Search..."
-                                    value="{{ request('search') }}">
-                                <span style="margin-left:5px">
-                                    <button class="btn btn-primary" type="submit" style="height:34px">
-                                        Search
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered" data-toggle="table" data-pagination="true"
+                    </div>
+                    <div class="card-body" style="max-height: 73vh; overflow-y: auto;">
+                            <table class="table table-bordered table-striped table-sm" data-toggle="table" data-pagination="true"
                                 data-page-list="[5, 25, 50, 100, all]" data-search="true">
                                 <thead>
                                     <tr>
@@ -82,7 +69,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                        </div>
 
                     </div>
                 </div>
