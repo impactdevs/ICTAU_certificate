@@ -36,7 +36,7 @@ class ApplicantController extends Controller
     public function index()
     {
         // Fetch applicants with pagination (10 per page)
-        $applicants = Applicant::latest()->get();
+        $applicants = Applicant::whereNot('application_status', 'approve')->latest()->get();
 
         // Pass the applicants data to the view
         return view('admin.applications.index', compact('applicants'));

@@ -46,7 +46,7 @@
                                                             aria-hidden="true"></i> View</button></a>
                                                 <a href="{{ url('/admin/member/' . $attendance->id . '/edit') }}"
                                                     title="Edit member"><button class="btn btn-warning"><i
-                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                            class="fa fa-pencil" aria-hidden="true"></i>
                                                         Edit</button></a>
 
                                                 <form method="POST"
@@ -56,7 +56,7 @@
                                                     {{ csrf_field() }}
                                                     <button type="submit" class="btn btn-danger" title="Delete member"
                                                         onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                            class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                                            class="fa fa-trash" aria-hidden="true"></i> Delete</button>
                                                 </form>
 
                                                 <div class="btn-group">
