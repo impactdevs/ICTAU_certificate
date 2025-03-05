@@ -27,7 +27,8 @@
                         <br />
                         <br />
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-bordered" data-toggle="table" data-pagination="true"
+                                data-page-list="[5, 25, 50, 100, all]" data-search="true">
                                 <thead>
                                     <tr>
                                         <th>Membership ID</th>
@@ -83,7 +84,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $member->appends(['search' => Request::get('search')])->render() !!} </div>
                         </div>
 
                     </div>

@@ -33,9 +33,9 @@ class MemberController extends Controller
                 ->orWhere('phone', 'LIKE', "%$keyword%")
                 ->orWhere('membership_id', 'LIKE', "%$keyword%")
                 ->orWhere('email', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
+                ->latest()->get();
         } else {
-            $member = Member::latest()->paginate($perPage);
+            $member = Member::latest()->get();
         }
 
         return view('admin.members.index', compact('member'));
