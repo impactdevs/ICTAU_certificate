@@ -24,8 +24,6 @@
                             </div>
                         </form>
 
-                        <br />
-                        <br />
                         <div class="table-responsive">
                             <table class="table table-bordered" data-toggle="table" data-pagination="true"
                                 data-page-list="[5, 25, 50, 100, all]" data-search="true">
