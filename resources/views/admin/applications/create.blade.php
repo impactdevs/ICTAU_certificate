@@ -15,8 +15,8 @@
     <!-- Nucleo Icons -->
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
- <!-- Add this to your head section to load Font Awesome for icons -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Add this to your head section to load Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
@@ -271,7 +271,8 @@
         <footer class="footer bg-dark text-white py-4">
             <div class="container text-center">
                 <p class="mb-2">© 2025 ICT Association of Uganda. All rights reserved.</p>
-                <p>Designed and Developed by <a href="https://www.impactoutsourcing.co.ug/" class="text-white">Impact Outsourcing</a>
+                <p>Designed and Developed by <a href="https://www.impactoutsourcing.co.ug/" class="text-white">Impact
+                        Outsourcing</a>
                 </p>
                 <div class="social-icons mt-3">
                     <a href="https://www.facebook.com/yourpage" class="text-white mx-2" target="_blank"><i
