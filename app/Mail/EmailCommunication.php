@@ -57,14 +57,14 @@ class EmailCommunication extends Mailable implements ShouldQueue
      */
     public function content(): Content
     {
-        $emailBody = $this->body; // Assuming $this->body contains HTML content.
+        $emailBody = $this->body;
     
         return new Content(
-            text: '',
-            html: $emailBody,
+            text: strip_tags($emailBody), // Plain text version
+            html: new HtmlString($emailBody), // Render HTML correctly
         );
     }
-    
+
 
     /**
      * Get the attachments for the message.
