@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <h1>Applicants</h1>
-        <table class="table table-bordered" data-toggle="table" data-pagination="true" data-page-list="[5, 25, 50, 100, all]"
+        <table class="table table-bordered" data-toggle="table" data-pagination="true" data-page-list="[5, 25, 50, 100, all]"   data-show-export="true"
+
             data-search="true">
             <thead>
                 <tr>

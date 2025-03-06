@@ -10,6 +10,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\CommunicationController;
+
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GeneralSettingsController;
@@ -54,6 +56,12 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('admin/general-settings', [GeneralSettingsController::class, 'edit'])->name('admin.general_settings.update');
     Route::put('admin/general-settings-update', [GeneralSettingsController::class, 'update']);
     Route::get('admin/attendance', [AttendanceController::class, 'index']);
+
+    //communications
+    Route::get('admin/communications', [CommunicationController::class, 'index']);
+    //route('sendEmail')
+    Route::get('admin/communications/send-email', [CommunicationController::class, 'create']);
+    Route::post('admin/communications/send-email', [CommunicationController::class, 'sendEmail'])->name('sendEmail');
 });
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
