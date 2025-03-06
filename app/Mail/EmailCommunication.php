@@ -8,7 +8,6 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Markdown;
 
 class EmailCommunication extends Mailable implements ShouldQueue
 {
@@ -56,16 +55,16 @@ class EmailCommunication extends Mailable implements ShouldQueue
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        $emailBody = $this->body;
-    
-        return new Content(
-            text: strip_tags($emailBody), // Plain text version
-            html: new HtmlString($emailBody), // Render HTML correctly
-        );
-    }
-
+public function content(): Content
+{
+    return new Content(
+        view: 'emails.communication',
+        with: [
+            'body' => $this->body,
+            'subject' => $this->subject
+        ],
+    );
+}
 
     /**
      * Get the attachments for the message.
