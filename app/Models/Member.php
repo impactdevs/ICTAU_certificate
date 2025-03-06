@@ -23,4 +23,10 @@ class Member extends Model
     {
         return $this->belongsTo(Membership_Type::class);
     }
+
+    public function applicant()
+    {
+        return $this->belongsTo(Applicant::class, 'applicant_id', 'application_id');
+    }
+    
 }

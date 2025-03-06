@@ -38,6 +38,8 @@ class MemberController extends Controller
             $member = Member::latest()->get();
         }
 
+        $member->load('applicant');
+
         return view('admin.members.index', compact('member'));
     }
 
@@ -92,6 +94,7 @@ class MemberController extends Controller
     {
 
         $member = Member::findOrFail($id);
+        $member->load('applicant');
 
         return view('admin.members.show', compact('member'));
     }
