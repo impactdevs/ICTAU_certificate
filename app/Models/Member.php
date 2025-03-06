@@ -28,5 +28,11 @@ class Member extends Model
     {
         return $this->belongsTo(Applicant::class, 'applicant_id', 'application_id');
     }
+
+    //get email attribute
+    public function getEmailAttribute($value)
+    {
+        return $value;
+    }
     
 }
