@@ -1,48 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update from ICTAU</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .certificate {
-            border: 5px solid #4CAF50;
-            padding: 30px;
-            margin: 20px auto;
-            width: 70%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #4CAF50;
-        }
-
-        .name {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-
-        .footer {
-            margin-top: 30px;
-            font-size: 14px;
-        }
-    </style>
+    <title>{{ $subject }}</title>
 </head>
-
 <body>
-    <div class="certificate">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <header style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 20px; margin-bottom: 20px;">
+            <h1>{{ config('app.name') }}</h1>
+        </header>
+
         <div class="content">
             {!! $body !!}
         </div>
+
+        <footer style="text-align: center; border-top: 1px solid #ddd; padding-top: 20px; margin-top: 20px;">
+            <p>© {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+        </footer>
     </div>
 </body>
-
 </html>

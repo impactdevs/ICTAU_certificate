@@ -55,16 +55,16 @@ class EmailCommunication extends Mailable implements ShouldQueue
     /**
      * Get the message content definition.
      */
-public function content(): Content
-{
-    return new Content(
-        view: 'emails.communication',
-        with: [
-            'body' => $this->body,
-            'subject' => $this->subject
-        ],
-    );
-}
+    public function content(): Content
+    {
+        $emailBody = $this->body; // Assuming $this->body contains HTML content.
+    
+        return new Content(
+            text: '',
+            html: $emailBody,
+        );
+    }
+    
 
     /**
      * Get the attachments for the message.
