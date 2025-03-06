@@ -10,7 +10,7 @@
         </header>
 
         <div class="content">
-            testing spam problems
+            {!! $body !!}
         </div>
 
         <footer style="text-align: center; border-top: 1px solid #ddd; padding-top: 20px; margin-top: 20px;">
