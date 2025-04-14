@@ -53,6 +53,13 @@ return [
             'transport' => 'mailgun',
         ],
 
+        'infobip' => [
+            'transport' => 'infobip',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
+        ],
+
         'postmark' => [
             'transport' => 'postmark',
         ],
