@@ -39,6 +39,9 @@ class MemberController extends Controller
         }
 
         $member->load('applicant');
+        $member->load(['subscriptions' => function ($query) {
+            $query->latest()->limit(1);
+        }]);
 
         return view('admin.members.index', compact('member'));
     }

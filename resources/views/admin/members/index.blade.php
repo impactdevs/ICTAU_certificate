@@ -20,6 +20,8 @@
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Membership Type</th>
+                                    <th>Last Subscribed on</th>
+                                    <th>status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -34,6 +36,26 @@
                                         <td>{{ $item->first_name }}</td>
                                         <td>{{ $item->last_name }}</td>
                                         <td>{{ $item->membershipType->membership_type_name }}</td>
+                                        @php
+                                            $subscription = $item->subscriptions[0];
+                                        @endphp
+                                        <td>
+                                            @if ($subscription)
+                                                {{ \Carbon\Carbon::parse($subscription->subscribed_on)->format('d M Y') }}
+                                            @else
+                                                {{  \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (
+                                                ($subscription && \Carbon\Carbon::parse($subscription->subscribed_on)->year == now()->year) ||
+                                                (!$subscription && \Carbon\Carbon::parse($item->created_at)->year == now()->year)
+                                            )
+                                                <span class="badge bg-success">Running</span>
+                                            @else
+                                                <span class="badge bg-danger">Expired</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ url('/admin/member/' . $item->id) }}" title="View member"><button
                                                     class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i>
@@ -68,21 +90,55 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <!-- Toast Trigger Button -->
-                                            <button type="button" class="btn btn-primary" id="toastbtn">Show
-                                                Toast</button>
+                                            <!-- Renew Button triggers modal -->
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#renewModal-{{ $item->id }}">Renew</button>
 
-                                            <div class="toast">
-                                                <div class="toast-header">
-                                                    <strong class="me-auto">Toast Header</strong>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="toast"></button>
-                                                </div>
-                                                <div class="toast-body">
-                                                    <p>Some text inside the toast body</p>
+                                            <!-- Renewal Modal -->
+                                            <div class="modal fade" id="renewModal-{{ $item->id }}" tabindex="-1" aria-labelledby="renewModalLabel-{{ $item->id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="renewModalLabel-{{ $item->id }}">Renew Membership</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <h5 class="mb-2 text-primary">
+                                                                    <i class="fa fa-user-circle me-2"></i>
+                                                                    {{ $item->first_name }} {{ $item->last_name }}
+                                                                </h5>
+                                                                <p class="mb-1">
+                                                                    <span class="fw-semibold">Membership Type:</span>
+                                                                    <span class="badge bg-info text-dark">{{ $item->membershipType->membership_type_name }}</span>
+                                                                </p>
+                                                                <p class="mb-3">
+                                                                    <span class="fw-semibold">Current Expiry:</span>
+                                                                    <span class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                                                                </p>
+                                                            </div>
+                                                            <form method="POST" action="{{ route('subscriptions.store') }}">
+                                                                @csrf
+                                                                <input type="hidden" name="membership_id" value="{{ $item->id }}">
+                                                                <div class="mb-3">
+                                                                    <label for="subscribed_on-{{ $item->id }}" class="form-label fw-semibold">
+                                                                        <i class="fa fa-calendar-alt me-1"></i>
+                                                                        Date of Renewal
+                                                                    </label>
+                                                                    <input type="date" name="subscribed_on" id="subscribed_on-{{ $item->id }}" class="form-control border-primary" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                                </div>
+                                                                <div class="d-flex justify-content-end gap-2">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                        <i class="fa fa-times me-1"></i> Cancel
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-primary">
+                                                                        <i class="fa fa-check me-1"></i> Confirm Renewal
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        
                                         </td>
                                     </tr>
                                 @endforeach

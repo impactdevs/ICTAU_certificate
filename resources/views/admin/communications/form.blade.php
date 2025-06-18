@@ -16,13 +16,24 @@
                 
                 <div class="col-md-6">
                     <label class="form-label">Membership Types</label>
-                    <select class="form-control select2" id="membership_types" name="membership_types[]" multiple>
+                    <select class="form-control select2" id="membership_types" name="membership_types[]">
+                        <option value="">-- Select Membership Type --</option>
                         <option value="all">All Members</option>
                         @foreach ($membershipTypes as $type)
                             <option value="{{ $type->id }}">
                                 {{ $type->membership_type_name }} Members
                             </option>
                         @endforeach
+                    </select>
+                </div>
+
+                {{-- subscription --}}
+                <div class="col-md-6 mt-3">
+                    <label class="form-label">Subscription Status</label>
+                    <select class="form-control select2" id="subscription_status" name="subscription_status">
+                        <option value="">-- Select Subscription Status --</option>
+                        <option value="running">Running Subscriptions</option>
+                        <option value="expired">Expired Subscriptions</option>
                     </select>
                 </div>
             </div>
@@ -52,11 +63,17 @@
     <script>
         $(document).ready(function() {
             // Initialize Select2
-            $('#members, #membership_types').select2({
-            placeholder: 'Select recipients',
-            allowClear: true,
-            closeOnSelect: false
-        });
+            $('#members').select2({
+                placeholder: 'Select individual members',
+                allowClear: true,
+                closeOnSelect: false
+            });
+
+            $('#membership_types').select2({
+                placeholder: '-- Select Membership Type --',
+                allowClear: true,
+                closeOnSelect: false
+            });
 
             tinymce.init({
                 selector: '#body', // This will make the textarea a WYSIWYG editor

@@ -34,5 +34,10 @@ class Member extends Model
     {
         return $value;
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class, 'membership_id', 'id');
+    }
     
 }

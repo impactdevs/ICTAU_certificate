@@ -15,6 +15,8 @@ use App\Http\Controllers\CommunicationController;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GeneralSettingsController;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +64,8 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     //route('sendEmail')
     Route::get('admin/communications/send-email', [CommunicationController::class, 'create']);
     Route::post('admin/communications/send-email', [CommunicationController::class, 'sendEmail'])->name('sendEmail');
+
+    Route::resource('subscriptions', 'App\Http\Controllers\SubscriptionController');
 });
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
@@ -85,6 +89,42 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('apply', [ApplicantController::class, 'create']);
     Route::get('/apply-to-become-a-member/{application_type}', [ApplicantController::class, 'step1']);
 });
+
+Route::get('/send-emails', function () {
+        ini_set('max_execution_time', 1200);
+        ini_set('memory_limit', '-1');
+    // send a test email
+    //read emails.csv in public/assets/emails.csv and get the second column of each row
+    $filePath = public_path('assets/emails.csv');
+    if (!file_exists($filePath)) {
+        return 'File not found.';
+    }
+    $emails = [];
+    if (($handle = fopen($filePath, 'r')) !== false) {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if (isset($data[1]) && filter_var($data[1], FILTER_VALIDATE_EMAIL)) {
+                $emails[] = $data[1];
+            }
+        }
+        fclose($handle);
+    }
+    if (empty($emails)) {
+        return 'No valid emails found.';
+    }
+    //send email to each email address
+    foreach ($emails as $email) {
+        try {
+            // send using InvitationMail 
+            Mail::to($email)->send(new \App\Mail\InvitationMail());
+            Log::info("Email sent to: $email");
+        } catch (\Exception $e) {
+            Log::error("Failed to send email to $email: " . $e->getMessage());
+            // If sending fails, just continue to the next email
+            continue;
+        }
+    }
+});
+
 
 Route::get('/login', function () {
     return view('session/login-session');
