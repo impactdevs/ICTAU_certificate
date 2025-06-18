@@ -37,7 +37,7 @@
                                         <td>{{ $item->last_name }}</td>
                                         <td>{{ $item->membershipType->membership_type_name }}</td>
                                         @php
-                                            $subscription = $item->subscriptions[0];
+                                            $subscription = isset($item->subscriptions[0]) ? $item->subscriptions[0] : null;
                                         @endphp
                                         <td>
                                             @if ($subscription)
