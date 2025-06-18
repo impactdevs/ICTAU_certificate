@@ -15,7 +15,8 @@ class Member extends Model
         'membership_type_id',
         'email',
         'phone',
-        'membership_id'
+        'membership_id',
+        'applicant_id'
     ];
 
     //a member has a membership type

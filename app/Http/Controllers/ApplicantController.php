@@ -707,6 +707,7 @@ class ApplicantController extends Controller
                             if ($membershipType == null) {
                                 $membershipType = new Membership_Type();
                                 $membershipType->membership_type_name = 'Student';
+
                                 $membershipType->save();
                             }
                         } else if ($applicant->application_type == 'professional') {
@@ -755,7 +756,9 @@ class ApplicantController extends Controller
                         $member->phone = $applicant->phone_number;
                         $member->membership_type_id = $membershipType->id;
                         $member->membership_id = $membershipCode;
+                        $member->applicant_id = $applicant->application_id;
                         $member->save();
+
                         //send an email to the applicant
                         if ($applicant->application_type == 'company') {
                             Mail::to($applicant->email)->send(new ApplicationApproved($applicant->company_name, $applicant->application_type));
