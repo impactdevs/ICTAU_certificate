@@ -43,17 +43,21 @@
                                             @if ($subscription)
                                                 {{ \Carbon\Carbon::parse($subscription->subscribed_on)->format('d M Y') }}
                                             @else
-                                                {{  \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
+                                                {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
                                             @endif
                                         </td>
                                         <td>
-                                            @if (
-                                                ($subscription && \Carbon\Carbon::parse($subscription->subscribed_on)->year == now()->year) ||
-                                                (!$subscription && \Carbon\Carbon::parse($item->created_at)->year == now()->year)
-                                            )
+                                            @php
+                                                $startDate = $subscription ? \Carbon\Carbon::parse($subscription->subscribed_on) : \Carbon\Carbon::parse($item->created_at);
+                                                $expiryDate = $startDate->copy()->addYear();
+                                                $now = \Carbon\Carbon::now();
+                                            @endphp
+                                            @if ($now->lessThan($expiryDate))
                                                 <span class="badge bg-success">Running</span>
+                                                <small class="text-muted">(expires {{ $expiryDate->format('d M Y') }})</small>
                                             @else
                                                 <span class="badge bg-danger">Expired</span>
+                                                <small class="text-muted">(expired {{ $expiryDate->format('d M Y') }})</small>
                                             @endif
                                         </td>
                                         <td>

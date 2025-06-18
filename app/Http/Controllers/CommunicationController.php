@@ -58,26 +58,26 @@ class CommunicationController extends Controller
             $status = $request->subscription_status;
             $query->where(function ($q) use ($status) {
                 if ($status === 'running') {
-                $q->where(function ($sq) {
-                    $sq->whereHas('subscriptions', function ($subQ) {
-                    $subQ->whereYear('subscribed_on', now()->year);
-                    })
-                    ->orWhere(function ($subSq) {
-                    $subSq->whereDoesntHave('subscriptions')
-                        ->whereYear('created_at', now()->year);
+                    $q->where(function ($sq) {
+                        $sq->whereHas('subscriptions', function ($subQ) {
+                            $subQ->whereRaw('DATE_ADD(subscribed_on, INTERVAL 1 YEAR) > NOW()');
+                        })
+                        ->orWhere(function ($subSq) {
+                            $subSq->whereDoesntHave('subscriptions')
+                                ->whereRaw('DATE_ADD(created_at, INTERVAL 1 YEAR) > NOW()');
+                        });
                     });
-                });
                 }
                 if ($status === 'expired') {
-                $q->where(function ($sq) {
-                    $sq->whereHas('subscriptions', function ($subQ) {
-                    $subQ->whereYear('subscribed_on', '<', now()->year);
-                    })
-                    ->orWhere(function ($subSq) {
-                    $subSq->whereDoesntHave('subscriptions')
-                        ->whereYear('created_at', '<', now()->year);
+                    $q->where(function ($sq) {
+                        $sq->whereHas('subscriptions', function ($subQ) {
+                            $subQ->whereRaw('DATE_ADD(subscribed_on, INTERVAL 1 YEAR) <= NOW()');
+                        })
+                        ->orWhere(function ($subSq) {
+                            $subSq->whereDoesntHave('subscriptions')
+                                ->whereRaw('DATE_ADD(created_at, INTERVAL 1 YEAR) <= NOW()');
+                        });
                     });
-                });
                 }
             });
             }
