@@ -757,7 +757,11 @@ class ApplicantController extends Controller
                         $member->membership_id = $membershipCode;
                         $member->save();
                         //send an email to the applicant
-                        Mail::to($applicant->email)->send(new ApplicationApproved($applicant->first_name, $applicant->application_type));
+                        if ($applicant->application_type == 'company') {
+                            Mail::to($applicant->email)->send(new ApplicationApproved($applicant->company_name, $applicant->application_type));
+                        } else {
+                            Mail::to($applicant->email)->send(new ApplicationApproved($applicant->first_name, $applicant->application_type));
+                        }
 
                         //send a welcome email to the applicant after 5 minutes
                         Mail::to($applicant->email)->later(now()->addMinutes($settings->send_welcome_email_after * 24 * 60), new Welcome($applicant));
