@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -18,7 +19,8 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $attendances = DB::table('attendances')->paginate();
+        $attendances = DB::table('second_summit_attendance')
+            ->paginate();
 
         return view('admin.attendances.index', compact('attendances'));
     }
@@ -44,7 +46,7 @@ class AttendanceController extends Controller
         ]);
 
         // Insert data into the attendances table and get the ID of the created record
-        $id = DB::table('attendances')->insertGetId([
+        $id = DB::table('second_summit_attendance')->insertGetId([
             'first_name' => $validatedData['first_name'],
             'last_name' => $validatedData['last_name'],
             'email' => $validatedData['email'],
@@ -53,14 +55,14 @@ class AttendanceController extends Controller
         ]);
 
         // Generate the certificate path
-        $certificatePath = $this->generate_email_certificate($id);
+        // $certificatePath = $this->generate_email_certificate($id);
 
         // Send the email with the certificate attached
-        Mail::to($validatedData['email'])->send(new SendCertificate(
-            $validatedData['first_name'],
-            $validatedData['last_name'],
-            $certificatePath
-        ));
+        // Mail::to($validatedData['email'])->send(new SendCertificate(
+        //     $validatedData['first_name'],
+        //     $validatedData['last_name'],
+        //     $certificatePath
+        // ));
 
         return view('admin.applications.thank-you');
     }
@@ -72,7 +74,7 @@ class AttendanceController extends Controller
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
-        $member = DB::table('attendances')->where('id', $id)->first();
+        $member = DB::table('second_summit_attendance')->where('id', $id)->first();
 
         $image->text($member->first_name . ' ' . $member->last_name, 800, 530, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
@@ -84,7 +86,7 @@ class AttendanceController extends Controller
         });
 
 
-        $image->text(strtoupper("THE INAUGURAL ICT NATIONAL SUMMIT ON 23-24/10/2024"), 800, 700, function ($font) {
+        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT ON 17-18/07/2025"), 800, 700, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -92,7 +94,7 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->text(strtoupper("AT KAMPALA, SERENA HOTEL"), 800, 800, function ($font) {
+        $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 800, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -121,7 +123,6 @@ class AttendanceController extends Controller
 
         // return response($img)->header('Content-Type', 'image/png');
         return public_path('images/certificate-generated_' . $id . '.png');
-
     }
 
 
@@ -169,7 +170,7 @@ class AttendanceController extends Controller
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
-        $member = DB::table('attendances')->where('id', request()->id)->first();
+        $member = DB::table('second_summit_attendance')->where('id', request()->id)->first();
 
         $image->text($member->first_name . ' ' . $member->last_name, 800, 530, function ($font) {
             $font->filename(public_path('fonts/Lobster-Regular.ttf'));
@@ -181,7 +182,7 @@ class AttendanceController extends Controller
         });
 
 
-        $image->text(strtoupper("THE INAUGURAL ICT NATIONAL SUMMIT ON 23-24/10/2024"), 800, 700, function ($font) {
+        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT ON 17-18/07/2025"), 800, 700, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -189,7 +190,7 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->text(strtoupper("AT KAMPALA, SERENA HOTEL"), 800, 800, function ($font) {
+        $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 800, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -277,7 +278,7 @@ class AttendanceController extends Controller
     {
         //check if the member exists
 
-        $member = DB::table('attendances')->where('id', $memberId)->first();
+        $member = DB::table('second_summit_attendance')->where('id', $memberId)->first();
         $qrText = url('attendance/' . $member->id);
 
         // Generate QR code
@@ -292,9 +293,8 @@ class AttendanceController extends Controller
 
     public function attendance_verification($id)
     {
-        $member = DB::table('attendances')->where('id', $id)->first();
+        $member = DB::table('second_summit_attendance')->where('id', $id)->first();
 
         return view('admin.attendances.attendance-verification', compact('member'));
     }
-
 }
