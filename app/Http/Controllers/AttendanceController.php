@@ -42,7 +42,7 @@ class AttendanceController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:attendances,email', // Ensure email is unique
+            'email' => 'required|email|max:255|unique:second_summit_attendance,email', // Ensure email is unique
         ]);
 
         // Insert data into the attendances table and get the ID of the created record
