@@ -86,7 +86,7 @@ class AttendanceController extends Controller
         });
 
 
-        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT ON 17-18/07/2025"), 800, 700, function ($font) {
+        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT"), 800, 650, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -94,7 +94,7 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->text(strtoupper("ON 17-18/07/2025"), 800, 750, function ($font) {
+        $image->text(strtoupper("17–18 JULY 2025"), 800, 730, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -102,13 +102,14 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 800, function ($font) {
+        $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 810, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
             $font->valign('middle');
             $font->lineHeight(1.6);
         });
+
 
         $image->text("Scan the QR code in the right corner to comfirm the validity of this certificate", 800, 1100, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
