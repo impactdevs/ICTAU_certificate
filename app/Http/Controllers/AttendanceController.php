@@ -94,6 +94,14 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
+        $image->text(strtoupper("ON 17-18/07/2025"), 800, 750, function ($font) {
+            $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
+            $font->size(60);
+            $font->align('center');
+            $font->valign('middle');
+            $font->lineHeight(1.6);
+        });
+
         $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 800, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
