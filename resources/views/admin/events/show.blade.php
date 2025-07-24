@@ -13,6 +13,11 @@
                             <a href="{{ url('/admin/events') }}" class="btn btn-secondary" title="Back">
                                 <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
                             </a>
+
+                            <div>
+                                <a href="{{ route('attendances.create', ['event_id' => $event->event_id]) }}">Register New Attendance</a>
+
+                            </div>
                             <div>
                                 <a href="{{ url('/admin/events/' . $event->id . '/edit') }}" class="btn btn-success" title="Edit Event">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Certificate Generator
@@ -74,9 +79,64 @@
                             </div>
                         </div>
 
+                        <!-- ADD THIS BELOW the certificate template section -->
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="card border-info shadow-sm">
+                                        <div class="card-header bg-info text-white d-flex justify-content-between">
+                                            <h5 class="card-title mb-0">Attendances</h5>
+                                            <a href="{{ route('attendances.create', ['event_id' => $event->event_id]) }}" class="btn btn-sm btn-outline-light">
+                                                <i class="fa fa-plus-circle"></i> Register New
+                                            </a>
+                                         </div>
+                                         <div class="card-body p-0">
+                                            @if ($event->attendances->isEmpty())
+                                                <div class="p-3 text-center">
+                                                    <p class="text-muted">No attendances have been recorded for this event yet.</p>
+                                                </div>
+                                            @else
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered mb-0">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Full Name</th>
+                                                                <th>Email</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                 @foreach ($event->attendances as $index => $attendee)
+                                                            <tr>
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $attendee->first_name }} {{ $attendee->last_name }}</td>
+                                                                <td>{{ $attendee->email }}</td>
+                                                                <td>
+                                                                    <a href="{{ route('attendances.show', $attendee->id) }}" class="btn btn-sm btn-primary">
+                                                                        <i class="fa fa-eye"></i> View
+                                                                    </a>
+                                                                    <a href="{{ route('attendances.edit', $attendee->id) }}" class="btn btn-sm btn-warning">
+                                                                        <i class="fa fa-pencil"></i> Edit
+                                                                    </a>
+                                                                        <form action="{{ route('attendances.destroy', $attendee->id) }}" method="POST" style="display:inline;">
+                                                                             @csrf
+                                                                                 @method('DELETE')
+                                                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                                                                                    <i class="fa fa-trash"></i> Delete
+                                                                                </button>
+                                                                        </form>
+                                                                </td>
+                                                            </tr>
+                                                                @endforeach
+                                                         </tbody>
+                                                    </table>
+                                                </div>
+                                            @endif
+
+                                        </div>
+                                </div>
+                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+             </div>
 @endsection
