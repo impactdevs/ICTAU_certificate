@@ -42,8 +42,8 @@
         <h1>Certificate of Attendance</h1>
         <p>This certifies that</p>
         <div class="name">{{ $firstName }} {{ $lastName }}</div>
-        <p>has successfully attended the National ICT Inaugural Summit</p>
-        <p>held from October 23 to 24, 2023.</p>
+        <p>has successfully attended the 2nd National ICT Summit</p>
+        <p>held from July 17 to 18, 2025.</p>
         <div class="footer">
             <p>Issued on: {{ date('F j, Y') }}</p>
             <p>Thank you for your participation!</p>
