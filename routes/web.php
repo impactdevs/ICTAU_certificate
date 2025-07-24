@@ -73,6 +73,7 @@ Route::put('/application-update/{applicant}', [ApplicantController::class, 'upda
 Route::get('/summit-attendance-registration', [AttendanceController::class, 'register'])->name('attendance.register');
 Route::post('/record-attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 
+Route::get('/attendance-qr', [AttendanceController::class, 'generate_qr_for_attendance'])->name('attendance.generate_qr_for_attendance');
 
 Route::group(['middleware' => 'guest'], function () {
     // Route::get('/register', [RegisterController::class, 'create']);

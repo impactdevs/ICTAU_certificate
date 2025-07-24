@@ -314,4 +314,17 @@ class AttendanceController extends Controller
 
         return view('admin.attendances.attendance-verification', compact('member'));
     }
+
+        public function generate_qr_for_attendance()
+    {
+        $qrText = 'http://crm.ictau.ug/summit-attendance-registration';
+
+        // Generate QR code
+        $img = QrCode::format('png')->size(230)->generate($qrText);
+
+        // Save the QR code to the public folder
+        file_put_contents(public_path('images/summit_attendance_qrcode.png'), $img);
+        //return the qr path
+        return response()->file(public_path('images/summit_attendance_qrcode.png'), ['Content-Type' => 'image/png']);
+    }
 }
