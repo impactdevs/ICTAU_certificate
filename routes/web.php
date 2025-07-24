@@ -70,7 +70,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
 Route::put('/application-update/{applicant}', [ApplicantController::class, 'update']);
-Route::get('/summit-attendance-registration', [AttendanceController::class, 'register'])->name('attendance.register');
+Route::get('/summit-certificate-generation', [AttendanceController::class, 'register'])->name('attendance.register');
 Route::post('/record-attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 
 Route::get('/attendance-qr', [AttendanceController::class, 'generate_qr_for_attendance'])->name('attendance.generate_qr_for_attendance');

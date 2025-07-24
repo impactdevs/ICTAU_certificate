@@ -55,14 +55,14 @@ class AttendanceController extends Controller
         ]);
 
         // Generate the certificate path
-        // $certificatePath = $this->generate_email_certificate($id);
+        $certificatePath = $this->generate_email_certificate($id);
 
         // Send the email with the certificate attached
-        // Mail::to($validatedData['email'])->send(new SendCertificate(
-        //     $validatedData['first_name'],
-        //     $validatedData['last_name'],
-        //     $certificatePath
-        // ));
+        Mail::to($validatedData['email'])->send(new SendCertificate(
+            $validatedData['first_name'],
+            $validatedData['last_name'],
+            $certificatePath
+        ));
 
         return view('admin.applications.thank-you');
     }
