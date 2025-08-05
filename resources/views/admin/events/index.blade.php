@@ -58,17 +58,17 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ url('/admin/events/' . $item->id . '/edit') }}" title="Edit Event">
+                                        <a href="{{ url('/admin/events/' . $item->event_id . '/edit') }}" title="Edit Event">
                                             <button class="btn btn-warning">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                <i class="fa fa-pencil-square" aria-hidden="true"></i> Edit
                                             </button>
                                         </a>
 
-                                        <form method="POST" action="{{ url('/admin/events' . '/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                        <form method="POST" action="{{ route('events.destroy', $item->event_id) }}" accept-charset="UTF-8" style="display:inline">
                                             {{ method_field('DELETE') }}
                                             {{ csrf_field() }}
                                             <button type="submit" class="btn btn-danger" title="Delete event" onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                <i class="fa fa-trash" aria-hidden="true"></i> Delete
                                             </button>
                                         </form>
                                     </td>

@@ -1,4 +1,4 @@
-<x-forms.input name="topic" label="First Name" type="text" id="topic" placeholder="Event Topic" value="{{ $event->topic ?? '' }}" />
+<x-forms.input name="topic" label="Event Name" type="text" id="topic" placeholder="Event Topic" value="{{ $event->topic ?? '' }}" />
 
     <x-forms.input name="event_date" label="Event Date" type="date" id="event_date" value="{{ $event->event_date ?? '' }}" />
 

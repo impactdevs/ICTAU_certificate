@@ -19,28 +19,28 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
-{
-    $query = Attendance::with('event');
+    public function index(Request $request)
+    {
+        $query = Attendance::with('event');
 
-    if ($request->has('event_id') && $request->event_id != '') {
-        $query->where('event_id', $request->event_id);
+        if ($request->has('event_id') && $request->event_id != '') {
+            $query->where('event_id', $request->event_id);
+        }
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'LIKE', "%$search%")
+                    ->orWhere('last_name', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $attendances = $query->paginate(10);
+        $events = Event::orderBy('event_date', 'desc')->get();
+
+        return view('admin.attendances.index', compact('attendances', 'events'));
     }
-
-    if ($request->has('search') && $request->search != '') {
-        $search = $request->search;
-        $query->where(function($q) use ($search) {
-            $q->where('first_name', 'LIKE', "%$search%")
-              ->orWhere('last_name', 'LIKE', "%$search%")
-              ->orWhere('email', 'LIKE', "%$search%");
-        });
-    }
-
-    $attendances = $query->paginate(10);
-    $events = Event::orderBy('event_date', 'desc')->get();
-
-    return view('admin.attendances.index', compact('attendances', 'events'));
-}
 
 
 
@@ -59,25 +59,27 @@ public function index(Request $request)
      */
     public function store(Request $request)
     {
-    // Validate the request data
-    $validatedData = $request->validate([
-        'event_id'   => 'required|uuid|exists:events,event_id',
-        'first_name' => 'required|string|max:255',
-        'last_name'  => 'required|string|max:255',
-        'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
-    ]);
+        // Validate the request data
+        $validatedData = $request->validate([
+            'event_id'   => 'required|uuid|exists:events,event_id',
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
+        ]);
 
-    // Insert into database
-    $id = DB::table('second_summit_attendance')->insertGetId([
-        'event_id'   => $validatedData['event_id'],
-        'first_name' => $validatedData['first_name'],
-        'last_name'  => $validatedData['last_name'],
-        'email'      => $validatedData['email'],
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+        // Insert into database
+        $id = DB::table('attendances')->insertGetId([
+            'event_id'   => $validatedData['event_id'],
+            'first_name' => $validatedData['first_name'],
+            'last_name'  => $validatedData['last_name'],
+            'email'      => $validatedData['email'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-
+        // send an email to the user with the certificate
+        $certificatePath = $this->generate_email_certificate($id);
+        Mail::to($validatedData['email'])->send(new SendCertificate($validatedData['first_name'], $validatedData['last_name'], $certificatePath));
 
         return view('admin.applications.thank-you');
     }
@@ -150,45 +152,6 @@ public function index(Request $request)
     }
 
 
-  
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-       $attendance = Attendance::findOrFail($id);
-        $events = Event::orderBy('name')->get(); // for a dropdown if needed
-
-        return view('admin.attendances.edit', compact('attendance', 'events'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
     public function register(Request $request)
     {
         $event_id = $request->event_id;
@@ -216,7 +179,7 @@ public function index(Request $request)
         });
 
 
-         $image->text(strtoupper("2ND ICT NATIONAL SUMMIT"), 800, 650, function ($font) {
+        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT"), 800, 650, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -274,53 +237,10 @@ public function index(Request $request)
     }
 
 
-    public function certificate()
-    {
-        //increase execution time to 10 minutes
-        set_time_limit(2000);
-        //get column names from the csv
-        $file = public_path('jack/invites.csv');
-        $csv = array_map('str_getcsv', file($file));
-
-        //set excution time to 5 minutes
-        for ($i = 3; $i < count($csv); $i++) {
-            $manager = new ImageManager(new Driver());
-            $image = $manager->read(public_path('jack/jack.jpeg'));
-
-            $name = $csv[$i][1];
-
-            //convert to capital letters
-            $name = strtoupper($name);
-            //find the member details with the id from the request
-            $image->text($name, 900, 750, function ($font) {
-                $font->filename(public_path('fonts/POPPINS-BOLD.TTF'));
-                $font->color('#F4CECE');
-                $font->size(50);
-                $font->align('center');
-                $font->valign('middle');
-                $font->lineHeight(2.0);
-            });
-            $name = str_replace(' ', '_', $name);
-            $image->toPng();
-            $imagePath = public_path('generated/' . $name . '.png');
-            $image->save($imagePath);
-            if (request()->file_type == 'pdf') {
-                //set page to landscape
-                pdf::loadView('admin.attendances.certificate', ['id' => $name])
-                    ->setPaper('a4', 'portrait')
-                    ->save(public_path('jack/' . $name . '.pdf'));
-                //delete the png file
-                unlink(public_path('generated/' . $name . '.png'));
-            }
-        }
-    }
-
-
     public function generate_qr($memberId)
     {
         //check if the member exists
-
-        $member = DB::table('second_summit_attendance')->where('id', $memberId)->first();
+        $member = DB::table('attendances')->where('id', $memberId)->first();
         $qrText = url('attendance/' . $member->id);
 
         // Generate QR code
@@ -335,12 +255,12 @@ public function index(Request $request)
 
     public function attendance_verification($id)
     {
-        $member = DB::table('second_summit_attendance')->where('id', $id)->first();
+        $member = DB::table('attendances')->where('id', $id)->first();
 
         return view('admin.attendances.attendance-verification', compact('member'));
     }
 
-        public function generate_qr_for_attendance()
+    public function generate_qr_for_attendance()
     {
         $qrText = 'http://crm.ictau.ug/summit-attendance-registration';
 

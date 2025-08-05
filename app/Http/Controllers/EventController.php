@@ -29,7 +29,7 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-       $event = new Event();
+        $event = new Event();
 
         $event->topic = $request->topic;
         $event->event_date = $request->event_date;
@@ -48,7 +48,6 @@ class EventController extends Controller
             } else {
                 return redirect()->back()->with('error', 'Error uploading file');
             }
-
         }
 
         $event->save();
@@ -96,19 +95,24 @@ class EventController extends Controller
 
     public function showAttendance(Event $event)
     {
-        $attendances = DB::table('second_summit_attendance')
-                   ->where('event_id', $event->event_id)  // Use $event->id instead of $event->event_id
-                   ->paginate(10);
+        $attendances = DB::table('attendances')
+            ->where('event_id', $event->event_id)  // Use $event->id instead of $event->event_id
+            ->paginate(10);
 
         return view('admin.events.attendance', compact('event', 'attendances'));
     }
 
-
     public function destroy($event_id)
     {
+
         $event = Event::findOrFail($event_id);
+        $attendances = DB::table('attendances')
+            ->where('event_id', $event->event_id)->count();
+        if ($attendances > 0) {
+            return redirect()->back()->with('error', 'Cannot delete event with existing attendances.');
+        }
         $event->delete();
 
-        return redirect()->route('admin.events.index')->with('success', 'Event deleted successfully.');
+        return redirect()->route('events.index')->with('success', 'Event deleted successfully.');
     }
 }
