@@ -11,58 +11,73 @@ use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendCertificate;
+use App\Models\Event;
+use App\Models\Attendance;
 
 class AttendanceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $attendances = DB::table('second_summit_attendance')
-            ->paginate();
+public function index(Request $request)
+{
+    $query = Attendance::with('event');
 
-        return view('admin.attendances.index', compact('attendances'));
+    if ($request->has('event_id') && $request->event_id != '') {
+        $query->where('event_id', $request->event_id);
     }
+
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('first_name', 'LIKE', "%$search%")
+              ->orWhere('last_name', 'LIKE', "%$search%")
+              ->orWhere('email', 'LIKE', "%$search%");
+        });
+    }
+
+    $attendances = $query->paginate(10);
+    $events = Event::orderBy('event_date', 'desc')->get();
+
+    return view('admin.attendances.index', compact('attendances', 'events'));
+}
+
+
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $events = Event::all()->pluck('topic', 'event_id')->toArray();;
+        return view('admin.attendances.create', compact('events'));
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:second_summit_attendance,email', // Ensure email is unique
-        ]);
+    // Validate the request data
+    $validatedData = $request->validate([
+        'event_id'   => 'required|uuid|exists:events,event_id',
+        'first_name' => 'required|string|max:255',
+        'last_name'  => 'required|string|max:255',
+        'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
+    ]);
 
-        // Insert data into the attendances table and get the ID of the created record
-        $id = DB::table('second_summit_attendance')->insertGetId([
-            'first_name' => $validatedData['first_name'],
-            'last_name' => $validatedData['last_name'],
-            'email' => $validatedData['email'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+    // Insert into database
+    $id = DB::table('second_summit_attendance')->insertGetId([
+        'event_id'   => $validatedData['event_id'],
+        'first_name' => $validatedData['first_name'],
+        'last_name'  => $validatedData['last_name'],
+        'email'      => $validatedData['email'],
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 
-        // Generate the certificate path
-        $certificatePath = $this->generate_email_certificate($id);
 
-        // Send the email with the certificate attached
-        Mail::to($validatedData['email'])->send(new SendCertificate(
-            $validatedData['first_name'],
-            $validatedData['last_name'],
-            $certificatePath
-        ));
 
         return view('admin.applications.thank-you');
     }
@@ -135,6 +150,10 @@ class AttendanceController extends Controller
     }
 
 
+  
+
+
+
     /**
      * Display the specified resource.
      */
@@ -148,7 +167,10 @@ class AttendanceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+       $attendance = Attendance::findOrFail($id);
+        $events = Event::orderBy('name')->get(); // for a dropdown if needed
+
+        return view('admin.attendances.edit', compact('attendance', 'events'));
     }
 
     /**
@@ -167,10 +189,13 @@ class AttendanceController extends Controller
         //
     }
 
-    public function register()
+    public function register(Request $request)
     {
-        return view('admin.applications.attendance');
+        $event_id = $request->event_id;
+        $events = Event::findOrFail($event_id);
+        return view('admin.applications.attendance', compact('events'));
     }
+
 
     public function generateCertificate()
     {

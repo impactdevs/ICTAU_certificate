@@ -11,6 +11,7 @@ use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\CommunicationController;
+use App\Http\Controllers\EventController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,7 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::resource('admin/member_type', 'App\Http\Controllers\MembershipTypeController');
     Route::resource('admin/member', 'App\Http\Controllers\MemberController');
-    Route::resource('admin/events', 'App\Http\Controllers\TrainingController');
+    Route::resource('admin/events', 'App\Http\Controllers\EventController');
     Route::resource('admin/payment', 'App\Http\Controllers\PaymentController');
     Route::get('/admin/applicants', [ApplicantController::class, 'index']);
     Route::get('/admin/applicants/{applicant}', [ApplicantController::class, 'show']);
@@ -66,6 +67,8 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::post('admin/communications/send-email', [CommunicationController::class, 'sendEmail'])->name('sendEmail');
 
     Route::resource('subscriptions', 'App\Http\Controllers\SubscriptionController');
+    Route::get('/admin/events/{event}/attendance', [EventController::class, 'showAttendance'])
+     ->name('events.attendance');
 });
 Route::post('application-store', [ApplicantController::class, 'store']);
 Route::get('/application/{applicant}', [ApplicantController::class, 'edit'])->name('application.edit');
@@ -86,6 +89,11 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
     Route::get('/member/{id}', [MemberController::class, 'member_verification']);
     Route::get('/attendance/{id}', [AttendanceController::class, 'attendance_verification']);
+    Route::get('/attendances/create', [AttendanceController::class, 'create'])->name('attendances.create');
+
+
+
+
 
     Route::get('apply', [ApplicantController::class, 'create']);
     Route::get('/apply-to-become-a-member/{application_type}', [ApplicantController::class, 'step1']);
@@ -115,7 +123,7 @@ Route::get('/send-emails', function () {
     //send email to each email address
     foreach ($emails as $email) {
         try {
-            // send using InvitationMail 
+            // send using InvitationMail
             Mail::to($email)->send(new \App\Mail\InvitationMail());
             Log::info("Email sent to: $email");
         } catch (\Exception $e) {
