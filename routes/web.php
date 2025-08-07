@@ -41,11 +41,12 @@ Route::middleware(['auth', 'admin.check'])->group(function () {
     Route::get('/admin/applicants/{applicant}', [ApplicantController::class, 'show']);
     Route::get('/approve', [ApplicantController::class, 'approve']);
     Route::get('/get-certificate', [MemberController::class, 'generateCertificate']);
-    Route::get('/get-attendance-certificate', [AttendanceController::class, 'generateCertificate']);
+
     Route::get('/certificate', [AttendanceController::class, 'certificate']);
     Route::get('/get-receipt', [PaymentController::class, 'generateReceipt']);
     Route::get('/generate-qr-code', [MemberController::class, 'generate_qr']);
     Route::get('dashboard',  [DashboardController::class, 'index'])->name('dashboard');
+
 
     Route::get('/share-receipt', [PaymentController::class, 'ShareWidget']);
 
@@ -89,6 +90,8 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/member/{id}', [MemberController::class, 'member_verification']);
     Route::get('/attendance/{id}', [AttendanceController::class, 'attendance_verification']);
     Route::get('/attendances/create', [AttendanceController::class, 'create'])->name('attendances.create');
+    // Route::get('/get-attendance-certificate', [AttendanceController::class, 'generateCertificate']);
+
 
 
 
@@ -137,3 +140,6 @@ Route::get('/send-emails', function () {
 Route::get('/login', function () {
     return view('session/login-session');
 })->name('login');
+
+Route::get('/get-attendance-certificate', [AttendanceController::class, 'generateCertificate'])
+        ->name('attendance.certificate');

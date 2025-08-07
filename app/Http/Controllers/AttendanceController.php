@@ -6,13 +6,15 @@ use Illuminate\Support\Facades\DB;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Facades\View;
+use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendCertificate;
 use App\Models\Event;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
@@ -47,7 +49,7 @@ public function index(Request $request)
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
         $events = Event::all()->pluck('topic', 'event_id')->toArray();;
         return view('admin.attendances.create', compact('events'));
@@ -64,11 +66,11 @@ public function index(Request $request)
         'event_id'   => 'required|uuid|exists:events,event_id',
         'first_name' => 'required|string|max:255',
         'last_name'  => 'required|string|max:255',
-        'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
+        'email'      => 'required|email|max:255|unique:attendances,email',
     ]);
 
     // Insert into database
-    $id = DB::table('second_summit_attendance')->insertGetId([
+    $id = DB::table('attendances')->insertGetId([
         'event_id'   => $validatedData['event_id'],
         'first_name' => $validatedData['first_name'],
         'last_name'  => $validatedData['last_name'],
@@ -89,7 +91,7 @@ public function index(Request $request)
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
-        $member = DB::table('second_summit_attendance')->where('id', $id)->first();
+        $member = DB::table('attendances')->where('id', $id)->first();
 
         $image->text($member->first_name . ' ' . $member->last_name, 800, 530, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
@@ -141,7 +143,7 @@ public function index(Request $request)
     }
 
 
-  
+
 
 
 
@@ -188,73 +190,85 @@ public function index(Request $request)
     }
 
 
-    public function generateCertificate()
-    {
+public function generateCertificate()
+{
+
+        // Initialize image manager
         $manager = new ImageManager(new Driver());
 
-        $image = $manager->read(public_path('images/attendance-template.jpeg'));
+        $templatePath = public_path('images/Attendance_certificate.jpeg');
+        $image = $manager->read($templatePath);
 
-        //find the member details with the id from the request
-        $member = DB::table('second_summit_attendance')->where('id', request()->id)->first();
-
-        $image->text($member->first_name . ' ' . $member->last_name, 800, 530, function ($font) {
-            $font->filename(public_path('fonts/Lobster-Regular.ttf'));
-            $font->color('#000000');
-            $font->size(50);
-            $font->align('center');
-            $font->valign('middle');
-            $font->lineHeight(2.0);
-        });
+        // Get attendance record
+        $attendance = DB::table('attendances')->where('id', request()->id)->first();
 
 
-        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT ON 17-18/07/2025"), 800, 700, function ($font) {
-            $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
-            $font->size(60);
-            $font->align('center');
-            $font->valign('middle');
-            $font->lineHeight(1.6);
-        });
-
-        $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 800, function ($font) {
-            $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
-            $font->size(60);
-            $font->align('center');
-            $font->valign('middle');
-            $font->lineHeight(1.6);
-        });
-
-        $image->text("Scan the QR code in the right corner to comfirm the validity of this certificate", 800, 1100, function ($font) {
-            $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
-            $font->size(25);
-            $font->align('center');
-            $font->valign('middle');
-            $font->lineHeight(1.6);
-        });
-
-        //generate the qr code
-        $qrPath = $this->generate_qr(request()->id);
-
-        //add the qr code to the certificate
-        $image->place($qrPath, 'top-right', 52, 55);
-        $image->toPng();
-        $imagePath = public_path('images/certificate-generated_' . request()->id . '.png');
-        $id = request()->id;
-        $image->save($imagePath);
-        if (request()->file_type == 'pdf') {
-            //set page to landscape
+            // Add attendee name (centered, larger font)
+            $image->text($attendance->first_name . ' ' . $attendance->last_name, 800, 530, function ($font) {
+                $font->filename(public_path('fonts/Lobster-Regular.ttf'));
+                $font->size(60);
+                $font->color('#000000');
+                $font->align('center');
+                $font->valign('middle');
+            });
 
 
-            pdf::loadView('admin.attendances.certificate', ['id' => $id])
-                ->setPaper('a4', 'landscape')
-                ->save(public_path('images/certificate-generated_' . request()->id . '.pdf'));
-            return response()->download(public_path('images/certificate-generated_' . request()->id . '.pdf'))->deleteFileAfterSend(true);
-        } else {
-            // $img = file_get_contents(public_path('images/certificate-generated_' . request()->id . '.png'));
+            $image->text('2ND ICT NATIONAL SUMMIT', 800, 660, function ($font) {
+                $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
+                $font->size(50);
+                $font->color('#000000');
+                $font->align('center');
+                $font->valign('middle');
+            });
 
-            // return response($img)->header('Content-Type', 'image/png');
-            return response()->download(public_path('images/certificate-generated_' . request()->id . '.png'))->deleteFileAfterSend(true);
-        }
+            $image->text('17-18 JULY 2025', 800, 730, function ($font) {
+                $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
+                $font->size(50);
+                $font->color('#000000');
+                $font->align('center');
+                $font->valign('middle');
+            });
+
+            $image->text('AT KAMPALA, NATIONAL ICT INNOVATION HUB', 800, 800, function ($font) {
+                $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
+                $font->size(50);
+                $font->color('#000000');
+                $font->align('center');
+                $font->valign('middle');
+            });
+
+
+
+            // Add QR code notice
+            $image->text('Scan the QR code in the right corner to confirm the validity of this certificate', 800, 1050, function ($font) {
+                $font->filename(public_path('fonts/OpenSans_Condensed-Regular.ttf'));
+                $font->size(25);
+                $font->color('#000000');
+                $font->align('center');
+                $font->valign('middle');
+            });
+
+            // Generate and add QR code
+            $qrPath = $this->generate_qr(request()->id);
+            $image->place($qrPath, 'top-right', 50, 50);
+
+            //Handle png
+            $image->toPng();
+            $imagePath = public_path('images/certificates' . request()->id . '.png');
+            $id = request()->id;
+            $image->save($imagePath);
+
+            // Handle PDF request
+    if (request()->file_type == 'pdf') {
+        PDF::loadView('admin.attendances.certificate', ['id' => $id])
+            ->setPaper('a4', 'landscape')
+            ->save(public_path('images/certificates' . request()->id . '.pdf'));
+
+        return response()->download(public_path('images/certificates' . request()->id . '.pdf'))->deleteFileAfterSend(true);
+    } else {
+        return response()->download(public_path('images/certificates' . request()->id . '.png'))->deleteFileAfterSend(true);
     }
+}
 
 
     public function certificate()
@@ -303,7 +317,7 @@ public function index(Request $request)
     {
         //check if the member exists
 
-        $member = DB::table('second_summit_attendance')->where('id', $memberId)->first();
+        $member = DB::table('attendances')->where('id', $memberId)->first();
         $qrText = url('attendance/' . $member->id);
 
         // Generate QR code
@@ -318,7 +332,7 @@ public function index(Request $request)
 
     public function attendance_verification($id)
     {
-        $member = DB::table('second_summit_attendance')->where('id', $id)->first();
+        $member = DB::table('attendances')->where('id', $id)->first();
 
         return view('admin.attendances.attendance-verification', compact('member'));
     }

@@ -39,8 +39,7 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
-                                        <th>Event</th>
-                                        <th>Actions</th>
+                                        <th>Certificate</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,44 +50,25 @@
                                             <td>{{ $attendance->last_name }}</td>
                                             <td>{{ $attendance->email }}</td>
                                             <td>
-                                                @if($attendance->event)
-                                                    {{ $attendance->event->topic }} ({{ \Carbon\Carbon::parse($attendance->event->event_date)->format('M d, Y') }})
-                                                @else
-                                                    <span class="text-danger">No event assigned</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ url('/admin/member/' . $attendance->id) }}"
-                                                    title="View member" class="btn btn-success btn-sm">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </a>
-                                                <a href="{{ url('/admin/member/' . $attendance->id . '/edit') }}"
-                                                    title="Edit member" class="btn btn-warning btn-sm">
-                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                </a>
-
-                                                <form method="POST"
-                                                    action="{{ url('/admin/member' . '/' . $attendance->id) }}"
-                                                    accept-charset="UTF-8" style="display:inline">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete member"
-                                                        onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </form>
-
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
                                                         <i class="fa fa-certificate"></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item"
-                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=png') }}">PNG</a></li>
-                                                        <li><a class="dropdown-item"
-                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=pdf') }}">PDF</a></li>
-                                                    </ul>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('attendance.certificate', ['id' => $attendance->id, 'file_type' => 'pdf']) }}">
+                                                                    PDF
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                 href="{{ route('attendance.certificate', ['id' => $attendance->id, 'file_type' => 'png']) }}">
+                                                                     PNG
+                                                            </a>
+                                                        </li>
+                                                     </ul>
                                                 </div>
                                             </td>
                                         </tr>
