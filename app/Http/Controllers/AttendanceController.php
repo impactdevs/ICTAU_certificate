@@ -64,7 +64,7 @@ class AttendanceController extends Controller
             'event_id'   => 'required|uuid|exists:events,event_id',
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
+            // 'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
         ]);
 
         // Insert into database
@@ -91,7 +91,7 @@ class AttendanceController extends Controller
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
-        $member = DB::table('second_summit_attendance')->where('id', $id)->first();
+        $member = DB::table('attendances')->where('id', $id)->first();
 
         $image->text($member->first_name . ' ' . $member->last_name, 800, 530, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
@@ -187,7 +187,7 @@ class AttendanceController extends Controller
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
-        $member = DB::table('second_summit_attendance')->where('id', request()->id)->first();
+        $member = DB::table('attendances')->where('id', request()->id)->first();
 
         $image->text($member->first_name . ' ' . $member->last_name, 800, 530, function ($font) {
             $font->filename(public_path('fonts/Lobster-Regular.ttf'));

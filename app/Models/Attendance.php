@@ -9,7 +9,7 @@ class Attendance extends Model
 {
     use HasFactory;
 
-    protected $table = 'second_summit_attendance';
+    protected $table = 'attendances';
 
     protected $primaryKey = 'id';
 
