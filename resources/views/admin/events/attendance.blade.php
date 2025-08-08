@@ -40,9 +40,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item"
-                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=png&event_id=' . $event->id) }}">PNG</a></li>
+                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=png&event_id=' . $event->event_id) }}">PNG</a></li>
                                                         <li><a class="dropdown-item"
-                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=pdf&event_id=' . $event->id) }}">PDF</a></li>
+                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=pdf&event_id=' . $event->event_id) }}">PDF</a></li>
                                                     </ul>
                                                 </div>
                                     </td>
