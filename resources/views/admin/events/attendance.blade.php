@@ -36,7 +36,7 @@
                                                <div class="btn-group">
                                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
                                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fa fa-certificate"></i>
+                                                        Certificate
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a class="dropdown-item"
