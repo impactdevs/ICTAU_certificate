@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <img src="{{ public_path('generated/' . $id . '.png') }}" alt="Certificate" height="100%" width="100%">
+    <img src="{{ public_path('images/certificate-generated_' . $id . '.png') }}" alt="Certificate" height="100%" width="100%">
 </body>
 
 </html>
