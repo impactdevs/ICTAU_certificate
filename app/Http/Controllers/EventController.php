@@ -35,6 +35,8 @@ class EventController extends Controller
         $event->event_date = $request->event_date;
         $event->venue = $request->venue;
         $event->venue_name = $request->venue_name;
+        $event->start_date = $request->start_date;
+        $event->end_date = $request->end_date;
 
         if (request()->hasFile('certificate_template')) {
             $file = request()->file('certificate_template');

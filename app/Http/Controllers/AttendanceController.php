@@ -164,6 +164,26 @@ class AttendanceController extends Controller
     {
         $manager = new ImageManager(new Driver());
 
+        $event = Event::findOrFail(request()->event_id);
+        $startDate = $event->start_date->format('d');
+        $startMonth = $event->start_date->format('F');
+        $startYear = $event->start_date->format('Y');
+        $endDate = $event->end_date->format('d');
+        $endMonth = $event->end_date->format('F');
+        $endYear = $event->end_date->format('Y');
+        $venue = $event->venue;
+
+        if ($startMonth == $endMonth && $startYear == $endYear) {
+            $dateRange = $startDate . ' - ' . $endDate . ' ' . $startMonth . ' ' . $startYear;
+        } elseif ($startYear == $endYear) {
+            $dateRange = $startDate . ' ' . $startMonth . ' - ' . $endDate . ' ' . $endMonth . ' ' . $startYear;
+        }
+         else {
+            $dateRange = $startDate . ' ' . $startMonth . ' ' . $startYear . ' - ' . $endDate . ' ' . $endMonth . ' ' . $endYear;
+        }
+
+        //process the date accordingly, if the same month and 
+
         $image = $manager->read(public_path('images/attendance-template.jpeg'));
 
         //find the member details with the id from the request
@@ -178,8 +198,8 @@ class AttendanceController extends Controller
             $font->lineHeight(2.0);
         });
 
-
-        $image->text(strtoupper("2ND ICT NATIONAL SUMMIT"), 800, 650, function ($font) {
+        //topic (2ND ICT NATIONAL SUMMIT)
+        $image->text(strtoupper($event->topic), 800, 650, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -187,7 +207,7 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->text(strtoupper("17–18 JULY 2025"), 800, 730, function ($font) {
+        $image->text(strtoupper($dateRange), 800, 730, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');
@@ -195,7 +215,7 @@ class AttendanceController extends Controller
             $font->lineHeight(1.6);
         });
 
-        $image->text(strtoupper("AT KAMPALA, NATIONAL ICT INNOVATION HUB"), 800, 810, function ($font) {
+        $image->text(strtoupper($venue), 800, 810, function ($font) {
             $font->filename(public_path('fonts/OpenSans_Condensed-Bold.ttf'));
             $font->size(60);
             $font->align('center');

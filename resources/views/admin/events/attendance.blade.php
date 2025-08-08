@@ -21,6 +21,7 @@
                                     <th>First Name</th>
                                     <th>last Name</th>
                                     <th>Email</th>
+                                    <th>Certificate</th>
                                     <th>Registered At</th>
                                 </tr>
                             </thead>
@@ -31,6 +32,20 @@
                                     <td>{{ $attendance->first_name ?? 'N/A' }}</td>
                                     <td>{{ $attendance->last_name ?? 'N/A' }}</td>
                                     <td>{{ $attendance->email ?? 'N/A' }}</td>
+                                    <td>
+                                               <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-certificate"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item"
+                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=png&event_id=' . $event->id) }}">PNG</a></li>
+                                                        <li><a class="dropdown-item"
+                                                            href="{{ url('/get-attendance-certificate?id=' . $attendance->id . '&file_type=pdf&event_id=' . $event->id) }}">PDF</a></li>
+                                                    </ul>
+                                                </div>
+                                    </td>
                                     <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('M j, Y g:i A') }}</td>
                                 </tr>
                                 @endforeach

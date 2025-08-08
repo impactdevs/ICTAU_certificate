@@ -20,7 +20,8 @@ class Event extends Model
     protected $fillable = [
         'event_id',
         'topic',
-        'event_date',
+        'start_date',
+        'end_date',
         'venue',
         'venue_name',
         'certificate_template_path'
