@@ -171,7 +171,7 @@ class AttendanceController extends Controller
         $endDate = $event->end_date->format('d');
         $endMonth = $event->end_date->format('F');
         $endYear = $event->end_date->format('Y');
-        $venue = $event->venue;
+        $venue = $event->venue_name;
 
         if ($startMonth == $endMonth && $startYear == $endYear) {
             $dateRange = $startDate . ' - ' . $endDate . ' ' . $startMonth . ' ' . $startYear;

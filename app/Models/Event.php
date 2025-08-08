@@ -27,6 +27,13 @@ class Event extends Model
         'certificate_template_path'
     ];
 
+    // cast start and end dates to Carbon instances
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'event_date' => 'datetime', 
+    ];
+
      protected static function boot()
     {
         parent::boot();
