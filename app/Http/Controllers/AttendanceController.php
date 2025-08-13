@@ -88,6 +88,10 @@ class AttendanceController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+        } else{
+            $id = DB::table('attendances')->where('event_id', $validatedData['event_id'])
+                ->where('email', $validatedData['email'])
+                ->value('id');
         }
 
         // send an email to the user with the certificate
