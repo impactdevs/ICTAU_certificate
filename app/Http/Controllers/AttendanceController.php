@@ -66,15 +66,11 @@ class AttendanceController extends Controller
             'event_id'   => 'required|uuid|exists:events,event_id',
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            // 'email'      => [
-            //     'required',
-            //     'email',
-            //     'max:255',
-            //     Rule::unique('attendances')->where(function ($query) use ($request) {
-            //         return $query->where('event_id', $request->event_id)
-            //             ->where('email', $request->email);
-            //     }),
-            // ],
+            'email'      => [
+                'required',
+                'email',
+                'max:255'
+            ],
         ]);
 
         // Check if the email is unique for the event
