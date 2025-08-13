@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendCertificate;
 use App\Models\Event;
 use App\Models\Attendance;
+use Illuminate\Validation\Rule;
+
 
 class AttendanceController extends Controller
 {
@@ -64,7 +66,15 @@ class AttendanceController extends Controller
             'event_id'   => 'required|uuid|exists:events,event_id',
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            // 'email'      => 'required|email|max:255|unique:second_summit_attendance,email',
+            'email'      => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('attendances')->where(function ($query) use ($request) {
+                    return $query->where('event_id', $request->event_id)
+                        ->where('email', $request->email);
+                }),
+            ],
         ]);
 
         // Insert into database
