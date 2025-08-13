@@ -66,26 +66,33 @@ class AttendanceController extends Controller
             'event_id'   => 'required|uuid|exists:events,event_id',
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
-            'email'      => [
-                'required',
-                'email',
-                'max:255',
-                Rule::unique('attendances')->where(function ($query) use ($request) {
-                    return $query->where('event_id', $request->event_id)
-                        ->where('email', $request->email);
-                }),
-            ],
+            // 'email'      => [
+            //     'required',
+            //     'email',
+            //     'max:255',
+            //     Rule::unique('attendances')->where(function ($query) use ($request) {
+            //         return $query->where('event_id', $request->event_id)
+            //             ->where('email', $request->email);
+            //     }),
+            // ],
         ]);
 
-        // Insert into database
-        $id = DB::table('attendances')->insertGetId([
-            'event_id'   => $validatedData['event_id'],
-            'first_name' => $validatedData['first_name'],
-            'last_name'  => $validatedData['last_name'],
-            'email'      => $validatedData['email'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // Check if the email is unique for the event
+        $emailExists = DB::table('attendances')->where('event_id', $validatedData['event_id'])
+            ->where('email', $validatedData['email'])
+            ->exists();
+
+        if (!$emailExists) {
+            // Insert into database
+            $id = DB::table('attendances')->insertGetId([
+                'event_id'   => $validatedData['event_id'],
+                'first_name' => $validatedData['first_name'],
+                'last_name'  => $validatedData['last_name'],
+                'email'      => $validatedData['email'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
         // send an email to the user with the certificate
         $certificatePath = $this->generate_email_certificate($id);
@@ -187,8 +194,7 @@ class AttendanceController extends Controller
             $dateRange = $startDate . ' - ' . $endDate . ' ' . $startMonth . ' ' . $startYear;
         } elseif ($startYear == $endYear) {
             $dateRange = $startDate . ' ' . $startMonth . ' - ' . $endDate . ' ' . $endMonth . ' ' . $startYear;
-        }
-         else {
+        } else {
             $dateRange = $startDate . ' ' . $startMonth . ' ' . $startYear . ' - ' . $endDate . ' ' . $endMonth . ' ' . $endYear;
         }
 
